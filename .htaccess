@@ -1,0 +1,13 @@
+RewriteOptions inherit
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteRule ^(.*)/(.*)/(.*)/(.*)/(.*).html$ index.php?module=$1&page=$2&action=$3&param1=$4&param2=$5 [L]
+RewriteRule ^(.*)/(.*)/(.*)/(.*).html$ index.php?module=$1&page=$2&action=$3&param1=$4 [L]
+RewriteRule ^(.*)/(.*)/(.*).html$ index.php?module=$1&page=$2&action=$3 [L]
+RewriteRule ^(.*)/(.*).html$ index.php?module=$1&page=$2 [L]
+RewriteRule ^(.*).html$ index.php?module=$1 [L]

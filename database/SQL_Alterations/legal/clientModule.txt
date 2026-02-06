@@ -1,0 +1,3 @@
+ALTER TABLE `legal_client` CHANGE `marketing` `marketing` BIGINT(20) NOT NULL COMMENT 'here saving marketing/internal staff Id\'s';
+ALTER TABLE `legal_client` ADD `behalf_of` INT(11) NULL AFTER `name`;
+ALTER TABLE `legal_client` ADD `type` ENUM('I','M') NOT NULL DEFAULT 'M' COMMENT 'I-internal,M-Marketing' AFTER `marketing`;

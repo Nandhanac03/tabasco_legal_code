@@ -1,0 +1,73 @@
+18-jul-25
+ALTER TABLE `legal_activelegal` ADD `collected_amount` DECIMAL(18,2) NULL AFTER `claim_amount`;
+
+25-jul-25
+ALTER TABLE `legal_activelegal` ADD `legal_status` ENUM('Active','Closed','Bad_dedebts') NOT NULL DEFAULT 'Active' AFTER `expense_amount`;
+
+29-jul-25
+CREATE TABLE `tabasco_legal`.`legal_case_root_actions` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `case_id` INT(11) NULL , `active_legal_id` INT(11) NULL , `case_root_id` INT(11) NULL , `category_id` INT(11) NULL , `action_subcategory_id` INT(11) NULL , `date` DATE NULL , `description` TEXT NULL , `document` VARCHAR(500) NULL , `uae_pass` VARCHAR(100) NULL , `created_at` DATETIME NULL , `created_by` INT(11) NULL , `updated_by` INT(11) NULL , `updated_on` DATETIME NULL , `status` ENUM('A','D') NULL DEFAULT 'A' , PRIMARY KEY (`id`)) ENGINE = MyISAM; 
+
+CREATE TABLE `tabasco_legal`.`legal_action_subcategory` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `title` VARCHAR(500) NULL , `description` TEXT NULL , `status` ENUM('A','D') NOT NULL DEFAULT 'A' , `created_by` INT(11) NULL , `created_on` DATETIME NULL , `updated_by` INT(11) NULL , `updated_on` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+
+1- aug-25
+
+ALTER TABLE `legal_case_root_actions` ADD `created_from` ENUM('CA','FA') NOT NULL DEFAULT 'CA' COMMENT 'CA- case action: FA- Follow up action' AFTER `uae_pass`; 
+
+
+
+5 aug - 25
+
+ALTER TABLE `legal_activelegal` CHANGE `legal_status` `legal_status` ENUM('Active','Closed','Bad_debts') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Active'; 
+
+8 aug - 25
+ALTER TABLE `legal_case_root_actions` ADD `email` VARCHAR(500) NULL AFTER `description`; 
+
+12-aug-25
+
+CREATE TABLE `tabasco_legal`.`legal_case_notification` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `case_id` INT(11) NULL , `client_id` INT(11) NULL , `marketing_id` INT(11) NULL COMMENT 'From users table' , `hearing_date` DATE NULL , `remind_date` DATE NULL , `case_status` VARCHAR(500) NULL , `created_at` DATETIME NULL , `created_by` INT(11) NULL , `updated_by` INT(11) NULL , `updated_on` DATETIME NULL , `status` ENUM('A', 'D') NULL DEFAULT 'A' , PRIMARY KEY (`id`)) ENGINE = MyISAM; 
+
+ALTER TABLE `legal_case_notification` ADD `active_legal_id` INT(11) NULL AFTER `id`; 
+
+
+INSERT INTO `legal_menu` (`id`, `name`, `actions`, `order_no`, `status`) VALUES (NULL, 'Closed Legal', 'V,A,E,D,P,M 	', '22', 'A');
+INSERT INTO `legal_menu` (`id`, `name`, `actions`, `order_no`, `status`) VALUES (NULL, 'Bad Debts', 'V,A,E,D,P,M', '23', 'A');
+INSERT INTO `legal_menu` (`id`, `name`, `actions`, `order_no`, `status`) VALUES (NULL, 'Total Legal', 'V,A,E,D,P,M', '24', 'A');
+
+
+6-aug-25
+ALTER TABLE `legal_collections` CHANGE `fees_type` `fees_type` INT NULL DEFAULT NULL;
+ALTER TABLE `legal_expense` CHANGE `fees_type` `fees_type` INT NULL DEFAULT NULL;
+
+
+3-nov-25
+ALTER TABLE `legal_expense` ADD `remark` TEXT NULL AFTER `description`; 
+ALTER TABLE `legal_collections` ADD `remark` TEXT NULL AFTER `description`; 
+ALTER TABLE `legal_case_roots` ADD `root_cat_number` VARCHAR(500) NULL AFTER `category`; 
+
+
+
+ALTER TABLE `legal_case_root_actions` ADD `client_id` INT(11) NULL AFTER `action_subcategory_id`, ADD `firm_id` INT(11) NULL COMMENT 'party_id in some table' AFTER `client_id`, ADD `parent_type` VARCHAR(500) NULL COMMENT 'TP-Third Party, DC-Debt Collector, LF-Legal Firm, LT-Legal Team ' AFTER `firm_id`;
+ALTER TABLE `legal_case_root_actions` ADD `case_type` VARCHAR(50) NULL DEFAULT 'case' AFTER `case_id`; 
+
+2-12-25
+
+ALTER TABLE `legal_activelegal` ADD `legal_status_reason` VARCHAR(1000) NULL AFTER `legal_status`; 
+
+
+6-12-25
+ALTER TABLE `legal_task_reminders` ADD `is_view` VARCHAR(50) NOT NULL DEFAULT 'N' AFTER `status`; 
+
+ALTER TABLE `legal_case_notification` ADD `case_root_id` INT(11) NULL AFTER `marketing_id`; 
+
+6-jan-26
+ALTER TABLE `legal_cheque_upload` ADD `cheque_number` VARCHAR(500) NULL AFTER `type`, ADD `cheque_bank` TEXT NULL AFTER `cheque_number`, ADD `cheque_bounced_date` DATETIME NULL AFTER `cheque_bank`; 
+
+7-jan-26
+ALTER TABLE `legal_client` ADD `client_from` ENUM('erp','legal') NULL COMMENT 'ERP uses existing customers, Legal is used to create new clients for Marketing or Internal Staff.' AFTER `type`; 
+
+
+9-jan-26
+INSERT INTO `legal_menu` (`id`, `name`, `actions`, `order_no`, `status`) VALUES ('25', 'Lawyer', 'V,A,E,D,P,M', '25', 'A'), (NULL, '', NULL, NULL, 'A');
+
+

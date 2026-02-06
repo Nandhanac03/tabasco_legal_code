@@ -1,0 +1,21 @@
+DELIMITER $$
+
+CREATE TRIGGER `before_update_legal_firm`
+BEFORE UPDATE ON `legal_firm`
+FOR EACH ROW
+BEGIN
+    DECLARE duplicate_count INT;
+
+    -- Check if the new code already exists in another record
+    SELECT COUNT(*) INTO duplicate_count
+    FROM legal_firm
+    WHERE code = NEW.code AND id != OLD.id;
+
+    -- If a duplicate exists, prevent the update
+    IF duplicate_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Duplicate code not allowed!';
+    END IF;
+END$$
+
+DELIMITER ;

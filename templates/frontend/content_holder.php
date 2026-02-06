@@ -1,0 +1,1 @@
+<?php include_once("./modules/".$module."/tpl/".$body.".php");?>

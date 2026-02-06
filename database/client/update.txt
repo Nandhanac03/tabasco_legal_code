@@ -1,0 +1,28 @@
+DELIMITER $$
+
+CREATE TRIGGER `before_update_legal_client`
+BEFORE UPDATE ON `legal_client`
+FOR EACH ROW
+BEGIN
+    DECLARE duplicate_count INT;
+    DECLARE new_code VARCHAR(100);
+
+    -- Check if the new code already exists (excluding the current row)
+    SELECT COUNT(*) INTO duplicate_count
+    FROM legal_client
+    WHERE code = NEW.code AND id != OLD.id;
+
+    -- If a duplicate exists, prevent the update
+    IF duplicate_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Duplicate code not allowed!';
+    END IF;
+
+    -- Ensure code is not empty or NULL, regenerate if necessary
+    IF NEW.code IS NULL OR NEW.code = '' THEN
+        SET new_code = CONCAT('TABL/CL/', LPAD(NEW.id, 4, '0'));
+        SET NEW.code = new_code;
+    END IF;
+END$$
+
+DELIMITER ;

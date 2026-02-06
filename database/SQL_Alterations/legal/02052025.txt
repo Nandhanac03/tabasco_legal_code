@@ -1,0 +1,4 @@
+ALTER TABLE `legal_third_party` ADD `share_link` TEXT NULL AFTER `status`, ADD `locked_status` ENUM('Y','N') NOT NULL DEFAULT 'N' COMMENT 'Y-Locked ; N-Unlocked' AFTER `share_link`;
+ALTER TABLE `legal_firm` ADD `locked_status` ENUM('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'N' COMMENT 'Y-Locked;N-Not Locked' AFTER `visiting_card`;
+ALTER TABLE `legal_debt_collector` ADD `locked_status` ENUM('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'N' COMMENT 'Y-Locked; N-Not Locked' AFTER `visiting_card`;
+ALTER TABLE legal_agencies_login ADD UNIQUE (user_name);

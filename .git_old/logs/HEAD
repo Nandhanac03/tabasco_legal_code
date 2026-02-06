@@ -1,0 +1,61 @@
+0000000000000000000000000000000000000000 472b86f895c1190b89c89fd8f7ab8e40b57b53c7 Anakha <anakha.s1299@gmail.com> 1752730761 +0530	clone: from https://github.com/praveencodelabs/tabasco_legal_code.git
+472b86f895c1190b89c89fd8f7ab8e40b57b53c7 1f1d5e6256c1ddc3a789c7bd35e02295a5c652a3 Anakha <anakha.s1299@gmail.com> 1752822217 +0530	pull origin main: Fast-forward
+1f1d5e6256c1ddc3a789c7bd35e02295a5c652a3 e1cde5a7ec1e39c7c45f49d97c3ff1d27849004d Anakha <anakha.s1299@gmail.com> 1752823381 +0530	commit: changes in active legal information - autopopulate
+e1cde5a7ec1e39c7c45f49d97c3ff1d27849004d 5e8487924822cf677bf4c33d73c8cbda26014917 Anakha <anakha.s1299@gmail.com> 1752923948 +0530	commit: Commision listing, it show previos and current data
+5e8487924822cf677bf4c33d73c8cbda26014917 2bbb6fe21cee7203033d778e724757056acb3032 Anakha <anakha.s1299@gmail.com> 1752924075 +0530	commit: Commission listing tpl change
+2bbb6fe21cee7203033d778e724757056acb3032 a552e0f2599844972e9b5bc26a6de10936dc197f Anakha <anakha.s1299@gmail.com> 1752925206 +0530	commit: Commision listing changes
+a552e0f2599844972e9b5bc26a6de10936dc197f cebb6a82562889222f70121e29821f909565a588 Anakha <anakha.s1299@gmail.com> 1753163610 +0530	commit: case information changes
+cebb6a82562889222f70121e29821f909565a588 0029c4f45f5e1ff07e2ff6dca585ba02f7a5120a Anakha <anakha.s1299@gmail.com> 1753163676 +0530	pull origin main: Merge made by the 'ort' strategy.
+0029c4f45f5e1ff07e2ff6dca585ba02f7a5120a 18529f461dc24a989e6ec81b7c8b060c4cd8e2b9 Anakha <anakha.s1299@gmail.com> 1753436449 +0530	commit: Dbchanges and changes in active legal shift and legal status chages
+18529f461dc24a989e6ec81b7c8b060c4cd8e2b9 56b53e5b0d9357e90a7f1e15740f015a93477b5c Anakha <anakha.s1299@gmail.com> 1753447431 +0530	commit: changes in Active,Closed,Bad debts and total legal
+56b53e5b0d9357e90a7f1e15740f015a93477b5c 68d1fd391398c8f905b9e6e51e5622d2076673d7 Anakha <anakha.s1299@gmail.com> 1753962116 +0530	commit: chages in action update case action and added new sub category in master
+68d1fd391398c8f905b9e6e51e5622d2076673d7 681305d68fec41f51d5c2a186899ee99f14f8050 Anakha <anakha.s1299@gmail.com> 1754047531 +0530	commit: changes for follow up action
+681305d68fec41f51d5c2a186899ee99f14f8050 ec5e251acd7017c919992349d14fe125674a265b Anakha <anakha.s1299@gmail.com> 1754373587 +0530	commit: changes on 5 aug
+ec5e251acd7017c919992349d14fe125674a265b e704ec17e46ff947c81b8cd10ec3765461570245 Anakha <anakha.s1299@gmail.com> 1754380676 +0530	commit: active legal Outstanding changs
+e704ec17e46ff947c81b8cd10ec3765461570245 b74da39ac0717d35e65e922a105c557a085b4f95 Anakha <anakha.s1299@gmail.com> 1754473477 +0530	commit: added filter in active legal renamed baddepts
+b74da39ac0717d35e65e922a105c557a085b4f95 efb69793e4fe32bd88c9afedec92c86700074c3b Anakha <anakha.s1299@gmail.com> 1754545609 +0530	commit: closed,baddebts,total legal filter changes
+efb69793e4fe32bd88c9afedec92c86700074c3b f32b9f7fe049e926ee81b7e265916c18e6540da2 Anakha <anakha.s1299@gmail.com> 1754570309 +0530	commit: shifting log, claim amount and status change corrected
+f32b9f7fe049e926ee81b7e265916c18e6540da2 42618501d7cf4bcd243bf710454b393c85d395c3 Anakha <anakha.s1299@gmail.com> 1754656867 +0530	commit: changes on 8 aug
+42618501d7cf4bcd243bf710454b393c85d395c3 b3c409cb64177f01a5f4e6fadaf57c4fddef599a Anakha <anakha.s1299@gmail.com> 1754658898 +0530	commit: last changes 8 aug
+b3c409cb64177f01a5f4e6fadaf57c4fddef599a 096d9e35b20e782d0ac12c9d0426ffa62e49aa70 Anakha <anakha.s1299@gmail.com> 1754976655 +0530	pull origin main: Fast-forward
+096d9e35b20e782d0ac12c9d0426ffa62e49aa70 eb58e7479688301ef30f21b735c845c63fbaa272 Anakha <anakha.s1299@gmail.com> 1754980724 +0530	commit: followup modal changes
+eb58e7479688301ef30f21b735c845c63fbaa272 bd14246813f3f98e87e6b9402e639af0f1450cfd Anakha <anakha.s1299@gmail.com> 1755061200 +0530	commit: notification changes
+bd14246813f3f98e87e6b9402e639af0f1450cfd 919b2f4b77acc3cca467d188ec7f3fab71a7ae96 Anakha <anakha.s1299@gmail.com> 1755068472 +0530	commit: dashboard and view changes
+919b2f4b77acc3cca467d188ec7f3fab71a7ae96 0f3c382a07be619f70f7ea902793ecf319ae8985 Anakha <anakha.s1299@gmail.com> 1755076234 +0530	pull origin main: Fast-forward
+0f3c382a07be619f70f7ea902793ecf319ae8985 e2fcb432a2f712b3c2b462734095c2f2b31c0c07 Anakha <anakha.s1299@gmail.com> 1755080342 +0530	pull origin main: Fast-forward
+e2fcb432a2f712b3c2b462734095c2f2b31c0c07 d6d9a50ea16357045e4a3bc049566a103103485a Anakha <anakha.s1299@gmail.com> 1755165422 +0530	pull origin main: Fast-forward
+d6d9a50ea16357045e4a3bc049566a103103485a cbc4cb59a5c52b377c359261ff86e760dd80157f Anakha <anakha.s1299@gmail.com> 1755495968 +0530	pull origin main: Fast-forward
+cbc4cb59a5c52b377c359261ff86e760dd80157f 7dbf0454d9093d961d27c68134103a1b537b145b Anakha <anakha.s1299@gmail.com> 1755498620 +0530	pull origin main: Fast-forward
+7dbf0454d9093d961d27c68134103a1b537b145b 5fbff540834bcf9b1130457de3b4e3cba3e3b99e Anakha <anakha.s1299@gmail.com> 1755500008 +0530	pull origin main: Fast-forward
+5fbff540834bcf9b1130457de3b4e3cba3e3b99e fc723a2afc114dab00266cfe9df3a6118c9cd026 Anakha <anakha.s1299@gmail.com> 1755521560 +0530	commit: lawyer, root and respective changes
+fc723a2afc114dab00266cfe9df3a6118c9cd026 ada578c4b4edfcd2ab9656c28f5b14c43a62f465 Anakha <anakha.s1299@gmail.com> 1755863612 +0530	commit: bad dept report and add expense
+ada578c4b4edfcd2ab9656c28f5b14c43a62f465 27cbf46731109398a8e20a0c3fbb55534b3988f7 Anakha <anakha.s1299@gmail.com> 1758091752 +0530	commit: changes included in update 9
+27cbf46731109398a8e20a0c3fbb55534b3988f7 2adbd52b9e9f30e6856857c50707b12814ecbd4a Anakha <anakha.s1299@gmail.com> 1758272036 +0530	commit: feedbacks from case - cheque and Case View – Active Legal
+2adbd52b9e9f30e6856857c50707b12814ecbd4a 48e4d3a820c7b0afe0608846061e5a72bf96bc74 Anakha <anakha.s1299@gmail.com> 1758272373 +0530	commit: lengthy description is wrapped
+48e4d3a820c7b0afe0608846061e5a72bf96bc74 7c13695d858a9c9900355042be2ad94c22dcd14e Anakha <anakha.s1299@gmail.com> 1758275485 +0530	pull origin main: Fast-forward
+7c13695d858a9c9900355042be2ad94c22dcd14e a0a3da061b61dc7c34c0ed543533e5592a1ea056 Anakha <anakha.s1299@gmail.com> 1760333248 +0530	pull origin main: Fast-forward
+a0a3da061b61dc7c34c0ed543533e5592a1ea056 087bcfa1bb36369a6779bb2fe6d9787c2346d7ed Anakha <anakha.s1299@gmail.com> 1760349018 +0530	commit: expense modal changes
+087bcfa1bb36369a6779bb2fe6d9787c2346d7ed 1ebc4465419f9fdd7d74fbe5970a9d8390cd7a0d Anakha <anakha.s1299@gmail.com> 1760349249 +0530	commit: respnsive change in expense and claim
+1ebc4465419f9fdd7d74fbe5970a9d8390cd7a0d 5872f07fefd8e5e823ff599e390da708c6b70c3a Anakha <anakha.s1299@gmail.com> 1761197277 +0530	commit: action report changes
+5872f07fefd8e5e823ff599e390da708c6b70c3a 38075615fa3b1dbcfe44038f641f93daf32e5f96 Anakha <anakha.s1299@gmail.com> 1761307590 +0530	commit: statement and expence report
+38075615fa3b1dbcfe44038f641f93daf32e5f96 3a2749f1c234fc12ceb9ce74012305615ae8603e Anakha <anakha.s1299@gmail.com> 1761652017 +0530	commit: changes in reports
+3a2749f1c234fc12ceb9ce74012305615ae8603e 188e97f6a318f3a0925b4d38fe7af3c31a018f21 Anakha <anakha.s1299@gmail.com> 1761652292 +0530	commit: masterpage chage in report
+188e97f6a318f3a0925b4d38fe7af3c31a018f21 4069058e9fed24f2586950a65f6632cd7141d5b4 Anakha <anakha.s1299@gmail.com> 1762323477 +0530	commit: changes in roothandling and reports
+4069058e9fed24f2586950a65f6632cd7141d5b4 7789c9a3bfc7a4799746b1ed24ac36c54a317d83 Anakha <anakha.s1299@gmail.com> 1762776054 +0530	commit: changes in expence and commission
+7789c9a3bfc7a4799746b1ed24ac36c54a317d83 f6f4f45b4804ae50accae61793b655c87973eb44 Anakha <anakha.s1299@gmail.com> 1762941944 +0530	commit: commission modal changes
+f6f4f45b4804ae50accae61793b655c87973eb44 2647f91ed285f9601f068da60b95b0f9d9ba911d Anakha <anakha.s1299@gmail.com> 1764243414 +0530	commit: changes for report commission notificatiin and task reminders
+2647f91ed285f9601f068da60b95b0f9d9ba911d 96b1b6ae3b35d98b2454ecec938f829ae7dcf429 Anakha <anakha.s1299@gmail.com> 1764651365 +0530	commit: changes in reports and added precase
+96b1b6ae3b35d98b2454ecec938f829ae7dcf429 4f3584b1b5c7de93f91a3214d898e00497136f88 Anakha <anakha.s1299@gmail.com> 1764656672 +0530	commit: table and related classes and modules changes to legal_ for better inderstanding
+4f3584b1b5c7de93f91a3214d898e00497136f88 bcee9413ec433259b7fd5418490339ed4d1f391f Anakha <anakha.s1299@gmail.com> 1764846253 +0530	commit: changes in task reminders and other changes
+bcee9413ec433259b7fd5418490339ed4d1f391f 1e3711e9b685cde0c069ff79df1a85b2164290c2 Anakha <anakha.s1299@gmail.com> 1764936211 +0530	commit: hide category, sub-category, stage, and UAE Pass fields in follow-up view; fix edit_id parameter assignment
+1e3711e9b685cde0c069ff79df1a85b2164290c2 f5a3e7c0b645be01bc7fee4ee60bce1864dac755 Anakha <anakha.s1299@gmail.com> 1765005110 +0530	commit: add is_view field to legal_task_reminders; implement task hiding functionality in AJAX
+f5a3e7c0b645be01bc7fee4ee60bce1864dac755 1853b0395336368032bc1a00b1612e10982736cb Anakha <anakha.s1299@gmail.com> 1765948732 +0530	commit: remove required file upload validation from hearing form; update validation logic and renamed client Cheque details button
+1853b0395336368032bc1a00b1612e10982736cb d04f98e795c9db556a2dad71b7bd15d0e2f88c49 Anakha <anakha.s1299@gmail.com> 1766037383 +0530	commit: update report links and adjust case number handling in action report templates
+d04f98e795c9db556a2dad71b7bd15d0e2f88c49 6af92c5e79e1a9720e78d348d120ffd043c9f8f0 Anakha <anakha.s1299@gmail.com> 1766060094 +0530	commit: add back navigation buttons to various report templates; update column header in client base statement
+6af92c5e79e1a9720e78d348d120ffd043c9f8f0 3588bbbb4e355ef13577a8d9fc3120ca18a5f530 Anakha <anakha.s1299@gmail.com> 1766234682 +0530	commit: refactor commission report logic; enhance expense report handling and add PDF generation functionality
+3588bbbb4e355ef13577a8d9fc3120ca18a5f530 d330dd77b227e1eca60f7b3b0a668de0c88cabf0 Anakha <anakha.s1299@gmail.com> 1766744977 +0530	commit: add active legal ID handling across case modules; implement new case hearing and document view templates
+d330dd77b227e1eca60f7b3b0a668de0c88cabf0 aaca1675ba5f3d3f66942ee5bdd9c719bbfbd394 Anakha <anakha.s1299@gmail.com> 1767258052 +0530	commit: add active legal handling and document management; refactor document includes and enhance AJAX responses
+aaca1675ba5f3d3f66942ee5bdd9c719bbfbd394 8cbc2a1180e6f5336279b335729688fc14ea57c7 Anakha <anakha.s1299@gmail.com> 1767874780 +0530	commit: add legal client marketing handling and enforce authorization checks across various modules
+8cbc2a1180e6f5336279b335729688fc14ea57c7 506291f32e5bf004cc80361483340a6068cd6084 Anakha <anakha.s1299@gmail.com> 1768213732 +0530	commit: enforce authorization checks across multiple modules and enhance AJAX data handling
+506291f32e5bf004cc80361483340a6068cd6084 76640ea247965306456418dee12f50f792b5f9d8 Anakha <anakha.s1299@gmail.com> 1768287148 +0530	commit: add AJAX endpoint for changing legal status and update related templates
+76640ea247965306456418dee12f50f792b5f9d8 9e2e010f703fc7420b1a1287a48da9db0bd13118 Anakha <anakha.s1299@gmail.com> 1770355478 +0530	commit: Add plaintiff dropdown logic

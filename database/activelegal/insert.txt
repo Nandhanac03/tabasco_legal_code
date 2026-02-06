@@ -1,0 +1,20 @@
+DELIMITER $$
+
+CREATE TRIGGER `before_insert_legal_activelegal`
+BEFORE INSERT ON `legal_activelegal`
+FOR EACH ROW
+BEGIN
+    DECLARE next_id INT;
+    DECLARE formatted_code VARCHAR(150);
+
+    -- Get the next auto-increment value from the same table
+    SELECT IFNULL(MAX(id), 0) + 1 INTO next_id FROM legal_activelegal;
+
+    -- Format the code as 'TABL/AL/XXXX'
+    SET formatted_code = CONCAT('TABL/AL/', LPAD(next_id, 4, '0'));
+
+    -- Assign the formatted code to the new record
+    SET NEW.code = formatted_code;
+END$$
+
+DELIMITER ;

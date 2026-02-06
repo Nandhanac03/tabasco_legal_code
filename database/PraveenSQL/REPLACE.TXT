@@ -1,0 +1,11 @@
+Open your code in Visual Studio Code
+
+From Edit Menu, select Replace or use a short cut key (command + Option + F on Mac or Ctrl + H on Windows)
+
+In the find box type ^(\s)*$\n
+
+Leave the replace box empty
+
+Make sure the 'Use Regular Expression' is selected
+
+Select the 'Replace All' button

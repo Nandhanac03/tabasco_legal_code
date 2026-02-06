@@ -1,0 +1,83 @@
+ALTER TABLE `usertype` ADD `usertype_module` ENUM('TE','TL') NOT NULL DEFAULT 'TE' COMMENT 'TE-ERP;TL-Legal' AFTER `usertype_dept`;
+ALTER TABLE `users` ADD `user_module` ENUM('TE','TL') NOT NULL DEFAULT 'TE' COMMENT 'TE-ERP;TL-Legal' AFTER `email_sign_image`;
+
+
+
+mevda5GM4SDD
+
+
+09-04-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_area` ADD `created_by` INT(10) NULL AFTER `status`, ADD `created_on` DATETIME NULL AFTER `created_by`, ADD `updated_by` INT(10) NULL AFTER `created_on`, ADD `updated_on` DATETIME NULL AFTER `updated_by`;
+ALTER TABLE `legal_document_type` ADD `updated_by` INT(11) NULL AFTER `create_on`, ADD `updated_on` DATETIME NULL AFTER `updated_by`;
+ALTER TABLE `legal_category` ADD `created_by` INT(11) NULL AFTER `status`, ADD `created_on` DATETIME NULL AFTER `created_by`, ADD `updated_by` INT(11) NULL AFTER `created_on`, ADD `updated_on` DATETIME NULL AFTER `updated_by`;
+ALTER TABLE `legal_location` ADD `created_by` INT(11) NULL AFTER `status`, ADD `created_on` DATETIME NULL AFTER `created_by`, ADD `updated_by` INT(11) NULL AFTER `created_on`, ADD `updated_on` DATETIME NULL AFTER `updated_by`;
+
+
+19-04-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_bank` ADD `updated_on` DATETIME NULL AFTER `created_by`, ADD `updated_by` BIGINT(20) NULL AFTER `updated_on`;
+
+
+21-04-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_category` CHANGE `description` `description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+
+29-04-2025 (giri)✅
+=======================================================================
+CREATE TABLE `tabasco_legal`.`legal_case` ( `id` INT NOT NULL AUTO_INCREMENT , `active_legal_id` BIGINT(20) NOT NULL , `code` VARCHAR(150) NOT NULL , `case_number` BIGINT(20) NOT NULL , `category` BIGINT(20) NULL , `court` BIGINT(20) NULL , `plaintiff` BIGINT(20) NULL , `defendant` VARCHAR(255) NULL , `register_date` DATE NULL , `case_mode` BIGINT(20) NULL , `lawyer` VARCHAR(255) NULL , `location` VARCHAR(255) NULL , `case_date` DATE NULL , `note` TEXT NULL , `total_outstanding` DECIMAL(18,2) NULL , `outstanding_with_cheque` DECIMAL(18,2) NULL , `outstanding_without_cheque` DECIMAL(18,2) NULL , `created_id` INT NULL , `created_on` INT NULL , `updated_id` INT NULL , `updated_on` INT NULL , `status` ENUM('A','D') NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+ALTER TABLE `legal_case` CHANGE `created_on` `created_on` DATETIME NULL DEFAULT NULL;
+ALTER TABLE `legal_case` CHANGE `updated_on` `updated_on` DATETIME NULL DEFAULT NULL;
+
+CREATE TABLE `tabasco_legal`.`legal_case_hearing` ( `id` INT NOT NULL AUTO_INCREMENT, `case_id` INT NOT NULL , `file` VARCHAR(255) NULL , `hearing_date` DATE NULL , `hearing_feedback_date` DATE NULL , `hearing_feedback` TEXT NULL , `created_on` DATETIME NULL , `created_id` INT NULL , `updated_on` DATETIME NULL , `updated_id` INT NULL , `status` ENUM('A','D') NOT NULL ) ENGINE = MyISAM;
+CREATE TABLE `tabasco_legal`.`legal_case_roots` ( `id` INT NOT NULL AUTO_INCREMENT , `case_id` INT NOT NULL , `active_legal_id` INT NULL , `lawyer` VARCHAR(255) NULL , `court` INT NULL , `stage` VARCHAR(255) NULL , `category` INT NULL , `register_date` DATE NULL , `created_on` DATETIME NULL , `created_by` INT NULL , `updated_on` DATETIME NULL , `updated_by` INT NULL , `status` ENUM('A','D') NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+
+30-04-2025 (giri)✅
+=======================================================================
+CREATE TABLE `tabasco_legal`.`legal_court` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NULL , `description` TEXT NULL , `status` ENUM('A','D') NULL , `created_by` INT NULL , `created_on` DATETIME NULL , `updated_by` INT NULL , `updated_on` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+
+02-05-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_case` CHANGE `code` `code` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+ALTER TABLE `legal_case` CHANGE `case_number` `case_number` VARCHAR(50) NOT NULL;
+ALTER TABLE `legal_case` CHANGE `plaintiff` `plaintiff` VARCHAR(50) NULL DEFAULT NULL;
+ALTER TABLE `legal_case` CHANGE `case_mode` `case_mode` VARCHAR(50) NULL DEFAULT NULL;
+
+
+07-05-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_cheque_upload` CHANGE `type` `type` VARCHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'C: Client, CA: Case';
+
+
+08-05-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_document` CHANGE `parent_type` `parent_type` VARCHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'C-Client, TP-Third Party , LF- Legal Firm , DC- Debt Collector , AL- Active Legal, CA- Case';
+
+
+09-05-2025 (giri)✅
+=======================================================================
+DROP TABLE ` legal_case_hearing `
+CREATE TABLE `tabasco_legal`.`legal_case_hearing` ( `id` INT NOT NULL AUTO_INCREMENT , `case_id` INT NULL , `file` VARCHAR(255) NULL , `hearing_date` DATE NULL , `hearing_feedback_date` DATE NULL , `hearing_feedback` TEXT NULL , `created_on` DATETIME NULL , `created_id` INT NULL , `updated_on` DATETIME NULL , `updated_id` INT NULL , `status` ENUM('A','D') NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+
+15-05-2025 (giri)✅
+=======================================================================
+CREATE TABLE `tabasco_legal`.`legal_shift_active_legal` ( `id` INT NOT NULL AUTO_INCREMENT , `active_legal_id` INT NULL , `legal_type` VARCHAR(255) NULL , `party_name` VARCHAR(255) NULL , `start_date` DATE NULL , `shifted_date` DATE NULL , `created_by` INT NULL , `created_at` DATETIME NULL , `updated_by` INT NULL , `updated_at` DATETIME NULL , `status` ENUM('A','D') NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+
+28-05-2025 (giri)✅
+=======================================================================
+CREATE TABLE `tabasco_legal`.`legal_activelegal_commission` ( `id` INT NOT NULL AUTO_INCREMENT , `parent_type` VARCHAR(10) NULL , `party_id` INT NULL , `commission` DOUBLE(10,2) NULL , `notes` TEXT NULL , `created_at` DATETIME NULL , `created_by` INT NULL , `updated_at` DATETIME NULL , `updated_by` INT NULL , `active` ENUM('A','D') NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
+
+ALTER TABLE `legal_activelegal_commission` CHANGE `parent_type` `parent_type` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'TP-Third Party, DC-Debt Collector, LF-Legal Firm, LT-Legal Team';
+
+ALTER TABLE `legal_activelegal_commission` ADD `active_legal_id` INT NULL AFTER `id`;
+
+
+30-05-2025 (giri)✅
+=======================================================================
+ALTER TABLE `legal_activelegal` CHANGE `dateon` `dateon` DATE NULL;
+ALTER TABLE `legal_activelegal` CHANGE `dateon` `dateon` DATE NOT NULL;

@@ -1,0 +1,48 @@
+[26-Mar-2025 09:52:07 Asia/Dubai] SQL Error: Table 'tabasco_legal.tabasco_legal' doesn't exist
+[26-Mar-2025 09:54:54 Asia/Dubai] SQL Error: Table 'tabasco_legal.tabasco_legal' doesn't exist
+[26-Mar-2025 09:57:18 Asia/Dubai] SQL Prepare Error: Table 'tabasco_legal.tabasco_legal' doesn't exist | Query: SELECT id, name, code, address, contact_no, email FROM tabasco_legal WHERE status = 'A'
+[26-Mar-2025 09:57:45 Asia/Dubai] SQL Error: Table 'tabasco_legal.tabasco_legal' doesn't exist
+[26-Mar-2025 09:57:49 Asia/Dubai] SQL Error: Table 'tabasco_legal.tabasco_legal' doesn't exist
+[26-Mar-2025 10:00:38 Asia/Dubai] SQL Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER_BY id DESC' at line 1
+[20-May-2025 13:26:34 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 107
+[20-May-2025 13:26:34 Asia/Dubai] PHP Stack trace:
+[20-May-2025 13:26:34 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[20-May-2025 13:26:34 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:107
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 107
+[20-May-2025 13:50:58 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 13:50:58 Asia/Dubai] PHP Stack trace:
+[20-May-2025 13:50:58 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[20-May-2025 13:50:58 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:83
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 13:50:58 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 13:50:58 Asia/Dubai] PHP Stack trace:
+[20-May-2025 13:50:58 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[20-May-2025 13:50:58 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:83
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 13:51:52 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 13:51:52 Asia/Dubai] PHP Stack trace:
+[20-May-2025 13:51:52 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[20-May-2025 13:51:52 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:83
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 83
+[20-May-2025 14:07:44 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[20-May-2025 14:07:44 Asia/Dubai] PHP Stack trace:
+[20-May-2025 14:07:44 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[20-May-2025 14:07:44 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-May-2025 11:29:26 Asia/Dubai] PHP Notice:  Undefined variable: stmt in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-May-2025 11:29:26 Asia/Dubai] PHP Stack trace:
+[22-May-2025 11:29:26 Asia/Dubai] PHP   1. {main}() C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:0
+[22-May-2025 11:29:26 Asia/Dubai] PHP Fatal error:  Uncaught Error: Call to a member function free_result() on null in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81

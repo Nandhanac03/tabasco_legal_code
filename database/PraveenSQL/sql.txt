@@ -1,0 +1,2 @@
+ALTER TABLE `legal_cheque_upload` ADD `add_type` INT(11) NOT NULL DEFAULT '1' COMMENT '1-With Cheque 2. Without cheque' AFTER `id`;
+ALTER TABLE `legal_cheque_upload` CHANGE `upload_date` `upload_date` DATETIME NULL DEFAULT NULL;

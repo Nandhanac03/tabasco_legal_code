@@ -1,0 +1,1 @@
+ALTER TABLE `legal_document` CHANGE `parent_type` `parent_type` VARCHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'C-Client, TP-Third Party , LF- Legal Firm , DC- Debt Collector , AL- Active Legal';

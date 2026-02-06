@@ -1,0 +1,51 @@
+changes in files
+
+4) Active legal code hide and make the columns fit in the view because right now for edit we have to scroll all page
+
+modules/activelegal/tpl/list.tpl.php
+modules/activelegal/ajax/load_active_legal.php
+ 
+
+1) Change Case Root Postion as second tab in the view page
+case roots 
+
+modules/case/list.php
+modules/case/view.php
+
+modules/tpl/list.tpl.php
+modules/tpl/view.tpl.php
+modules/tpl/actions.tpl.php
+modules/tpl/case_hearing.tpl.php
+modules/tpl/document_view.tpl.php
+modules/tpl/expense.tpl.php
+
+
+
+
+
+
+8) UAE Pass report needed
+
+lib/class/class.casereports.php
+
+modules/reports/case_report_client.php
+
+modules/report/case_report_list.php
+
+modules/reports/tpl/case_report_client.tpl.php
+
+modules/reports/tpl/case_report_list.tpl.php
+
+modules/reports/tpl/ajax/load_ajax_case_report_list.php
+
+modules/reports/tpl/list.tpl.php
+
+
+
+
+
+
+
+
+
+
