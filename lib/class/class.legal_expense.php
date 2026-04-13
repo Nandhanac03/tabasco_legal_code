@@ -89,7 +89,52 @@ class Expense extends dbcon
         $this->_last_query = $Sqlcmd;
         $this->_inserted_id = $this->mysqlInsertid();
 
-        return $this->Query($Sqlcmd, $params);
+
+          // Determine if INSERT or UPDATE
+    if ($id) {
+        $Sqlcmd = "UPDATE legal_expense SET " . implode(", ", $fields) . " WHERE id=:id";
+        $params['id'] = $id;
+        $action = 'UPDATE';
+    } else {
+        $Sqlcmd = "INSERT INTO legal_expense SET " . implode(", ", $fields);
+        $action = 'CREATE';
+    }
+
+    $this->_last_query = $Sqlcmd;
+
+    $result = $this->Query($Sqlcmd, $params);
+
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
+        }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_expense',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Legal Expense ID: $id"
+                        : "Created Legal Expense ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+        
+        return $result;
+        
     }
 
 

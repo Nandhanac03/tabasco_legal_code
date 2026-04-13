@@ -9,7 +9,9 @@ include_once("../lib/class/class.dbcon.php");
 
 
 include_once("../lib/class/class.legal_contact.php");
+
 $ObjContact  =   new Contact();
+
 
 if ($_POST) {
 
@@ -140,6 +142,7 @@ $email = isset($_POST['contactEmail']) ? htmlspecialchars($_POST['contactEmail']
             $response['file_name'] = $uniqueFileName; // Return new filename if needed
             $response['status'] = 'success';
             $response['message'] = 'Contact added successfully.';
+            //$objlogger->logActivity('CREATE', 'Contact', null, "Added contact: {$contactName} for parent ID: {$parentID} ({$parentType})", null, $input_data);
         }else{
             $response['status'] = 'error';
             $response['message'] = 'Error : Please try again.';

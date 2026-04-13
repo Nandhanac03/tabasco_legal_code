@@ -24,7 +24,7 @@ $fees_types = $objFees_type->get_feesType();
 
 $legal_case = $objLegalCase->get_case($caseid);
 $active_legal = $objActiveLegal->Get_ActiveLegal_Information(['id' => $legal_case[0]['active_legal_id']]);
-// echo '<pre>';print_r($active_legal);
+ //echo '<pre>';print_r($active_legal);
 // echo '<pre>';print_r($fees_type);exit;
 
 
@@ -44,7 +44,17 @@ $expense = $objExpense->get_expense('', $filter);
 //     $collection_id = $collection[0]['id'];
 // }
 
-// echo '<pre>';print_r($collection);exit;
+//echo '<pre>';print_r($expense);exit;
 
 
+
+// echo '<pre>';
+// print_r([
+//     'client_id' => $client_id,
+//     'active_legal_id' => $active_legal_id,
+//     'case_id' => $case_id
+// ]);
+// exit;
+
+$actve_sub_menu =   'expensereport';
 $body = "expense.tpl";

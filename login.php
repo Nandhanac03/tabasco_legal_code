@@ -1,116 +1,171 @@
 <?php
 ob_start();
 session_start();
-# including files here
+
+// Include necessary classes
 include_once("lib/config.php");
 include_once("lib/class/class.dbcon.php");
-
 include_once "lib/class/class.validator.php";
-$ObjValidator = new validator();
-
 include_once "lib/class/class.common.php";
-$Objcommon = new Common();
-
-//CRSF Token class
 include_once "lib/class/class.crsftoken.php";
-$objCRSF = new csrftoken();
+include_once "lib/class/class.login.php";
+include_once 'lib/class.legal_activity_log.php';
+
+// Objects
+$ObjValidator = new validator();
+$Objcommon    = new Common();
+$objCRSF      = new csrftoken();
+$Objlogin     = new Login();
+$activityLog  = new LegalActivityLog();
+
 $validation_error = false;
 
+
+// Handle LOGOUT first
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+  if (isset($_SESSION['LOGIN_LEGAL_ID'])) {
+      $user_id   = $_SESSION['LOGIN_LEGAL_ID'];
+      $user_name = $_SESSION['LOGIN_LEGAL_NAME'] ?? '';
+      $user_type = $_SESSION['LOGIN_LEGAL_TYPE_NAME'] ?? '';
+
+      // Log logout
+      $activityLog->logActivity(
+          'LOGOUT',
+           $user_type . 'Logout',
+          $user_id,
+          "User {$user_name} ({$user_type}) logged out from IP {$_SERVER['REMOTE_ADDR']}"
+      );
+  }
+
+  // Destroy session
+  session_unset();
+  session_destroy();
+
+  // Redirect to login page
+  header("Location: " . ROOT_DIR . "login.php");
+  exit;
+}
+
+// Clear previous login sessions
 unset($_SESSION['LOGIN_LEGAL_ID']);
 unset($_SESSION['LOGIN_LEGAL_NAME']);
 unset($_SESSION['LOGIN_LEGAL_TYPE_ID']);
 unset($_SESSION['LOGIN_LEGAL_TYPE_NAME']);
-
-include_once "lib/class/class.login.php";
-# Object Creation
-$Objlogin = new Login();
-
+unset($_SESSION['LOGIN_AGENCIES']);
+unset($_SESSION['LOGIN_SUPER_ADMIN']);
 
 $go_Agencies_login = false;
-if ($_POST && $validation_error == false) {
 
-  $user_name = $ObjValidator->clean_string($_POST['legal_username']);
-  $user_password = $ObjValidator->clean_string($_POST['legal_password']);
+if ($_POST && !$validation_error) {
+    $user_name     = $ObjValidator->clean_string($_POST['legal_username']);
+    $user_password = $ObjValidator->clean_string($_POST['legal_password']);
 
-  unset($_SESSION['LOGIN_LEGAL_ID']);
-  unset($_SESSION['LOGIN_LEGAL_NAME']);
-  unset($_SESSION['LOGIN_LEGAL_TYPE_ID']);
-  unset($_SESSION['LOGIN_LEGAL_TYPE_NAME']);
-  unset($_SESSION['LOGIN_AGENCIES']);
-  unset($_SESSION['LOGIN_SUPER_ADMIN']);
+    if (!empty($user_name) && !empty($user_password)) {
 
-
-  if ($user_name != '' && $user_password != '') {
-    // allowed with  user_legal_access='Y'
-    if ($Objlogin->MainLoginAuthentication($user_name, $user_password, $user_types)) {
-      if ($Objlogin->_login_authentication_msg == "success") {
-        $_SESSION['LOGIN_LEGAL_ID']       = $Objlogin->_user_id;
-        $_SESSION['LOGIN_LEGAL_NAME']     = $Objcommon->getFirstWords($Objlogin->_user_name);
-        $_SESSION['LOGIN_LEGAL_TYPE_ID']  = $Objlogin->_user_type;
-        $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = $Objlogin->_user_type_name;
-        $_SESSION['LOGIN_AGENCIES']       = '0'; // Not an agency user
-        $_SESSION['LOGIN_SUPER_ADMIN']    = $Objlogin->_user_sa;
-        header("location: " . ROOT_DIR . "dashboard/panel.html");
-        exit;
+      // Attempt normal user login
+      if ($Objlogin->MainLoginAuthentication($user_name, $user_password)) {
+  
+          if ($Objlogin->_login_authentication_msg == "success") {
+            $userType = $_SESSION['LOGIN_LEGAL_TYPE_NAME'] ?? 'User';
+              // Log successful login
+              $activityLog->logActivity(
+                  'LOGIN',
+                  $userType. ' Login',
+                  $Objlogin->_user_id,
+                  "User {$Objlogin->_user_name} logged in from IP {$_SERVER['REMOTE_ADDR']}"
+              );
+  
+              // Set sessions
+              $_SESSION['LOGIN_LEGAL_ID']        = $Objlogin->_user_id;
+              $_SESSION['LOGIN_LEGAL_NAME']      = $Objcommon->getFirstWords($Objlogin->_user_name);
+              $_SESSION['LOGIN_LEGAL_TYPE_ID']   = $Objlogin->_user_type;
+              $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = $Objlogin->_user_type_name;
+              $_SESSION['LOGIN_AGENCIES']        = '0'; 
+              $_SESSION['LOGIN_SUPER_ADMIN']     = $Objlogin->_user_sa;
+  
+              header("location: " . ROOT_DIR . "dashboard/panel.html");
+              exit;
+  
+          } else {
+              $go_Agencies_login = true; 
+          }
+  
       } else {
-        $go_Agencies_login = true;
+          $go_Agencies_login = true;
       }
-    } else {
-      $go_Agencies_login = true;
-    }
+  
+      // Agency login
+      if ($go_Agencies_login) {
+  
+          $Objlogin->Agencies_Login_Authentication($user_name, $user_password);
+  
+          if ($Objlogin->_login_authentication_msg == "success") {
+            $userType = $_SESSION['LOGIN_LEGAL_TYPE_NAME'] ?? 'User';
+              // Log successful agency login
+              $activityLog->logActivity(
+                  'LOGIN',
+                  $userType .'Login',
+                  $Objlogin->_user_id,
+                  "Agency user {$Objlogin->_user_name} logged in from IP {$_SERVER['REMOTE_ADDR']}"
+              );
+  
+              // Set agency sessions
+              $_SESSION['LOGIN_LEGAL_ID'] = $Objlogin->_user_id;
+              $_SESSION['LOGIN_LEGAL_NAME'] = $Objcommon->getFirstWords($Objlogin->_user_name);
+              $_SESSION['LOGIN_LEGAL_TYPE_ID'] = $Objlogin->_user_type;
+  
+              switch ($Objlogin->_user_type) {
+                  case 'TP': $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Third Party"; break;
+                  case 'LF': $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Legal Firm"; break;
+                  case 'DC': $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Debt Collector"; break;
+                  default:   $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Agency User"; break;
+              }
+  
+              $_SESSION['LOGIN_AGENCIES']    = '1'; 
+              $_SESSION['LOGIN_SUPER_ADMIN'] = 'N';
+              
+  
+              header("location: " . ROOT_DIR . "dashboard/agencies.html");
+              exit;
+  
+          } else {
+  
+            $userType = $_SESSION['LOGIN_LEGAL_TYPE_NAME'] ?? 'User';
+
+            $activityLog->logActivity(
+                'LOGIN_FAILED',
+                $userType . ' Login',
+                null,
+                "Failed login attempt for username: {$user_name} from IP {$_SERVER['REMOTE_ADDR']}"
+            );
+  
+              $msgAlert = "Access denied. Your credentials are invalid or you do not have the required permissions.";
+          }
+      }
+  
   } else {
-    $msgAlert = "Access denied. Your credentials are invalid or you do not have the required permissions.";
+  
+      $msgAlert = "Access denied. Username and password are required.";
+      $userType = $_SESSION['LOGIN_LEGAL_TYPE_NAME'] ?? 'User';
+      // Log failed login due to missing credentials
+      $activityLog->logActivity(
+          'LOGIN_FAILED',
+          $userType .'Login',
+          null,
+          "Failed login attempt: empty username or password from IP {$_SERVER['REMOTE_ADDR']}"
+      );
   }
-
-  if ($go_Agencies_login == true) {
-
-    $array_Agencies = $Objlogin->Agencies_Login_Authentication($user_name, $user_password);
-    if ($Objlogin->_login_authentication_msg == "success") {
-      // **Set sessions for agency login and redirect**
-      $_SESSION['LOGIN_LEGAL_ID']       = $Objlogin->_user_id;
-      $_SESSION['LOGIN_LEGAL_NAME']     = $Objcommon->getFirstWords($Objlogin->_user_name);
-      $_SESSION['LOGIN_LEGAL_TYPE_ID']  = $Objlogin->_user_type;
-      switch ($Objlogin->_user_type) {
-        case 'TP':
-          $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Third Party";
-          break;
-        case 'LF':
-          $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Legal Firm";
-          break;
-        case 'DC':
-          $_SESSION['LOGIN_LEGAL_TYPE_NAME'] = "Debt Collector";
-          break;
-      }
-      $_SESSION['LOGIN_AGENCIES']       = '1'; // Agency user
-      $_SESSION['LOGIN_SUPER_ADMIN']    = 'N'; // Not a super admin
-      header("location: " . ROOT_DIR . "dashboard/agencies.html");
-      exit;
-    } else {
-      $msgAlert = "Access denied. Your credentials are invalid or you do not have the required permissions.";
-    }
-  }
+  
+    
+    
+   
 }
 
+// Sign in label
 $signIn_label = 'Tabasco Legal System';
-// switch($_GET['userIs']){
-//   case 'tabascoTeam':
-//   $signIn_label = 'Tabasco Team';
-//   break;
-//   case 'thirdParty':
-//   $signIn_label = 'Third Party';
-//   break;
-//   case 'legalFirm':
-//   $signIn_label = 'Legal Firm';
-//   break;
-//   case 'debtCollector':
-//   $signIn_label = 'Debt Collector';
-//   break;
-//   default:
-//   $signIn_label = 'Tabasco Team';
-//   break;
-// }
 
 ?>
+
 
 <!doctype html>
 <html lang="en" class="light-theme">

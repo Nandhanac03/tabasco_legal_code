@@ -74,11 +74,36 @@ class Casenotification extends dbcon
 
         $result = $this->Query($Sqlcmd, $params);
 
-        if (!$id) {
-            $this->_inserted_id = $this->mysqlInsertid();
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
         }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_case_notification',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Case Notification ID: $id"
+                        : "Created Case Notification ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+return $result;
 
-        return $result;
     }
 
     function get_notifications($id = null, $from_date = null, $to_date = null)

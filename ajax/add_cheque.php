@@ -20,6 +20,7 @@ include_once("../lib/class/class.dbcon.php");
 
 include_once("../lib/class/class.legal_cheque.php");
 
+
 include_once("../lib/class/class.legal_case.php");
 
 $objLegalCase =   new LegalCase();
@@ -282,6 +283,8 @@ if ($_POST) {
         $response['message']   = 'Cheque details added successfully!';
 
         $response['file_name'] = $uniqueFileName;
+
+       // $objlogger->logActivity('CREATE', 'Cheque', null, "Added cheque of amount {$cheque_amount} for parent ID: {$parentID} ({$parentType})", null, $input_data);
     } else {
 
         $response['success'] = false;

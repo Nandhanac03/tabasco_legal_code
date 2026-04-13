@@ -58,6 +58,10 @@ class LegalCollectionCommission extends dbcon
             $setParts[] = "created_from = :created_from";
             $params['created_from'] = $data['created_from'];
         }
+        if (isset($data['zero_commission'])) {
+            $setParts[] = "zero_commission = :zero_commission";
+            $params['zero_commission'] = $data['zero_commission'];
+        }
         if ($id == '') {
             $setParts[] = "created_by = :created_by";
             $params['created_by'] = $data['created_by'];
@@ -86,8 +90,41 @@ class LegalCollectionCommission extends dbcon
             $this->_inserted_id = $this->mysqlInsertid();
         }
 
-        return $this->Query($SqlCmd, $params);
-    }
+        $result = $this->Query($SqlCmd, $params);
+
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
+        }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_collections',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Collection Commission ID: $id"
+                        : "Created Collection Commission ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+        
+        return $result;
+        
+        }
+        
 
     function get_collection_commission($filters = [])
     {

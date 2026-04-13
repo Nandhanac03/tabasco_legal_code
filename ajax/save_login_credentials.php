@@ -156,6 +156,11 @@ elseif ($mode === 'login') {
     $_SESSION['user_name'] = $user['user_name'];
     $_SESSION['user_type'] = $user['user_type'];
 
+    // Log the successful login
+    include_once("../lib/class/class.legal_activity_log.php");
+    $logger = new LegalActivityLog();
+    $logger->logActivity('LOGIN', 'Authentication', $user['user_id'], "User {$user['user_name']} logged in successfully.");
+
     echo json_encode(['success' => true, 'message' => 'Login successful.']);
     exit;
 

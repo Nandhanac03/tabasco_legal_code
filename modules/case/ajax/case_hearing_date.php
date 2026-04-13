@@ -43,12 +43,25 @@ function load_hearing_template($data)
 
             $no = $key + 1;
 
+               // Get the full feedback
+    $full_feedback = $each_data['hearing_feedback'];
+
+    // Create the 20-character version for default display
+    $short_feedback = (mb_strlen($full_feedback) > 20) 
+                      ? mb_substr($full_feedback, 0, 20) . "..." 
+                      : $full_feedback;
+
             $tmpl .= "<tr>
                 <td>{$no}</td>
-                <td>{$each_data['hearing_date']}sdsa</td>
+                <td>{$each_data['hearing_date']}</td>
                 <td>{$each_data['hearing_feedback_date']}</td>
-                <td>{$each_data['hearing_feedback']}</td>";
-
+    <td style='max-width:150px; min-width:150px; position: relative; vertical-align: top;'>
+    <div class='hover-container'>
+           <div class='text-box' style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>  {$short_feedback}</div>
+        
+             <div class='full-content-tooltip'>" . htmlspecialchars($full_feedback) . "</div>
+                </div>
+        </td>";
             // File column
             if (!empty($each_data['file'])) {
                 $tmpl .= "<td>

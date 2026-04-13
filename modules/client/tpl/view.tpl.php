@@ -21,8 +21,7 @@
                     </nav>
                 </div>
             </div>
-            <!-- Back Button on the Right -->
-            <!-- Back & Edit Buttons Container -->
+            
             <div class="d-flex align-items-center gap-2">
                 <?php include("common/backButton_list.php"); ?>
 

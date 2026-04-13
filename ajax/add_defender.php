@@ -14,7 +14,9 @@ include_once("../lib/config.php");
 include_once("../lib/class/class.dbcon.php");
 include_once("../lib/class/class.legal_defender.php");
 
+
 $ObjContact = new Defender();
+
 $response = array('status' => 'error', 'message' => 'Internal Server Error');
 
 if ($_POST) {
@@ -62,6 +64,7 @@ if ($_POST) {
     if ($ObjContact->manage_defender($input_data)) {
         $response['status'] = 'success';
         $response['message'] = 'Defender added successfully.';
+       // $objlogger->logActivity('CREATE', 'Defender', null, "Added defender: {$DefenderName} for parent ID: {$parentID} ({$parentType})", null, $input_data);
     } else {
         $response['status'] = 'error';
         $response['message'] = 'Database Error: Could not save the record.';

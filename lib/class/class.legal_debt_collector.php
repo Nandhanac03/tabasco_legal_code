@@ -13,7 +13,10 @@ class DebtCollector extends dbcon {
             'notes'        => $data['notes'] ?? '',
             'visiting_card'=> $data['visiting_card'] ?? ''
         ];
-        if ($id) {
+
+        $isUpdate = $id ? true : false;
+
+        if ($isUpdate) {
             $sql = "UPDATE legal_debt_collector SET
                         name = :name,
                         address = :address,
@@ -31,16 +34,49 @@ class DebtCollector extends dbcon {
             $params['updated_by_type'] = $data['updated_by_type'] ?? null;
         } else {
             $sql = "INSERT INTO legal_debt_collector (
-                        name, address, contact_no, email, post_box_no, notes, visiting_card, created_by,created_by_type,created_on
+                        name, address, contact_no, email, post_box_no, notes, visiting_card, created_by, created_by_type, created_on
                     ) VALUES (
-                        :name, :address, :contact_no, :email, :post_box_no, :notes, :visiting_card, :created_by,:created_by_type, NOW()
+                        :name, :address, :contact_no, :email, :post_box_no, :notes, :visiting_card, :created_by, :created_by_type, NOW()
                     )";
             $params['created_by'] = $data['created_by'] ?? null;
             $params['created_by_type'] = $data['created_by_type'] ?? null;
         }
-        $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($sql, $params);
+
+        $result = $this->Query($sql, $params);
+
+        if (!$isUpdate && $result) {
+            $id = $this->_inserted_id = $this->mysqlInsertid();
+        }
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+            include_once __DIR__ . '/class.legal_activity_log.php';
+            $activity = new LegalActivityLog();
+            $loggedUserId = $data['created_by'] ?? $data['updated_by'] ?? ($_SESSION['LOGIN_LEGAL_ID'] ?? null);
+
+            if ($isUpdate) {
+                $activity->logActivity(
+                    'UPDATE',                  // action type
+                    'legal_debt_collector',    // module/table
+                    $loggedUserId,             // log_user
+                    "Updated Debt Collector record ID: $id", // message
+                    $id                        // log_refr_id
+                );
+            } else {
+                $activity->logActivity(
+                    'CREATE',
+                    'legal_debt_collector',
+                    $loggedUserId,
+                    "Created Debt Collector record ID: $id",
+                    $id
+                );
+            }
+        }
+
+        return $result;
     }
+
+    
     /**
      * Get Debt Collector Information
      */public function getDebtCollectorInfo($filters = []) {
@@ -111,29 +147,64 @@ class DebtCollector extends dbcon {
         $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
         return ($this->_num_rows > 0) ? $this->_result : false;
     }
-    function Update_Debt_Collector_Records_Status($id = '') {
-        if ($id) {
-            // Prepare parameters for the SQL queries
-            $params = array();
-            $params['id'] = $id;
-            // SQL query for the first status update (soft delete: status='D')
-            $Sqlcmd1 = "UPDATE legal_debt_collector SET legal_debt_collector.status='D'  WHERE id=:id";
-            // Execute the first status update query (soft delete)
-            $this->_last_query = $Sqlcmd1;
-            $this->Query($Sqlcmd1, $params);
-            // SQL query for the second status update (e.g., activate: status='D')
-            $Sqlcmd2 = "UPDATE legal_document SET legal_document.status='D' WHERE parent_type='DC' AND parent_id=:id";
-            // Execute the second status update query (activate)
-            $this->_last_query = $Sqlcmd2;
-            $this->Query($Sqlcmd2, $params);
-            // SQL query for the third status update (e.g., archive: status='D')
-            $Sqlcmd3 = "UPDATE legal_contacts SET legal_contacts.status='D' WHERE parent_type='DC' AND parent_id=:id";
-            // Execute the third status update query (archive)
-            $this->_last_query = $Sqlcmd3;
-            return $this->Query($Sqlcmd3, $params);
-        } else {
-            return false; // Return false if no ID or status is provided
+
+    public function Update_Debt_Collector_Records_Status($id = '') {
+        if (!$id) return false;
+
+        $params = ['id' => $id];
+
+        // Update debt collector
+        $Sqlcmd1 = "UPDATE legal_debt_collector SET status='D' WHERE id=:id";
+        $this->Query($Sqlcmd1, $params);
+
+        // Update related documents
+        $Sqlcmd2 = "UPDATE legal_document SET status='D' WHERE parent_type='DC' AND parent_id=:id";
+        $this->Query($Sqlcmd2, $params);
+
+        // Update related contacts
+        $Sqlcmd3 = "UPDATE legal_contacts SET status='D' WHERE parent_type='DC' AND parent_id=:id";
+        $result = $this->Query($Sqlcmd3, $params);
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+            include_once __DIR__ . '/class.legal_activity_log.php';
+            $activity = new LegalActivityLog();
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+            $activity->logActivity(
+                'DELETE',
+                'legal_debt_collector',
+                $loggedUserId,
+                "Soft deleted Debt Collector record ID: $id",
+                $id
+            );
         }
+
+        return $result;
     }
+    // function Update_Debt_Collector_Records_Status($id = '') {
+    //     if ($id) {
+    //         // Prepare parameters for the SQL queries
+    //         $params = array();
+    //         $params['id'] = $id;
+    //         // SQL query for the first status update (soft delete: status='D')
+    //         $Sqlcmd1 = "UPDATE legal_debt_collector SET legal_debt_collector.status='D'  WHERE id=:id";
+    //         // Execute the first status update query (soft delete)
+    //         $this->_last_query = $Sqlcmd1;
+    //         $this->Query($Sqlcmd1, $params);
+    //         // SQL query for the second status update (e.g., activate: status='D')
+    //         $Sqlcmd2 = "UPDATE legal_document SET legal_document.status='D' WHERE parent_type='DC' AND parent_id=:id";
+    //         // Execute the second status update query (activate)
+    //         $this->_last_query = $Sqlcmd2;
+    //         $this->Query($Sqlcmd2, $params);
+    //         // SQL query for the third status update (e.g., archive: status='D')
+    //         $Sqlcmd3 = "UPDATE legal_contacts SET legal_contacts.status='D' WHERE parent_type='DC' AND parent_id=:id";
+    //         // Execute the third status update query (archive)
+    //         $this->_last_query = $Sqlcmd3;
+    //         return $this->Query($Sqlcmd3, $params);
+    //     } else {
+    //         return false; // Return false if no ID or status is provided
+    //     }
+    // }
 }
 ?>

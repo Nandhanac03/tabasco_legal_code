@@ -170,6 +170,12 @@
 
                                                                     </div>
 
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Defendant: </label>
+                                                                        <input type="text" name="defendant" id="defendant" value="<?= $legal_case[0]['defendant']  ?>" disabled class="form-control">
+
+                                                                    </div>
+
 
 
                                                                     <div class="mb-3">

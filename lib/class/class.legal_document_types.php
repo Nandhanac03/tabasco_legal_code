@@ -4,6 +4,7 @@ class Document_types extends dbcon
     function save_document_type($data = [], $id = '')
     {
         $params = [];
+        $isUpdate = !empty($id);
         if ($id) {
             $Sqlcmd = "UPDATE";
         } else {
@@ -34,8 +35,37 @@ class Document_types extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $Sqlcmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        $result = $this->Query($Sqlcmd, $params);
+
+    /* ===== GET INSERT ID IF INSERT ===== */
+    if ($result && !$isUpdate) {
+        $id = $this->mysqlInsertid();
     }
+
+    /* ===== ACTIVITY LOG ===== */
+    if ($result) {
+
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+        if ($loggedUserId) {
+            $activity->logActivity(
+                $isUpdate ? 'UPDATE' : 'INSERT',          // action
+                'legal_document_type',                    // module/table
+                $loggedUserId,                            // user id
+                $isUpdate 
+                    ? "Updated Document Type ID: $id"
+                    : "Created Document Type ID: $id",
+                $id                                       // reference id
+            );
+        }
+    }
+
+    return $result;
+}
+    
     function get_document_type($id = '', $title = '', $not_id = '', $search = '', $limit = '', $offset = '')
     {
         $params = [];
@@ -80,6 +110,27 @@ class Document_types extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $Sqlcmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        $result = $this->Query($Sqlcmd, $params);
+
+    /* ===== ACTIVITY LOG ===== */
+    if ($result) {
+
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+        if ($loggedUserId) {
+            $activity->logActivity(
+                'DISABLE',                         // action
+                'legal_document_type',             // module
+                $loggedUserId,                     // user
+                "Disabled Document Type ID: $id",  // message
+                $id                                // reference id
+            );
+        }
     }
+
+    return $result;
 }
+    }

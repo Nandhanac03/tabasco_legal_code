@@ -8,7 +8,9 @@ include_once("../lib/config.php");
 include_once("../lib/class/class.dbcon.php");
 
 include_once("../lib/class/class.legal_document.php");
+
 $objprocessDocument = new processDocument();
+
 
 // CSRF token validation
 if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -90,6 +92,7 @@ if (move_uploaded_file($file['tmp_name'], $destination)) {
     $input_data['create_by']    =  $_SESSION['LOGIN_LEGAL_ID'];
     $input_data['create_on']    =  date('Y-m-d H:i:s');
     if($objprocessDocument->upload_document($input_data)){
+       // $objlogger->logActivity('CREATE', 'Document', null, "Uploaded document: {$newName} for parent ID: {$parent_id} ({$parent_type})", null, $input_data);
         echo json_encode(['status' => 'success', 'message' => 'File uploaded successfully.']);
     }else{
         // ❌ Failed to save document data, so unlink (delete) the uploaded file

@@ -85,13 +85,51 @@ class Collection extends dbcon
         // Build query
         $Sqlcmd = "INSERT INTO legal_collections SET " . implode(", ", $fields);
 
-        $this->_output_alert = "Ok";
-        $this->_last_query = $Sqlcmd;
-        $this->_inserted_id = $this->mysqlInsertid();
+ if ($id) {
+    $Sqlcmd = "UPDATE legal_collections SET " . implode(", ", $fields) . " WHERE id=:id";
+    $params['id'] = $id;
+    $action = 'UPDATE';
+} else {
+    $Sqlcmd = "INSERT INTO legal_collections SET " . implode(", ", $fields);
+    $action = 'CREATE';
+}
 
-        return $this->Query($Sqlcmd, $params);
+$this->_last_query = $Sqlcmd;
+
+$result = $this->Query($Sqlcmd, $params);
+
+/* ===== GET INSERTED ID ===== */
+$isUpdate = !empty($id);
+
+if ($result && !$isUpdate) {
+    $id = $this->mysqlInsertid();
+}
+
+/* ===== ACTIVITY LOG ===== */
+if ($result) {
+
+    include_once("class.legal_activity_log.php");
+    $activity = new LegalActivityLog();
+
+    // Logged-in user ID
+    $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+    if ($loggedUserId) {
+        $activity->logActivity(
+            $isUpdate ? 'UPDATE' : 'INSERT',   // action
+            'legal_collections',                      // module/table
+            $loggedUserId,                     // user id
+            $isUpdate
+                ? "Updated Collection ID: $id"
+                : "Created Collection ID: $id",
+            $id                                // reference id
+        );
     }
+}
 
+return $result;
+
+}
 
 
     function getting_collection($id = '', $case_id = '', $type = '')
@@ -265,5 +303,8 @@ class Collection extends dbcon
             $params['id'] = $id;
         }
         return $this->Query($Sqlcmd, $params);
+
+
+        
     } //end function
 }//end class

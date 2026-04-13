@@ -625,8 +625,6 @@
   });
 
 
-
-
   function loadData(page, filters = {}) {
     $.ajax({
       url: "<?= ROOT_DIR ?>modules/totallegal/ajax/load_total_legal.php",

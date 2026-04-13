@@ -47,12 +47,30 @@ class Clients extends dbcon
         }
         $this->_output_alert = "Ok";
         $this->_last_query = $Sqlcmd;
-        $result = $this->Query($Sqlcmd, $params);
-        if (!$isUpdate) {
-            $this->_inserted_id = $this->mysqlInsertid();
-        }
-        return $result;
+        // Execute query
+    $result = $this->Query($Sqlcmd, $params);
+
+    if (!$isUpdate && $result) {
+        $id = $this->_inserted_id = $this->mysqlInsertid();
     }
+
+    // ===== ACTIVITY LOG =====
+if ($result) {
+    require_once __DIR__ . '/class.legal_activity_log.php';
+    $activity = new LegalActivityLog();
+
+    $action = $isUpdate ? 'UPDATE' : 'CREATE';
+    $message = $isUpdate ? 'Updated Client record' : 'Created Client record';
+
+    // Get logged-in user ID from session
+    $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+    $activity->logActivity($action, 'legal_client', $loggedUserId, $message);
+}
+
+
+    return $result;
+}
     // Fetch Client Information
     function Get_Client_Information($id = null, $name = null, $search = null, $status = null, $action_id = null, $offset = 0, $limit = 0, $marketing = null, $createFromdate = null, $createTodate = null, $validate_client_id = null)
     {
@@ -208,30 +226,30 @@ class Clients extends dbcon
         file_put_contents($logFile, "[$timestamp] $message\n", FILE_APPEND);
     }
 
-    function Update_Cheque_OutStanding($id = '', $data = '')
+    function Update_Cheque_OutStanding($id = '', $data = [])
     {
+        // Fetch old data for before state
+        $oldData = $this->Get_Client_Information($id);
+        $oldData = $oldData[0] ?? null; // Get the first row
+    
         $sql = "
-        UPDATE legal_client
-        SET
-            total_outstanding = :total_outstanding,
-            outstanding_cheque = :outstanding_cheque,
-            outstanding_without_cheque = :outstanding_without_cheque
-        WHERE id = :id
-    ";
-
+            UPDATE legal_client
+            SET
+                total_outstanding = :total_outstanding,
+                outstanding_cheque = :outstanding_cheque,
+                outstanding_without_cheque = :outstanding_without_cheque
+            WHERE id = :id
+        ";
+    
         $params = [
             'total_outstanding'          => $data['total_outstanding'],
             'outstanding_cheque'         => $data['outstanding_cheque'],
             'outstanding_without_cheque' => $data['outstanding_without_cheque'],
             'id'                         => $id
         ];
-
-        // Build final SQL for logging
-        //$finalSQL = $this->buildDebugSQL($sql, $params);
-
-        // Log it to file
-        //$this->logSQLToFile("Executing SQL: " . $finalSQL);
-
-        return $this->Query($sql, $params);
+    
+        return  $this->Query($sql, $params);
+    
     }
+    
 }

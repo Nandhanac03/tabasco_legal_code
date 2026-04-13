@@ -30,8 +30,43 @@ class Defender extends dbcon
         }
         //echo $this->get_query($Sqlcmd, $params);  exit;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
-    }//end function
+        //return $this->Query($Sqlcmd, $params);
+
+        $result = $this->Query($Sqlcmd, $params);
+
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
+        }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_defender',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Defender ID: $id"
+                        : "Created Defender ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+        
+        return $result;
+        
+    }
+
 
     
     function get_defender($id = '', $parent_id = '', $parent_type = '')
@@ -79,6 +114,27 @@ class Defender extends dbcon
         $this->_last_query = $Sqlcmd;
         //echo $this->get_query($Sqlcmd, $params);  exit;
         //$this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        $result = $this->Query($Sqlcmd, $params);
+
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // logged in user
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    'DISABLE',                     // action
+                    'legal_defender',                  // module/table
+                    $loggedUserId,                 // user id
+                    "Defendant disabled (ID: $id)",     // message
+                    $id                            // reference id
+                );
+            }
+        }
+        
+        return $result;
+            }
     }//end function
-}//end class

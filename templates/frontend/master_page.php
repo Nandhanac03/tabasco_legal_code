@@ -22,8 +22,8 @@
     </div>
   </noscript>
 
-
-  <script src="<?= ROOT_DIR ?>assets/js/pace.min.js"></script>
+  <!-- Loading in the top right causing delay -->
+  <!-- <script src="<?= ROOT_DIR ?>assets/js/pace.min.js"></script> -->
 
 
 
@@ -223,15 +223,21 @@
           <div class="menu-title ">Settings</div>
         </a>
         <ul>
-          <li <?= ($actve_sub_menu == 'permission') ? 'class="mm-active"' : '' ?>> <a href="<?= ROOT_DIR ?>permission/userlist.html">
-              <ion-icon name="ellipse-outline"></ion-icon>Set Permissions
-            </a>
-          </li>
+        <?php if (isset($_SESSION['LOGIN_SUPER_ADMIN']) && $_SESSION['LOGIN_SUPER_ADMIN'] == 'Y') { ?>
+  <li>
+    <a href="<?= ROOT_DIR ?>permission/userlist.html">
+      <ion-icon name="ellipse-outline"></ion-icon>
+      Set Permissions
+    </a>
+  </li>
+<?php } ?>
+
+
           <!-- <li <?= ($actve_sub_menu == 'profile') ? 'class="mm-active"' : '' ?>> <a href="<?= ROOT_DIR ?>settings/profile.html">
               <ion-icon name="ellipse-outline"></ion-icon>Edit Profile
             </a>
           </li> -->
-          <li> <a href="<?= ROOT_DIR ?>login.php">
+          <li> <a href="<?= ROOT_DIR ?>login.php?action=logout">
               <ion-icon name="ellipse-outline"></ion-icon>Logout
             </a>
           </li>
@@ -696,7 +702,7 @@ $login_fullName = substr($_SESSION['LOGIN_LEGAL_NAME'],0,15);
 
               <li>
 
-                <a class="dropdown-item" href="<?= ROOT_DIR ?>login.php">
+                <a class="dropdown-item" href="<?= ROOT_DIR ?>logout.php">
 
                   <div class="d-flex align-items-center">
 
@@ -803,24 +809,32 @@ $login_fullName = substr($_SESSION['LOGIN_LEGAL_NAME'],0,15);
 
 <script src="<?= ROOT_DIR ?>assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 <script src="<?= ROOT_DIR ?>assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+
 <script src="<?= ROOT_DIR ?>assets/js/table-datatable.js"></script>
 
 <script src="<?= ROOT_DIR ?>assets/plugins/bs-stepper/js/main.js"></script>
 <!-- Main JS-->
+
+
+
 <script src="<?= ROOT_DIR ?>assets/js/main.js"></script>
+
+
 <script src="<?= ROOT_DIR ?>common/pages.js"></script>
+
+
 <script type="text/javascript">
   function preventInvalidInput(event) {
-    const forbiddenChars = /['"“”‘’~]/g; // Regex to detect quotes and tilde (~)
+    const forbiddenChars = /['"“”‘’~]/g;
     if (forbiddenChars.test(event.target.value)) {
-      //alert("⚠️ Quotes and ~ are not allowed!");
+     
       error_noti(`Quotation marks (' " “ ” ‘ ’) and the tilde (~) are not allowed .`);
 
-      event.target.value = event.target.value.replace(forbiddenChars, ''); // Remove invalid characters
+      event.target.value = event.target.value.replace(forbiddenChars, ''); 
     }
   }
 
-  // Apply validation to all text inputs and textareas
+
   document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll("input[type='text'], textarea").forEach((element) => {
       element.addEventListener("input", preventInvalidInput);
@@ -829,15 +843,15 @@ $login_fullName = substr($_SESSION['LOGIN_LEGAL_NAME'],0,15);
 
 
   document.addEventListener("DOMContentLoaded", function() {
-    // Select the ion-icon with name="home-outline"
+
     let homeIcon = document.querySelector('ion-icon[name="home-outline"]');
 
     if (homeIcon) {
-      homeIcon.style.cursor = "pointer"; // Make it look clickable
-      homeIcon.setAttribute("title", "Back to Dashboard"); // Set tooltip
+      homeIcon.style.cursor = "pointer";
+      homeIcon.setAttribute("title", "Back to Dashboard"); 
 
       homeIcon.addEventListener("click", function() {
-        window.location.href = "<?= ROOT_DIR ?>dashboard/panel.html"; // Change URL as needed
+        window.location.href = "<?= ROOT_DIR ?>dashboard/panel.html"; 
       });
     }
   });

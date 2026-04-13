@@ -53,7 +53,6 @@ if (LEGAL_PAGES_AUTH === true && $_SESSION['LOGIN_AGENCIES'] == 0 && $_SESSION['
             return;
         }
 
-        // Page/module → menu ID mapping
         $pageMenuMap = [
             'area'         => 1,
             'bank'         => 2,
@@ -67,19 +66,30 @@ if (LEGAL_PAGES_AUTH === true && $_SESSION['LOGIN_AGENCIES'] == 0 && $_SESSION['
             'legalfirm'    => 10,
             'debtcollector'=> 11,
             'activelegal'  => 12,
-            'actionreport' => 13,
-            'addcase'      => 14,
-            'bad_debts'    => 15,
+            'action_report_list' => 13,
+            'caseactions'      => 14,
+            'baddebts'    => 15,
             'total_legal_report' =>16,
             'action_report_with_clain_ex' =>17,
             'client_base_statement' => 18,
-            'expence_report' => 19,
+            'expensereport' => 19,
             'action_report'  => 20,
             'subcategory'    => 21,
             'closedlegal'    => 22,
             'baddebts'       => 23,
             'totallegal'     => 24,
-            'lawyer'         => 25
+            'lawyer'         => 25,
+            'case_report_list'         => 26,
+            'internalstaff'         => 27,
+            'legalteam'         => 28,
+            'followupactions'      => 29,
+            'commission'      => 30,
+            'reports'          =>31,
+            'expense_report_list'          =>32,
+            'total_legal_report'    =>34,
+            'closed_legal_report'    =>35,
+            'bad_debts'     =>36
+             
         ];
 
         // Auto-detect: prefer page if exists in map, otherwise module

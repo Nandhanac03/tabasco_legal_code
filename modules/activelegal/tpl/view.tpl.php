@@ -161,16 +161,125 @@
                               <td class="text-center"><?= $case['register_date'] ?></td>
                               <td class="text-center"><?= $case['total_outstanding'] ?></td>
                               <td class="text-center"><?= $case['lawyer_name'] ?></td>
-                              <td class="description-cell"><?= $case['first_instance_description'] ? $case['first_instance_description'] : '----'; ?></td>
-                              <?php
+
+
+<style>
+
+.custom-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Hidden box */
+.custom-tooltip .tooltip-box {
+    display: none;
+    position: absolute;
+    top: 25px;
+    left: 0;
+    
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    background-color: #ffffff; /* ✅ WHITE BACKGROUND */
+    color: #000;
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+
+    z-index: 9999;
+}
+
+/* Show on hover */
+.custom-tooltip:hover .tooltip-box {
+    display: block;
+}
+
+
+
+
+</style>
+
+
+
+
+                              <td class="description-cell">
+    <?php 
+    $desc = $case['first_instance_description'];
+
+    if (!empty($desc)) { ?>
+        <div class="custom-tooltip">
+            <?= substr($desc, 0, 50) . '...'; ?>
+            <div class="tooltip-box">
+                <?= htmlspecialchars($desc); ?>
+            </div>
+        </div>
+    <?php } else {
+        echo '----';
+    } ?>
+</td>
+
+
+
+                              <!-- <td class="description-cell"><?= $case['first_instance_description'] ? $case['first_instance_description'] : '----'; ?></td> -->
+                              <style>
+.table-responsive {
+  overflow-x: unset!important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hover-container {
+    position: relative;
+    cursor: pointer;
+}
+
+
+.full-content-tooltip {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 4px;
+    color: #333;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
+.hover-container:hover .full-content-tooltip {
+    display: block;
+}
+
+</style>
+               
+                            
+                            
+                            <?php
 $fullText  = $case['execution_decision_description'] ?? '----';
 $shortText = mb_strlen($fullText) > 20 
     ? mb_substr($fullText, 0, 20) . '...' 
     : $fullText;
 ?>
 
-<td class="description-cell" title="<?= htmlspecialchars($fullText); ?>">
-    <?= htmlspecialchars($shortText); ?>
+<td style="max-width:150px; min-width:150px; vertical-align: top;">
+    <div class="hover-container">
+        <div class="text-box">
+            <?= htmlspecialchars($shortText); ?>
+        </div>
+        <div class="full-content-tooltip">
+            <?= nl2br(htmlspecialchars($fullText)); ?>
+        </div>
+
+    </div>
 </td>
 
                             

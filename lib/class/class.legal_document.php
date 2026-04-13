@@ -23,8 +23,31 @@ function upload_document($data='') {
     $this->_last_query = $Sqlcmd;
     //echo $this->get_query($Sqlcmd, $params);  exit;
     $this->_inserted_id = $this->mysqlInsertid();
-    return $this->Query($Sqlcmd, $params);
-}//end function
+    $result = $this->Query($Sqlcmd, $params);
+
+    // ✅ get inserted document id
+    if ($result) {
+        $docId = $this->mysqlInsertid();
+
+        /* ===== ACTIVITY LOG ===== */
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+        if ($loggedUserId) {
+            $activity->logActivity(
+                'UPLOAD',                         // action
+                'legal_document',                 // module
+                $loggedUserId,                    // user id
+                "Uploaded document: {$data['name']} (ID: $docId)", 
+                $docId                            // reference id
+            );
+        }
+    }
+
+    return $result;
+}
 function get_document($id='',$parent_id = '',$parent_type='') {
     //echo $limit; echo $offset; exit;
     $params = array();
@@ -50,20 +73,49 @@ function get_document($id='',$parent_id = '',$parent_type='') {
     } else
         return false;
 }
-function Delete_document($id='',$data='') {
-    $params = array();
-    $Sqlcmd = "UPDATE";
-    $Sqlcmd = $Sqlcmd . " legal_document SET ";
-    $Sqlcmd = $Sqlcmd . " status=:status";
-    $params['status'] = $data['status'];
-    $Sqlcmd = $Sqlcmd . " ,update_by=:update_by";
-    $params['update_by'] = $data['update_by'];
-    $Sqlcmd = $Sqlcmd . " ,update_on=:update_on";
-    $params['update_on'] = $data['update_on'];
-    if($id>0){
-        $Sqlcmd = $Sqlcmd . " WHERE  id=:id";
-        $params['id'] = $id;
+function Delete_document($id = '', $data = [])
+{
+    if (empty($id) || $id <= 0) {
+        return false;
     }
-    return $this->Query($Sqlcmd, $params);
-}//end function
+
+    $params = [];
+
+    $Sqlcmd = "UPDATE legal_document SET
+               status    = :status,
+               update_by = :update_by,
+               update_on = :update_on
+               WHERE id  = :id";
+
+    $params['status']    = $data['status'];   // usually 'D'
+    $params['update_by'] = $data['update_by'];
+    $params['update_on'] = $data['update_on'];
+    $params['id']        = $id;
+
+    $this->_last_query = $Sqlcmd;
+
+    $result = $this->Query($Sqlcmd, $params);
+
+    /* ===== ACTIVITY LOG ===== */
+    if ($result) {
+
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+        if ($loggedUserId) {
+            $activity->logActivity(
+                'DELETE',                              // action
+                'legal_document',                      // module
+                $loggedUserId,                         // user id
+                "Deleted Document ID: $id",            // message
+                $id                                    // reference id
+            );
+        }
+    }
+
+    return $result;
+}
+
 }//end class

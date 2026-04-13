@@ -6,6 +6,7 @@ include_once("lib/config.php");
 include_once("lib/class/class.dbcon.php");
 include_once("lib/class/class.legal_category.php");
 include_once("lib/class/class.legal_court.php");
+include_once("lib/class/class.legal_users.php");
 include_once("lib/class/class.legal_active_legals.php");
 include_once("lib/class/class.legal_case.php");
 include_once("lib/class/class.legal_case_mode.php");
@@ -14,6 +15,7 @@ include_once("lib/class/class.legal_users.php");
 
 $objCategory =   new Category();
 $objCourt =   new Court();
+$objUsers =   new UsersClass();
 $objActiveLegal =   new ActiveLegal();
 $objLegalCase =   new LegalCase();
 $objLegalCaseMode =   new Case_mode();
@@ -42,11 +44,12 @@ if ($action == 'edit') {
         exit;
     }
 }
+// echo"<pre>";
+// print_r( $current_legal_case[0]['lawyer']);
+// exit;
 
 
-
-
-
+// $lawyer = $objUsers->get_users();
 $client_id = $activeLegal[0]['client'] ?? null;
 
 $plantiffs = [];
@@ -70,8 +73,9 @@ $list1 = $ObjUsersClass->get_all_Users(null, '', 23) ?: [];
 $list2 = $ObjUsersClass->get_all_Users(null, '', 24) ?: [];
 
 $lawyerusersList = array_merge($list1, $list2);
-
-
+// echo"<pre>";
+// print_r($lawyerusersList);
+// exit;
 if ($_POST) {
 
     $go_forward = true;

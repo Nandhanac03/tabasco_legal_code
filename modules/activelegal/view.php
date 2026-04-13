@@ -11,6 +11,7 @@ include_once("lib/class/class.legal_debt_collector.php");
 include_once("lib/class/class.legal_firm.php");
 include_once("lib/class/class.legal_case_root_actions.php");
 
+
 $objActiveLegal = new ActiveLegal();
 $objLegalCase = new LegalCase();
 $objThirdParty = new thirdParty();

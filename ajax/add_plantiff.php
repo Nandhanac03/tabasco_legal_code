@@ -14,7 +14,9 @@ include_once("../lib/config.php");
 include_once("../lib/class/class.dbcon.php");
 include_once("../lib/class/class.legal_plantiff.php");
 
+
 $ObjContact = new Plantiff();
+//$objlogger  = new LegalActivityLog();
 $response = array('status' => 'error', 'message' => 'Internal Server Error');
 
 if ($_POST) {
@@ -62,6 +64,7 @@ if ($_POST) {
     if ($ObjContact->manage_plantiff($input_data)) {
         $response['status'] = 'success';
         $response['message'] = 'Plaintiff added successfully.';
+       // $objlogger->logActivity('CREATE', 'Plaintiff', null, "Added plaintiff: {$plantiffName} for parent ID: {$parentID} ({$parentType})", null, $input_data);
     } else {
         $response['status'] = 'error';
         $response['message'] = 'Database Error: Could not save the record.';

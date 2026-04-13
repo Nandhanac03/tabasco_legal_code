@@ -18,10 +18,6 @@ class LegalTempCase extends dbcon
             $sqlCmd .= ", temp_case_number =:temp_case_number";
             $params['temp_case_number'] = $data['temp_case_number'];
         }
-
-
-
-
         if ($data['register_date']) {
             $sqlCmd .= ", register_date =:register_date";
             $params['register_date'] = $data['register_date'];
@@ -83,8 +79,43 @@ class LegalTempCase extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $sqlCmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($sqlCmd, $params);
+      //  return $this->Query($sqlCmd, $params);
+
+        $result = $this->Query($sqlCmd, $params);
+
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
+        }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_temp_case',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Temp Case ID: $id"
+                        : "Created Temp Case ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+        
+        return $result;
+        
     }
+    
 
     // function getTempCase($id = '', $filters = [])
     // {

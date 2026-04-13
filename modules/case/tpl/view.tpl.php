@@ -367,7 +367,7 @@
                                             <label class="form-label">Plantiff <span class="text-danger">*</span></label>
                                             <select class="form-select modal-form format_data" id="add_roots_plantiff" >
     <option value="">--- Select Plantiff ---</option>
-    <option value="Tabasco Tech" selected>Tabasco Tech</option>
+    <option value="Tabasco Tech" >Tabasco Tech</option>
     <?php if (!empty($case_plantiffs)) { ?>
         <?php foreach ($case_plantiffs as $p) { ?>
             <option value="<?= $p['plantiff'] ?>">
@@ -875,7 +875,7 @@
      
 
 
-        let goForward = validateForm(case_number, lawyer, court, stage,plantiff, defendant,category, register_date,root_cat_number);
+        let goForward = validateForm(case_number, lawyer, court, stage,category,plantiff,defendant, register_date,root_cat_number);
 
         if (goForward) {
 

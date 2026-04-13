@@ -5,6 +5,7 @@ class Cheque extends dbcon
     function upload_cheque($data = '')
     {
         $params = array();
+        $isUpdate = !empty($data['id']);
         $Sqlcmd = "INSERT INTO";
         $Sqlcmd = $Sqlcmd . " legal_cheque_upload SET ";
         $Sqlcmd = $Sqlcmd . " add_type=:add_type";
@@ -37,8 +38,40 @@ class Cheque extends dbcon
         $this->_last_query = $Sqlcmd;
         // echo $this->get_query($Sqlcmd, $params);  exit;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
-    } //end function
+       // return $this->Query($Sqlcmd, $params);
+
+        $result = $this->Query($Sqlcmd, $params);
+
+
+        /* ===== GET INSERT ID IF INSERT ===== */
+   if ($result && !$isUpdate) {
+       $id = $this->mysqlInsertid();
+   }
+
+   /* ===== ACTIVITY LOG ===== */
+   if ($result) {
+
+       include_once("class.legal_activity_log.php");
+       $activity = new LegalActivityLog();
+
+       $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+       if ($loggedUserId) {
+           $activity->logActivity(
+               $isUpdate ? 'UPDATE' : 'INSERT',          // action
+               'legal_cheque_upload',                    // module/table
+               $loggedUserId,                            // user id
+               $isUpdate 
+                   ? "Updated Check ID: $id"
+                   : "Created Check ID: $id",
+               $id                                       // reference id
+           );
+       }
+   }
+
+   return $result;
+}
+    
     function get_cheque($id = '', $parent_id = '', $type = '', $add_type = '')
     {
         //echo $limit; echo $offset; exit;
@@ -109,7 +142,32 @@ WHERE
             $Sqlcmd = $Sqlcmd . " WHERE  id=:id";
             $params['id'] = $id;
         }
-        return $this->Query($Sqlcmd, $params);
+       // return $this->Query($Sqlcmd, $params);
+
+
+        $result = $this->Query($Sqlcmd, $params);
+
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // logged in user
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    'DISABLE',                     // action
+                    'legal_cheque_upload',                  // module/table
+                    $loggedUserId,                 // user id
+                    "Cheque disabled (ID: $id)",     // message
+                    $id                            // reference id
+                );
+            }
+        }
+        
+        return $result;
+            
     } //end function
 
 

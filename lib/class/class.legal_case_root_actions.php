@@ -4,6 +4,8 @@ class CaseRootAction extends dbcon
     function save_case_root($data = [], $id = '')
     {
         $params = [];
+        $isUpdate = !empty($id);
+
         if ($id) {
             $SqlCmd = "UPDATE legal_case_root_actions SET";
         } else {
@@ -102,7 +104,39 @@ class CaseRootAction extends dbcon
             $this->_inserted_id = $this->mysqlInsertid();
         }
 
-        return $this->Query($SqlCmd, $params);
+        $result = $this->Query($SqlCmd, $params);
+
+         if (!$isUpdate && $result) {
+            $this->_inserted_id = $this->mysqlInsertid();
+            $id = $this->_inserted_id;
+        }
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+            include_once __DIR__ . '/class.legal_activity_log.php';
+            $activity = new LegalActivityLog();
+            $loggedUserId = $data['created_by'] ?? $data['updated_by'] ?? ($_SESSION['LOGIN_LEGAL_ID'] ?? null);
+
+            if ($isUpdate) {
+                $activity->logActivity(
+                    'UPDATE',
+                    'legal_case_root_actions',
+                    $loggedUserId,
+                    "Updated Case Root Action ID: $id",
+                    $id
+                );
+            } else {
+                $activity->logActivity(
+                    'CREATE',
+                    'legal_case_root_actions',
+                    $loggedUserId,
+                    "Created Case Root Action ID: $id",
+                    $id
+                );
+            }
+        }
+
+        return $result;
     }
 
     function get_case_root($id = '', $filters = [])
@@ -212,6 +246,24 @@ class CaseRootAction extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $Sqlcmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        $result = $this->Query($Sqlcmd, $params);
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+            include_once __DIR__ . '/class.legal_activity_log.php';
+            $activity = new LegalActivityLog();
+            $loggedUserId = $data['updated_by'] ?? $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+            $activity->logActivity(
+                'UPDATE',
+                'legal_case_root_actions',
+                $loggedUserId,
+                "Changed status of Case Root Action ID: $id to {$data['status']}",
+                $id
+            );
+        }
+
+        return $result;
     }
+    
 }

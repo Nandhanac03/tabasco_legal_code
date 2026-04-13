@@ -103,13 +103,9 @@
                                                                     <style>
                                                                         .description-cell {
                                                                             max-width: 270px;
-                                                                            /* Adjust this width as needed */
                                                                             overflow-wrap: break-word;
-                                                                            /* Breaks long words to wrap */
                                                                             white-space: normal;
-                                                                            /* Allows text to wrap to multiple lines */
                                                                             text-align: justify;
-                                                                            /* Justifies the text */
                                                                         }
                                                                     </style>
                                                                     <table class="table align-middle mb-0">
@@ -131,7 +127,8 @@
                                                                                         <td><?= $data['date'] ?></td>
                                                                                         <td class="description-cell"><?= $data['description'] ?></td>
                                                                                         </td>
-                                                                                        <td><?= $data['fees_type_title'] ?></td>
+                                                                                        <td><?= !empty($data['fees_type_title']) ? $data['fees_type_title'] : $data['fees_type'] ?></td>
+
                                                                                         <td><?= $data['amount'] ?></td>
                                                                                         <td>
                                                                                             <?php if (!empty($data['document'])): ?>
@@ -285,8 +282,24 @@
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
                                             <input type="number" name="coll_amount" class="form-control input-amount">
+
+
+                                          
+    <div class="form-check mt-2">
+ <input type="hidden" name="zero_commission" value="0">
+        <input class="form-check-input"type="checkbox"  id="zeroCommissionCheck"  name="zero_commission"       value="1">
+        <label class="form-check-label" for="zeroCommissionCheck">
+            0% Commission
+        </label>
+    </div>
+
+<style>
+.text-danger{
+    color:red!important;
+}
+</style>
                                             <!-- <small id="commissionMessage" class="text-success mt-2 d-block" style="display:none;"></small> -->
-                                            <small id="commissionMessage" class="text-info mt-2 d-block" style="display:none;"></small>
+                                            <small id="commissionMessage" class="text-info mt-2 d-block text-danger" style="color:red!important;display:none;"></small>
 
                                         </div>
                                         <div class="mb-3">
@@ -482,8 +495,8 @@
             }
         };
 
-        // Initialize Select2 for all select2-bootstrap elements
         $('.select2-bootstrap').select2();
+
 
 
         // Form validation and submission
@@ -535,57 +548,80 @@
 
             if (!isValid) return;
 
-            // Submit form via AJAX
-            const formData = new FormData($form[0]);
-            $.ajax({
-                url: config.ajaxUrl,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
 
-                success: function(response) {
+const formData = new FormData($form[0]);
 
+$.ajax({
+    url: config.ajaxUrl,
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    dataType: 'json',
 
-                    const toastEl = document.getElementById('statusToast');
-                    const toastBody = document.getElementById('statusToastBody');
-                    const toast = new bootstrap.Toast(toastEl);
+    success: function(response) {
 
-                    // Show commission comment (if any)
-                    if (response.c_comment) {
-                        $('#commissionMessage').text(response.c_comment).fadeIn();
-                    }
+        const toastEl = document.getElementById('statusToast');
+        const toastBody = document.getElementById('statusToastBody');
+        const toast = new bootstrap.Toast(toastEl);
 
-                    if (response.success) {
-                        toastBody.textContent = response.message || config.successMessage;
-                        toastEl.classList.remove('bg-danger');
-                        toastEl.classList.add('bg-success');
-                        toast.show();
-                        setTimeout(() => location.reload(), 3500);
-                    } else {
-                        toastBody.textContent = response.message || 'Update failed.';
-                        toastEl.classList.remove('bg-success');
-                        toastEl.classList.add('bg-danger');
-                        toast.show();
-                        setTimeout(() => location.reload(), 5000);
-                    }
+        if (response.c_comment) {
+            const isZero = response.c_comment.toLowerCase().includes('zero');
 
-                },
-
-                error: function(xhr, status, error) {
-
-                    const toastEl = document.getElementById('statusToast');
-                    const toastBody = document.getElementById('statusToastBody');
-                    const toast = new bootstrap.Toast(toastEl);
-
-                    toastBody.textContent = 'AJAX error: ' + error;
-                    toastEl.classList.remove('bg-success');
-                    toastEl.classList.add('bg-danger');
-                    toast.show();
-                }
-            });
+            $('#commissionMessage')
+                .text(response.c_comment)
+                .css('color', isZero ? 'green' : 'red')
+                .fadeIn();
+        } else {
+            $('#commissionMessage').hide();
         }
 
+  
+        if (response.success === true) {
+
+            toastBody.textContent =
+                response.message || 'Status updated successfully';
+
+            toastEl.classList.remove('bg-danger');
+            toastEl.classList.add('bg-success');
+
+            toast.show();
+
+            setTimeout(function () {
+                location.reload();
+            }, 3500);
+
+        } else {
+
+            toastBody.textContent =
+                response.message || response.c_comment || 'Update failed';
+
+            toastEl.classList.remove('bg-success');
+            toastEl.classList.add('bg-danger');
+
+            toast.show();
+        }
+    },
+
+    error: function(xhr, status, error) {
+
+        const toastEl = document.getElementById('statusToast');
+        const toastBody = document.getElementById('statusToastBody');
+        const toast = new bootstrap.Toast(toastEl);
+
+
+        console.log("Server Response:", xhr.responseText);
+
+        toastBody.textContent = 'AJAX error: ' + error;
+
+        toastEl.classList.remove('bg-success');
+        toastEl.classList.add('bg-danger');
+
+        toast.show();
+    }
+});
+
+        }
         // Event handlers for each modal
         $('.modal-form').each(function() {
             const $form = $(this);
@@ -645,6 +681,29 @@
             })
 
         })
+
+        
+$('#zeroCommissionCheck').change(function() {
+
+if ($(this).is(':checked')) {
+
+    $('#commissionMessage')
+        .text("Zero Commission selected. The actual amount will be paid to the client.")
+        .removeClass('text-danger')
+        .addClass('text-success')
+        .show();
+
+} else {
+
+    $('#commissionMessage')
+        .text("Please select the commission.")
+        .removeClass('text-success')
+        .addClass('text-danger')
+        .show();
+}
+
+});
+
 
     });
 </script>

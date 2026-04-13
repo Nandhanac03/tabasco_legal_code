@@ -186,6 +186,12 @@ class Dbcon {
             }
             return $string;
         }
+
+        public function lastInsertId()
+{
+    return $this->conn->insert_id;   // mysqli
+}
+
 //end function
 }
 //end class

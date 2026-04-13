@@ -1,110 +1,180 @@
 <?php
-// IMPORTANT: show errors while testing
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+session_start();
+require_once ("../../../vendor/autoload.php");
+use Mpdf\Mpdf;
 
-require_once '../../../vendor/autoload.php';
+include_once("../../../lib/config.php");
+include_once("../../../lib/class/class.dbcon.php");
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+$db = new Dbcon();
 
-/* ===============================
-   GET DATA FROM AJAX
-================================ */
-$rows = $_POST['rows'] ?? [];
+// ✅ Get data
+$rows = json_decode($_POST['rows'] ?? '[]', true);
+$ids  = $_POST['ids'] ?? [];
 
-if (empty($rows)) {
-    exit('No data selected');
+if (empty($rows) || empty($ids)) {
+    exit('No rows selected');
 }
 
-/* ===============================
-   CREATE SPREADSHEET
-================================ */
-$spreadsheet = new Spreadsheet();
-$sheet = $spreadsheet->getActiveSheet();
+$ids = array_map('intval', $ids);
 
-/* ===============================
-   PAGE SETUP
-================================ */
-$sheet->getPageSetup()
-    ->setOrientation(PageSetup::ORIENTATION_PORTRAIT)
-    ->setPaperSize(PageSetup::PAPERSIZE_A4);
-
-/* ===============================
-   TITLE
-================================ */
-$sheet->setCellValue('A1', 'Commission Report');
-$sheet->mergeCells('A1:D1');
-$sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
-$sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
-
-/* ===============================
-   TABLE HEADER
-================================ */
-$sheet->setCellValue('A3', 'Party');
-$sheet->setCellValue('B3', 'Received Collection');
-$sheet->setCellValue('C3', 'Commission (%)');
-$sheet->setCellValue('D3', 'Commission Payable');
-
-$sheet->getStyle('A3:D3')->getFont()->setBold(true);
-
-/* ===============================
-   TABLE DATA
-================================ */
-$rowNum = 4;
-$totalReceived = 0;
-$totalPayable  = 0;
+// ✅ Calculate totals
+$total_received = 0;
+$total_payable  = 0;
 
 foreach ($rows as $r) {
-
-    $received = floatval($r['received']);
-    $payable  = floatval($r['payable']);
-
-    $totalReceived += $received;
-    $totalPayable  += $payable;
-
-    $sheet->setCellValue("A$rowNum", $r['party']);
-    $sheet->setCellValue("B$rowNum", number_format($received, 2));
-    $sheet->setCellValue("C$rowNum", $r['commission']);
-    $sheet->setCellValue("D$rowNum", number_format($payable, 2));
-
-    $rowNum++;
+    $total_received += floatval($r['received']);
+    $total_payable  += floatval($r['payable']);
 }
 
-/* ===============================
-   TOTAL ROW
-================================ */
-$sheet->getStyle("A$rowNum:D$rowNum")->getFont()->setBold(true);
+// ✅ Update commissions or reuse existing voucher
+$placeholders = implode(',', array_fill(0, count($ids), '?'));
+$existing_vouchers = $db->SELECT_MultiFetch(
+    "SELECT DISTINCT voucher_id FROM legal_collection_commission WHERE id IN ($placeholders) AND voucher_id > 0",
+    $ids
+);
 
-$sheet->setCellValue("A$rowNum", 'Total');
-$sheet->setCellValue("B$rowNum", number_format($totalReceived, 2));
-$sheet->setCellValue("D$rowNum", number_format($totalPayable, 2));
+$voucher_id = 0;
+$is_reprint = false;
+$created_by = $_SESSION['LOGIN_LEGAL_ID'] ?? 0;
 
-/* ===============================
-   SIGNING SECTION
-================================ */
-$rowNum += 3;
-$sheet->setCellValue("A$rowNum", 'Processed By: ______________________________');
+if (count($existing_vouchers) === 1) {
+    $voucher_id = $existing_vouchers[0]['voucher_id'];
+    $is_reprint = true;
+    
+    // Fetch existing voucher details
+    $v = $db->SQL_Fetch(
+        "SELECT voucher_no, commission_pdf FROM legal_commission_voucher WHERE id = ? LIMIT 1",
+        [$voucher_id]
+    );
+    $voucher_no = $v['voucher_no'];
+    $pdf_filename = $v['commission_pdf'] ?: 'Commission_Voucher_' . $voucher_no . '.pdf';
+    $upload_path = "../../../uploads/expenses/" . $pdf_filename;
 
-$rowNum += 2;
-$sheet->setCellValue("A$rowNum", 'Completed For Signing: ______________________________');
+    // Update printed_at
+    $db->Query("UPDATE legal_commission_voucher SET printed_at = NOW() WHERE id = ?", [$voucher_id]);
+} else {
+    // ✅ Create new voucher
+    $voucher_no = 'VC-' . rand(100,999);
+    $pdf_filename = 'Commission_Voucher_' . $voucher_no . '.pdf'; 
+    $upload_path = "../../../uploads/expenses/" . $pdf_filename; 
 
-/* ===============================
-   AUTO SIZE COLUMNS
-================================ */
-foreach (['A','B','C','D'] as $col) {
-    $sheet->getColumnDimension($col)->setAutoSize(true);
+    $db->Query(
+        "INSERT INTO legal_commission_voucher
+        (voucher_no, voucher_date, total_amount, status, printed_at, created_by, created_at, commission_pdf)
+        VALUES (?, CURDATE(), ?, 'Printed', NOW(), ?, NOW(), ?)",
+        [$voucher_no, $total_payable, $created_by, $pdf_filename]
+    );
+
+    $voucher_id = $db->mysqlInsertid();
+
+    // fallback
+    if (empty($voucher_id)) {
+        $v = $db->SQL_Fetch(
+            "SELECT id FROM legal_commission_voucher WHERE voucher_no=? LIMIT 1",
+            [$voucher_no]
+        );
+        $voucher_id = $v['id'] ?? 0;
+    }
+
+    // ✅ Update commissions with new voucher ID
+    $params = array_merge([$voucher_id], $ids);
+    $db->Query(
+        "UPDATE legal_collection_commission
+        SET payment_status='Printed', voucher_id=?
+        WHERE id IN ($placeholders)",
+        $params
+    );
 }
 
-/* ===============================
-   OUTPUT PDF
-================================ */
-header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="Commission_Report.pdf"');
-header('Cache-Control: max-age=0');
+// ✅ Activity log
+$party_names = implode(', ', array_column($rows, 'party'));
+$log_action = $is_reprint ? 'Reprint Voucher' : 'Generate Voucher';
+$log_message = ($is_reprint ? 'Commission Voucher Reprinted' : 'Commission Voucher Created') . 
+               ' - Voucher No: '.$voucher_no.
+               ' | Total Payable: '.number_format($total_payable,2).
+               ' | Commissions: '.count($ids).
+               ' | Parties: '.$party_names;
 
-$writer = new Mpdf($spreadsheet);
-$writer->save('php://output');
+$db->Query(
+"INSERT INTO legal_activity_log
+(log_datetime,log_date,log_user,log_utype,log_menu,log_action,log_message,log_url,log_refr_id,log_parent_id,log_parent_type)
+VALUES (NOW(),CURDATE(),?,?,?,?,?,?,?,?,'Commission')",
+[
+    $created_by,
+    'Legal',
+    'Commission',
+    $log_action,
+    $log_message,
+    $_SERVER['REQUEST_URI'] ?? 'commission/generate_voucher',
+    $voucher_id,
+    $voucher_id
+]
+);
+
+// ✅ Build HTML
+$html = '
+<h2 style="text-align:center;">Commission Voucher</h2>
+
+<p><strong>Voucher No:</strong> '.$voucher_no.'</p>
+<p><strong>Date:</strong> '.date('d-m-Y').'</p>
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse:collapse">
+
+<thead style="background:#f0f0f0;font-weight:bold">
+<tr>
+<th>Party</th>
+<th>Received</th>
+<th>Commission %</th>
+<th>Payable</th>
+</tr>
+</thead>
+
+<tbody>
+';
+
+foreach ($rows as $r) {
+    $html .= '
+<tr>
+<td>'.htmlspecialchars($r['party']).'</td>
+<td>'.number_format($r['received'],2).'</td>
+<td>'.htmlspecialchars($r['commission']).'</td>
+<td>'.number_format($r['payable'],2).'</td>
+</tr>
+';
+}
+
+$html .= '
+<tr style="font-weight:bold;background:#e0e0e0">
+<td>Total</td>
+<td>'.number_format($total_received,2).'</td>
+<td></td>
+<td>'.number_format($total_payable,2).'</td>
+</tr>
+
+</tbody>
+</table>
+
+<br><br>
+Prepared By: ______________________
+<br><br>
+Recipient Signature: ______________________
+';
+
+// ✅ Generate PDF
+$mpdf = new Mpdf();
+
+$mpdf->WriteHTML($html);
+
+// prevent output issues
+if (ob_get_length()) {
+    ob_clean();
+}
+
+// ✅ Save PDF to Server
+$mpdf->Output($upload_path, 'F');
+
+// ✅ Output PDF for Download
+$mpdf->Output($pdf_filename, 'D');
+
 exit;

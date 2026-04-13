@@ -179,4 +179,6 @@ class UsersClass extends dbcon
         //echo $this->get_query($Sqlcmd, $params); exit;
         return ($this->_num_rows > 0) ? $this->_result : false;
     }
+
+    
 }

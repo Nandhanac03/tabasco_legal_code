@@ -54,11 +54,40 @@ class ActiveLegal extends dbcon
         }
         $this->_output_alert = "Ok";
         $this->_last_query = $Sqlcmd;
+      
         $result = $this->Query($Sqlcmd, $params);
-        if (!$isUpdate) {
-            $this->_inserted_id = $this->mysqlInsertid();
+
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
         }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_activelegal',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Active Legal ID: $id"
+                        : "Created Active Legal ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+        
         return $result;
+        
     }
     function Get_Last_ActiveLegal_ID()
     {
@@ -157,17 +186,28 @@ WHERE 1";
             $sql .= " AND AL.id != :action_id";
             $params['action_id'] = $filters['action_id'];
         }
-        // ✅ Ensure ordering is always applied
+        
         $sql .= " ORDER BY AL.id DESC";
-        // ✅ FIX: Proper LIMIT and OFFSET Handling
+
         if (!empty($filters['limit'])) {
-            $limit = (int)$filters['limit']; // Ensure limit is an integer
-            $offset = !empty($filters['offset']) ? (int)$filters['offset'] : 0; // Default to 0 if not set
+            $limit = (int)$filters['limit']; 
+            $offset = !empty($filters['offset']) ? (int)$filters['offset'] : 0; 
             $sql .= " LIMIT $offset, $limit";
         }
-        // Debugging - Uncomment if needed
+      
         // echo $this->get_query($sql, $params); exit;
         return $this->SELECT_MultiFetch($sql, $params);
+
+
+        $activity->log(
+            'legal_activelegal',
+            $id,
+            'UPDATE',
+            'Updated Active Legal record',
+            $oldData,
+            $data
+        );
+        
     }
     function Get_LEGAL_TOTAL_COUNT($offset = '', $limit = '', $status = '', $legal_status = '', $filters = [])
     {
@@ -267,7 +307,7 @@ WHERE 1";
             $Sqlcmd = "INSERT INTO legal_shift_active_legal SET ";
         }
 
-        // Safely add fields
+       
         if (!empty($data['active_legal_id'])) {
             $fields[] = "active_legal_id = :active_legal_id";
             $params['active_legal_id'] = $data['active_legal_id'];
@@ -308,10 +348,10 @@ WHERE 1";
             $params['status'] = $data['status'];
         }
 
-        // Combine fields into SQL string
+     
         $Sqlcmd .= implode(', ', $fields);
 
-        // Add WHERE clause for update
+        
         if (!empty($id)) {
             $Sqlcmd .= " WHERE id = :id";
             $params['id'] = $id;
@@ -398,71 +438,103 @@ WHERE 1";
     function disable_active_legal($data = [], $id = '')
     {
         $params = [];
-        $Sqlcmd = "UPDATE legal_activelegal SET";
-        $Sqlcmd .= " updated_id=:updated_id";
+    
+        $Sqlcmd = "UPDATE legal_activelegal SET
+                   updated_id=:updated_id,
+                   updated_on=:updated_on,
+                   status=:status
+                   WHERE id=:id";
+    
         $params['updated_id'] = $data['updated_id'];
-        $Sqlcmd .= ", updated_on=:updated_on";
         $params['updated_on'] = $data['updated_on'];
-        if ($data['status']) {
-            $Sqlcmd .= ", status=:status";
-            $params['status'] = $data['status'];
+        $params['status']     = $data['status'];
+        $params['id']         = $id;
+    
+        $result = $this->Query($Sqlcmd, $params);
+
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // logged in user
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    'DISABLE',                     // action
+                    'legal_activelegal',                  // module/table
+                    $loggedUserId,                 // user id
+                    "Activelegal disabled (ID: $id)",     // message
+                    $id                            // reference id
+                );
+            }
         }
-        $Sqlcmd .= " WHERE id=$id";
-        $this->_output_alert = 'Ok';
-        $this->_last_query = $Sqlcmd;
-        $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
-    }
-    function save_commission($data = [], $id = '')
+        
+        return $result;
+            }    function save_commission($data = [], $id = '')
     {
         $params = [];
-        if ($id) {
-            $Sqlcmd = "UPDATE";
-        } else {
-            $Sqlcmd = "INSERT INTO";
-        }
-        $Sqlcmd .= " legal_activelegal_commission SET";
+        $setParts = [];
+
         if ($data['active_legal_id']) {
-            $Sqlcmd .= " active_legal_id=:active_legal_id";
+            $setParts[] = "active_legal_id=:active_legal_id";
             $params['active_legal_id'] = $data['active_legal_id'];
         }
         if ($data['parent_type']) {
-            $Sqlcmd .= ", parent_type=:parent_type";
+            $setParts[] = "parent_type=:parent_type";
             $params['parent_type'] = $data['parent_type'];
         }
         if ($data['party_id']) {
-            $Sqlcmd .= ", party_id=:party_id";
+            $setParts[] = "party_id=:party_id";
             $params['party_id'] = $data['party_id'];
         }
-        if ($data['commission']) {
-            $Sqlcmd .= ", commission=:commission";
+        if (isset($data['commission'])) {
+            $setParts[] = "commission=:commission";
             $params['commission'] = $data['commission'];
         }
         if ($data['notes']) {
-            $Sqlcmd .= ", notes=:notes";
+            $setParts[] = "notes=:notes";
             $params['notes'] = $data['notes'];
         }
         if ($id == '') {
-            $Sqlcmd .= ", created_by=:created_by";
+            $setParts[] = "created_by=:created_by";
             $params['created_by'] = $data['created_by'];
-            $Sqlcmd .= ", created_at=:created_at";
+            $setParts[] = "created_at=:created_at";
             $params['created_at'] = $data['created_at'];
         }
-        $Sqlcmd .= ", updated_by=:updated_by";
+        $setParts[] = "updated_by=:updated_by";
         $params['updated_by'] = $data['updated_by'];
-        $Sqlcmd .= ", updated_at=:updated_at";
+        $setParts[] = "updated_at=:updated_at";
         $params['updated_at'] = $data['updated_at'];
         if ($data['active']) {
-            $Sqlcmd .= ", active=:active";
+            $setParts[] = "active=:active";
             $params['active'] = $data['active'];
         }
-        if ($id) {
-            $Sqlcmd .= " WHERE id=$id";
+        if (isset($data['zero_commission'])) {
+            $setParts[] = "zero_commission=:zero_commission";
+            $params['zero_commission'] = $data['zero_commission'];
         }
+
+        if (empty($setParts)) {
+            return false;
+        }
+
+        if ($id) {
+            $Sqlcmd = "UPDATE legal_activelegal_commission SET " . implode(", ", $setParts) . " WHERE id=:id";
+            $params['id'] = $id;
+        } else {
+            $Sqlcmd = "INSERT INTO legal_activelegal_commission SET " . implode(", ", $setParts);
+        }
+
         $this->_output_alert = 'Ok';
         $this->_last_query = $Sqlcmd;
-        $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        
+        $result = $this->Query($Sqlcmd, $params);
+        if ($result && !$id) {
+            $this->_inserted_id = $this->mysqlInsertid();
+        }
+        return $result;
     }
     function get_commission($id = '', $active_legal_id = '', $parent_type = '', $party_id = '')
     {

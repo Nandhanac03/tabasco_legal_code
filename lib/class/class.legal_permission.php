@@ -68,25 +68,29 @@ class userPermission extends dbcon {
     public function get_allowed_permission(?int $user_id = null, ?int $menu_id = null)
     {
         $params = [];
-        $Sqlcmd = "SELECT *
+    
+        $Sqlcmd = "SELECT user_id, menu_id, actions, status
                    FROM legal_menu_permission
-                   WHERE legal_menu_permission.status = 'A'";
-
+                   WHERE status = 'A'";
+    
         if (!is_null($user_id) && $user_id > 0) {
             $Sqlcmd .= " AND user_id = :user_id";
             $params['user_id'] = $user_id;
         }
-
+    
         if (!is_null($menu_id) && $menu_id > 0) {
             $Sqlcmd .= " AND menu_id = :menu_id";
             $params['menu_id'] = $menu_id;
         }
-
-        $Sqlcmd .= " ORDER BY menu_id";
-
+    
+        $Sqlcmd .= " ORDER BY menu_id ASC";
+    
         $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
-        return ($this->_num_rows > 0) ? $this->_result : false;
+    
+        // ✅ Always return array (very important)
+        return ($this->_num_rows > 0) ? $this->_result : [];
     }
+    
 
    public function get_user_allowed_permissions(?int $user_id = null)
 {

@@ -20,9 +20,11 @@ include_once("../../../lib/class/class.legal_court.php");
 
 include_once("../../../lib/class/class.legal_category.php");
 include_once("../../../lib/class/class.legal_case_root_actions.php");
-$objcaseRootAction = new CaseRootAction();
 
-$objLegalCase =   new LegalCase();
+
+$objcaseRootAction = new CaseRootAction();
+$objLegalCase = new LegalCase();
+
 
 $objLegalCourt =  new Court();
 
@@ -270,16 +272,25 @@ if ($_POST['action']) {
 
 
 
+            $before_data = null;
+            if ($id) {
+                $current_roots = $objLegalCase->get_roots($id);
+                $before_data = !empty($current_roots) ? $current_roots[0] : null;
+            }
+
             if ($objLegalCase->saveRoots($input_data, $id)) {
+                $action_type = $id ? 'UPDATE' : 'CREATE';
+                $record_id = $id ? $id : $objLegalCase->mysqlInsertid();
+                
+                $message = $id ? "Updated case root for case ID: {$case_id}" : "Created new case root for case ID: {$case_id}";
+                
+                //$objlogger->logActivity($action_type, 'Case Roots', $record_id, $message, $before_data, $input_data);
 
                 if ($id) {
-
                     echo json_encode(['success' => true, 'message' => 'Roots updated successfully']);
                 } else {
-
                     echo json_encode(['success' => true, 'message' => 'Roots saved successfully']);
                 }
-
                 exit;
             } else {
 

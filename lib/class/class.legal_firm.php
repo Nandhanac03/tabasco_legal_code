@@ -5,7 +5,12 @@ class LegalFirm extends dbcon {
      */
     public function manageLegalFirmInformation($data, $id = null) {
         $params = [];
-        if ($id) {
+        $isUpdate = $id ? true : false;
+    
+        if ($isUpdate) {
+            // Fetch old data before update for logging
+            $oldData = $this->SELECT_MultiFetch("SELECT * FROM legal_firm WHERE id=:id", ['id' => $id])[0] ?? null;
+    
             $sql = "UPDATE legal_firm SET
                         name = :name,
                         address = :address,
@@ -27,7 +32,8 @@ class LegalFirm extends dbcon {
                     )";
             $params['created_by'] = $data['created_by'] ?? null;
         }
-        // Bind Parameters
+    
+        // Bind common parameters
         $params['name'] = $data['name'] ?? '';
         $params['address'] = $data['address'] ?? '';
         $params['contact_no'] = $data['contact_no'] ?? '';
@@ -35,9 +41,41 @@ class LegalFirm extends dbcon {
         $params['post_box_no'] = $data['post_box_no'] ?? '';
         $params['notes'] = $data['notes'] ?? '';
         $params['visiting_card'] = $data['visiting_card'] ?? '';
-        $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($sql, $params);
+    
+        $result = $this->Query($sql, $params);
+
+        if (!$isUpdate && $result) {
+            $id = $this->_inserted_id = $this->mysqlInsertid();
+        }
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+            include_once __DIR__ . '/class.legal_activity_log.php';
+            $activity = new LegalActivityLog();
+            $loggedUserId = $data['created_by'] ?? $data['updated_by'] ?? ($_SESSION['LOGIN_LEGAL_ID'] ?? null);
+
+            if ($isUpdate) {
+                $activity->logActivity(
+                    'UPDATE',                  // action type
+                    'legal_firm',    // module/table
+                    $loggedUserId,             // log_user
+                    "Updated Legal Firm record ID: $id", // message
+                    $id                        // log_refr_id
+                );
+            } else {
+                $activity->logActivity(
+                    'CREATE',
+                    'legal_firm',
+                    $loggedUserId,
+                    "Created Legal Firm record ID: $id",
+                    $id
+                );
+            }
+        }
+
+        return $result;
     }
+    
     /**
      * Get Legal Firm Information
      */

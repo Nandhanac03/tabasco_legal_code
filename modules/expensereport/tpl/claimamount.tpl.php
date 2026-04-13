@@ -182,6 +182,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" id="collection_modal" class="modal-form" data-form-type="collection">
+                    <input type="hidden" id="max_allowed_collection" value="<?= max(0, floatval($active_legal[0]['claim_amount']) - $objCollection->total_collection($active_legal_id)) ?>">
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
@@ -275,8 +276,27 @@
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
                                             <input type="number" name="coll_amount" class="form-control input-amount">
+
+
+                        
+                                            <div class="form-check mt-2">
+ <input type="hidden" name="zero_commission" value="0">
+        <input class="form-check-input"type="checkbox"  id="zeroCommissionCheck"  name="zero_commission"       value="1">
+        <label class="form-check-label" for="zeroCommissionCheck">
+            0% Commission
+        </label>
+    </div>
+
+<style>
+.text-danger{
+    color:red!important;
+}
+</style>
+
+
+
                                             <!-- <small id="commissionMessage" class="text-success mt-2 d-block" style="display:none;"></small> -->
-                                            <small id="commissionMessage" class="text-info mt-2 d-block" style="display:none;"></small>
+                                            <small id="commissionMessage" class="text-info mt-2 d-block text-danger" style="display:none;"></small>
 
                                         </div>
                                         <div class="mb-3">
@@ -520,6 +540,25 @@
                 }
             }
 
+            // Custom collection amount validation
+            if (config.fieldPrefix === 'coll_') {
+                const amountVal = parseFloat($form.find('.input-amount').val());
+                const maxAllowed = parseFloat($('#max_allowed_collection').val());
+                if (!isNaN(amountVal) && amountVal > maxAllowed) {
+                    const $amountField = $form.find('.input-amount');
+                    $amountField.addClass('is-invalid').removeClass('is-valid');
+                    
+                    let $feedback = $amountField.siblings('.invalid-amount-feedback');
+                    if ($feedback.length === 0) {
+                        $feedback = $('<span class="invalid-feedback invalid-amount-feedback" style="display:block; color: #dc3545;"></span>').insertAfter($amountField);
+                    }
+                    $feedback.text('Amount exceeds the balance claim amount (' + maxAllowed.toFixed(2) + ').').show();
+                    isValid = false;
+                } else {
+                    $form.find('.invalid-amount-feedback').hide();
+                }
+            }
+
             if (!isValid) return;
 
             // Submit form via AJAX
@@ -628,5 +667,33 @@
             })
 
         })
+
+
+
+ $('#zeroCommissionCheck').change(function() {
+
+if ($(this).is(':checked')) {
+
+    $('#commissionMessage')
+        .text("Zero Commission selected. The actual amount will be paid to the client.")
+        .removeClass('text-danger')
+        .addClass('text-success')
+        .show();
+
+} else {
+
+    $('#commissionMessage')
+        .text("Please select the commission.")
+        .removeClass('text-success')
+        .addClass('text-danger')
+        .show();
+}
+
+});
+  
+
+
+
+
     });
 </script>

@@ -7,31 +7,28 @@ class CaseHearing extends dbcon
         $params = [];
         $set = [];
 
+        $isUpdate = !empty($id);
+
         if (!empty($data['case_id'])) {
             $set[] = "case_id = :case_id";
             $params['case_id'] = $data['case_id'];
         }
-
         if (!empty($data['file'])) {
             $set[] = "file = :file";
             $params['file'] = $data['file'];
         }
-
         if (!empty($data['hearing_date'])) {
             $set[] = "hearing_date = :hearing_date";
             $params['hearing_date'] = $data['hearing_date'];
         }
-
         if (!empty($data['hearing_feedback_date'])) {
             $set[] = "hearing_feedback_date = :hearing_feedback_date";
             $params['hearing_feedback_date'] = $data['hearing_feedback_date'];
         }
-
         if (!empty($data['hearing_feedback'])) {
             $set[] = "hearing_feedback = :hearing_feedback";
             $params['hearing_feedback'] = $data['hearing_feedback'];
         }
-
         if (!$id) {
             // INSERT fields
             $set[] = "created_on = :created_on";
@@ -56,9 +53,37 @@ class CaseHearing extends dbcon
         }
 
         $this->_last_query = $sql;
-        return $this->Query($sql, $params);
-    }
+        $result = $this->Query($set, $params);
 
+        /* ===== GET INSERTED ID ===== */
+        $isUpdate = !empty($id);
+        
+        if ($result && !$isUpdate) {
+            $id = $this->mysqlInsertid();
+        }
+        
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+        
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // Logged-in user ID
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    $isUpdate ? 'UPDATE' : 'INSERT',   // action
+                    'legal_case_hearing',                      // module/table
+                    $loggedUserId,                     // user id
+                    $isUpdate
+                        ? "Updated Case Hearing ID: $id"
+                        : "Created Case Hearing ID: $id",
+                    $id                                // reference id
+                );
+            }
+        }
+    }
     function get_hearing($id = '', $case_id = '', $type = '')
     {
         $params = array();
@@ -96,6 +121,31 @@ class CaseHearing extends dbcon
             $Sqlcmd = $Sqlcmd . " WHERE  id=:id";
             $params['id'] = $id;
         }
-        return $this->Query($Sqlcmd, $params);
+      //  return $this->Query($Sqlcmd, $params);
+
+        $result = $this->Query($Sqlcmd, $params);
+    
+        /* ===== ACTIVITY LOG ===== */
+  
+        if ($result) {
+
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+        
+            // logged in user
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+        
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    'DISABLE',                     // action
+                    'legal_case_hearing',                  // module/table
+                    $loggedUserId,                 // user id
+                    "Case Hearing disabled (ID: $id)",     // message
+                    $id                            // reference id
+                );
+            }
+        }
+  
+      return $result;
+  }
     } //end function
-}//end class

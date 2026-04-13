@@ -1,3 +1,43 @@
+Tabasco Meeting Minutes
+
+1) Change Case Root Postion as second tab in the view page
+
+2) Plantiff, Defender Master entry needed from clients page
+
+#praveen
+
+3) Last Action trim text and show description upon hover
+
+modules/case/ajax/case_hearing_date.php
+
+
+4) Active legal code hide and make the columns fit in the view because right now for edit we have to scroll all page
+
+5) Plantiff and defender selection needed in case creation
+
+6) Plantiff and defender selection needed in roots creation
+
+7) Stage 1 cannot be created again . check duplicate entry for the stages
+
+8) UAE Pass report needed
+
+9) Internal case no commission provided. Please put a checkbox for no commission in such cases entry has to be done with no commission
+
+#Praveen
+
+10) Collection entry check the logic if wrong entry there.
+
+#Praveen
+
+
+
+
+
+
+
+
+
+
 
 2) Plantiff, Defender Master entry needed from clients page
 

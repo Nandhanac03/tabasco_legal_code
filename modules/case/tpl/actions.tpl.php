@@ -259,6 +259,8 @@
                                                                                         <?php foreach ($case_roots as $case_roots) { ?>
                                                                                             <tr>
 
+
+                                                                                            
                                                                                                 <td><?= $case_roots['date'] ?></td>
 
                                                                                                 <td style="max-width:380px; min-width:340px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;"><?= $case_roots['description'] ?></td>

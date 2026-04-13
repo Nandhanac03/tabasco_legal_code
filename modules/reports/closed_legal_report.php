@@ -1,5 +1,9 @@
 <?php
 
+if (LEGAL_AUTH_VIEW==false){
+    header("Location: ".ROOT_DIR."permission_denied.php");
+    exit();
+}
 
 
 include_once("lib/class/class.legal_master.php");
@@ -10,7 +14,7 @@ $ObjMasterdata   =   new Masterdata();
 
 
 
-include_once("lib/config.php");
+
 include_once("lib/class/class.dbcon.php");
 include_once("lib/class/class.legal_common_selection.php");
 

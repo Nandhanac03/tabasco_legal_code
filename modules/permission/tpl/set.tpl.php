@@ -106,6 +106,11 @@
                 <?php
                     $menu_id = $menu['id'];
                     $grantedActions = $menu_permissions[$menu_id] ?? [];
+//                     echo"<pre>";
+// print_r($array_legal_menu);
+// exit;
+
+                    
                 ?>
                 <tr>
                     <td><?= $i ?></td>

@@ -5,6 +5,7 @@ class LegalFees_type extends dbcon
     function save_feesType($data = [], $id = '')
     {
         $params = [];
+        $isUpdate = !empty($id);
         if ($id) {
             $SqlCmd = "UPDATE";
         } else {
@@ -39,8 +40,38 @@ class LegalFees_type extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $SqlCmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($SqlCmd, $params);
+        $result = $this->Query($SqlCmd, $params);
+
+
+         /* ===== GET INSERT ID IF INSERT ===== */
+    if ($result && !$isUpdate) {
+        $id = $this->mysqlInsertid();
     }
+
+    /* ===== ACTIVITY LOG ===== */
+    if ($result) {
+
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+        if ($loggedUserId) {
+            $activity->logActivity(
+                $isUpdate ? 'UPDATE' : 'INSERT',          // action
+                'legal_fees_type',                    // module/table
+                $loggedUserId,                            // user id
+                $isUpdate 
+                    ? "Updated Fee Type ID: $id"
+                    : "Created Fee Type ID: $id",
+                $id                                       // reference id
+            );
+        }
+    }
+
+    return $result;
+}
+    
     function get_feesType($id = '', $title = '', $not_id = '', $search = '', $limit = '', $offset = '')
     {
         $params = [];
@@ -86,6 +117,31 @@ class LegalFees_type extends dbcon
         $this->_output_alert = 'Ok';
         $this->_last_query = $Sqlcmd;
         $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
+        //return $this->Query($Sqlcmd, $params);
+
+
+        $result = $this->Query($Sqlcmd, $params);
+
+        /* ===== ACTIVITY LOG ===== */
+        if ($result) {
+    
+            include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+    
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+    
+            if ($loggedUserId) {
+                $activity->logActivity(
+                    'DISABLE',                         // action
+                    'legal_fees_type',             // module
+                    $loggedUserId,                     // user
+                    "Disabled Test Type ID: $id",  // message
+                    $id                                // reference id
+                );
+            }
+        }
+    
+        return $result;
     }
-}
+    }
+

@@ -17,7 +17,8 @@ $objLegalFirm = new LegalFirm();
 
 $action = $_GET['action'];
 $id = $_GET['param1'];
-
+print_r($id);
+exit;
 if (!$action || !$id) {
     header("location: " . ROOT_DIR . "closedlegal/list.html");
     exit;

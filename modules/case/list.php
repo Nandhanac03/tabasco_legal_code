@@ -1,6 +1,4 @@
 <!-- list -->
-
-
 <?php
 ob_start();
 session_start();
@@ -15,6 +13,11 @@ $objActiveLegal =   new ActiveLegal();
 $objLegalCase =   new LegalCase();
 $objCheque =   new Cheque();
 
+if (LEGAL_AUTH_VIEW == false) {
+    header("Location: " . ROOT_DIR . "permission_denied.php");
+    exit();
+}
+
 $action = $_GET['action'];
 $id = $_GET['param1'];
 
@@ -24,7 +27,7 @@ $activeLegal = $objActiveLegal->Get_ActiveLegal_Information(['id' => $activeLega
 $legal_case = $objLegalCase->get_case($id);
 
 // echo '<pre>';
-// print_r($activeLegal);
+// print_r($legal_case[0]['lawyer']);
 // exit;
 
 if ($activeLegal) {

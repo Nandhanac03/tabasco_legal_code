@@ -212,10 +212,10 @@ $selected_plaintiff = $current_legal_case[0]['plaintiff'] ?? '';
 
     <select class="form-select" name="plaintiff" id="plaintiff">
         <option value="">--- Select Plaintiff ---</option>
-
+        <option value="Tabasco Tech" <?= ($selected_plaintiff == "Tabasco Tech") ? 'selected' : '' ?>>Tabasco Tech</option>
       
             <?php foreach ($plantiffs as $p): ?>
-    <option value="<?= $p['id']; ?>" <?= ($selected_plaintiff == $p['id']) ? 'selected' : '' ?>>
+    <option value="<?= $p['name']; ?>" <?= ($selected_plaintiff == $p['name']) ? 'selected' : '' ?>>
         <?= htmlspecialchars($p['name']); ?>
     </option>
 <?php endforeach; ?>
@@ -238,8 +238,8 @@ $selected_defendant = $current_legal_case[0]['defendant'] ?? '';
         <option value="">--- Select Defendant ---</option>
 
         <?php foreach ($defendant as $p): ?>
-            <option value="<?= $p['id']; ?>"
-                <?= ($selected_defendant == $p['id']) ? 'selected' : '' ?>>
+            <option value="<?= $p['name']; ?>"
+                <?= ($selected_defendant == $p['name']) ? 'selected' : '' ?>>
                 <?= htmlspecialchars($p['name']); ?>
             </option>
         <?php endforeach; ?>
@@ -278,22 +278,33 @@ $selected_defendant = $current_legal_case[0]['defendant'] ?? '';
                                                                             <label class="form-label">Lawyer: <span class="text-danger">*</span></label>
                                                                             <input type="text" class="form-control" name="lawyer" id="lawyer" value="<?= isset($current_legal_case[0]['lawyer']) && $current_legal_case[0]['lawyer'] != '' ? $current_legal_case[0]['lawyer'] : $_POST['lawyer'] ?>">
                                                                         </div> -->
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Lawyer: <span class="text-danger">*</span></label>
-                                                                            <select class="form-control" name="lawyer" id="lawyer" required>
-                                                                                <option value="">-- Select Lawyer --</option>
-                                                                                <?php
-                                                                                $selectedLawyer = isset($current_legal_case[0]['lawyer']) && $current_legal_case[0]['lawyer'] != ''
-                                                                                    ? $current_legal_case[0]['lawyer']
-                                                                                    : ($_POST['lawyer'] ?? '');
 
-                                                                                foreach ($lawyerusersList as $lawyer) {
-                                                                                    $selected = ($selectedLawyer == $lawyer['user_Id']) ? "selected" : "";
-                                                                                    echo "<option value='{$lawyer['user_Id']}' $selected>{$lawyer['user_name']}</option>";
-                                                                                }
-                                                                                ?>
-                                                                            </select>
-                                                                        </div>
+
+                                                                        <?php
+$selectedLawyer = $current_legal_case[0]['lawyer'] ?? '';
+
+?>
+
+<div class="mb-3">
+    <label class="form-label">
+    Lawyer <span class="text-danger">*</span>
+    </label>
+
+    <select class="form-select" name="lawyer" id="lawyer">
+        <option value="">--- Select Lawyer ---</option>
+
+        <?php foreach ($lawyerusersList as $p): ?>
+            <option value="<?= $p['user_Id']; ?>"
+                <?= ($selectedLawyer == $p['user_name']) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($p['user_name']); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+
+                                                     
+
 
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Location: <span class="text-danger">*</span></label>

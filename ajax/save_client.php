@@ -8,6 +8,8 @@ include_once("../lib/config.php");
 include_once("../lib/class/class.dbcon.php");
 
 include_once("../lib/class/class.legal_client.php");
+
+
 $objClients = new Clients();
 
 
@@ -61,6 +63,9 @@ if (isset($_POST)) {
             $id = $objClients->_inserted_id;
             if ($id) {
                 $_SESSION['PAGE_SUCCESS'] = 'You have successfully created a client !';
+                
+               // $objlogger->logActivity('CREATE', 'Client', $id, "Created new client: {$client_Text}", null, $input_data);
+
                 echo json_encode(['success' => true, 'status' => 'success', 'message' => 'OKAY', 'id' => $id]);
                 exit;
             }

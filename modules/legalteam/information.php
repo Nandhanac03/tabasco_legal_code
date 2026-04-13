@@ -1,4 +1,15 @@
 <?php
+
+
+
+ob_start();
+include_once("lib/class/auth.php");
+session_start();
+if (LEGAL_AUTH_VIEW==false){
+    header("Location: ".ROOT_DIR."permission_denied.php");
+    exit();
+}
+
 include_once("lib/class/class.legal_users.php");
 $ObjUsersClass = new UsersClass();
 

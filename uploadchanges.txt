@@ -1,0 +1,93 @@
+Tabasco Meeting Minutes
+
+1) Change Case Root Postion as second tab in the view page  - DONE
+
+2) Plantiff, Defender Master entry needed from clients page  - DONE
+
+#praveen
+
+3) Last Action trim text and show description upon hover  - DONE
+
+4) Active legal code hide and make the columns fit in the view because right now for edit we have to scroll all page  - DONE
+
+5) Plantiff and defender selection needed in case creation  -  DONE
+
+6) Plantiff and defender selection needed in roots creation   -  DONE
+
+7) Stage 1 cannot be created again . check duplicate entry for the stages  -  DONE
+
+8) UAE Pass report needed  -   DONE
+
+
+9) Internal case no commission provided. Please put a checkbox for no commission in such cases entry has to be done with no commission
+
+#Praveen
+
+10) Collection entry check the logic if wrong entry there.
+
+#Praveen
+
+
+
+
+
+
+
+
+
+
+
+2) Plantiff, Defender Master entry needed from clients page
+
+
+modules/client/view.php
+
+modules/client/tpl/view.tpl.php
+modules/client/tpl/information.tpl.php
+modules/client/tpl/commission.tpl.php
+modules/client/tpl/document.tpl.php
+
+add 
+
+modules/client/plantiff.php
+modules/client/defender.php
+
+modules/client/tpl/plantiff.tpl.php
+modules/client/tpl/defender.tpl.php
+
+lib/class/class.legal_plantiff.php
+lib/class/class.legal_defender.php
+
+common/manage_plantiff.php
+common/manage_defender.php
+
+ajax/add_plantiff.php
+ajax/load_plantiff.php
+
+ajax/add_defender.php
+ajax/load_defender.php
+
+
+
+
+05-feb-2026
+
+6) Plantiff and defender selection needed in roots creation
+
+modules/case/ajax/roots_handling.php
+
+modules/case/tpl/view.tpl.php
+modules/case/view.php
+
+
+lib/class/class.legal_case.php
+
+
+
+
+5) Plantiff and defender selection needed in case creation
+
+
+
+
+

@@ -4,48 +4,102 @@ class thirdParty extends dbcon
     ################	MEMBER FUNCTIONS SECTION	##############
     function Manage_thirdParty_information($data = '', $id = '')
     {
-        $params = array();
-        if ($id > 0) {
-            $Sqlcmd = "UPDATE";
+        $params = [];
+        $isUpdate = $id > 0;
+    
+        // Fetch old data if updating
+        $oldData = $isUpdate ? $this->SELECT_MultiFetch("SELECT * FROM legal_third_party WHERE id=:id", ['id' => $id])[0] ?? null : null;
+    
+        if ($isUpdate) {
+            $Sqlcmd = "UPDATE legal_third_party SET ";
         } else {
-            $Sqlcmd = "INSERT INTO";
+            $Sqlcmd = "INSERT INTO legal_third_party SET ";
         }
-        $Sqlcmd = $Sqlcmd . " legal_third_party SET ";
-        $Sqlcmd = $Sqlcmd . " code=:code";
+    
+        $Sqlcmd .= " code=:code";
         $params['code'] = $data['code'];
-        $Sqlcmd = $Sqlcmd . " ,name=:name";
+    
+        $Sqlcmd .= ", name=:name";
         $params['name'] = $data['name'];
-        $Sqlcmd = $Sqlcmd . " ,address=:address";
+    
+        $Sqlcmd .= ", address=:address";
         $params['address'] = $data['address'];
-        $Sqlcmd = $Sqlcmd . " ,contact_no=:contact_no";
+    
+        $Sqlcmd .= ", contact_no=:contact_no";
         $params['contact_no'] = $data['contact_no'];
-        $Sqlcmd = $Sqlcmd . " ,email=:email";
+    
+        $Sqlcmd .= ", email=:email";
         $params['email'] = $data['email'];
-        $Sqlcmd = $Sqlcmd . " ,notes=:notes";
+    
+        $Sqlcmd .= ", notes=:notes";
         $params['notes'] = $data['notes'];
-        $Sqlcmd = $Sqlcmd . " ,visiting_card=:visiting_card";
+    
+        $Sqlcmd .= ", visiting_card=:visiting_card";
         $params['visiting_card'] = $data['visiting_card'];
-        if ($id > 0) {
-            $Sqlcmd = $Sqlcmd . " ,updated_by=:updated_by";
+    
+        if ($isUpdate) {
+            $Sqlcmd .= ", updated_by=:updated_by";
             $params['updated_by'] = $data['updated_by'];
-            $Sqlcmd = $Sqlcmd . " ,updated_by_type=:updated_by_type";
+    
+            $Sqlcmd .= ", updated_by_type=:updated_by_type";
             $params['updated_by_type'] = $data['updated_by_type'];
-            $Sqlcmd = $Sqlcmd . " ,updated_on=:updated_on";
+    
+            $Sqlcmd .= ", updated_on=:updated_on";
             $params['updated_on'] = $data['updated_on'];
-            $Sqlcmd = $Sqlcmd . " WHERE  legal_third_party.id=:id";
+    
+            $Sqlcmd .= " WHERE id=:id";
             $params['id'] = $id;
         } else {
-            $Sqlcmd = $Sqlcmd . " ,created_by=:created_by";
+            $Sqlcmd .= ", created_by=:created_by";
             $params['created_by'] = $data['created_by'];
-            $Sqlcmd = $Sqlcmd . " ,created_by_type=:created_by_type";
+    
+            $Sqlcmd .= ", created_by_type=:created_by_type";
             $params['created_by_type'] = $data['created_by_type'];
-            $Sqlcmd = $Sqlcmd . " ,created_on=:created_on";
+    
+            $Sqlcmd .= ", created_on=:created_on";
             $params['created_on'] = $data['created_on'];
         }
-        //echo $this->get_query($Sqlcmd, $params);  exit;
-        $this->_inserted_id = $this->mysqlInsertid();
-        return $this->Query($Sqlcmd, $params);
-    } //end function
+    
+        $result = $this->Query($Sqlcmd, $params);
+      
+        // get inserted id
+        if ($result && !$isUpdate) {
+           $this->_inserted_id = $this->mysqlInsertid();
+           $id = $this->_inserted_id;
+       }
+       
+       /* ===== ACTIVITY LOG ===== */
+       
+       if ($result) {
+        include_once("class.legal_activity_log.php");
+        $activity = new LegalActivityLog();
+    
+        $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null; // logged-in user ID
+    
+        if ($isUpdate) {
+            $activity->logActivity(
+                'UPDATE', 
+                'legal_third_party',        // module / table name
+                $loggedUserId, 
+                "Updated Third Party record ID: $id",
+                $id
+            
+            );
+        } else {
+            $activity->logActivity(
+                'CREATE',
+                'legal_third_party',
+                $loggedUserId,
+                "Created record ID: $id",
+                $id
+            );
+            
+        }
+    }
+    
+    return $result;
+    }    
+    
     function Get_Last_ThirdParty_ID()
     {
         // SQL query to get the maximum 'id' from the 'legal_client' table
