@@ -4,74 +4,56 @@ session_start();
 # including files here
 include_once("lib/config.php");
 include_once("lib/class/class.dbcon.php");
+include_once("lib/class/class.legal_common_selection.php");
+include_once("lib/class/class.legal_expense.php");
+include_once("lib/class/class.legal_cheque.php");
 include_once("lib/class/class.legal_active_legals.php");
 include_once("lib/class/class.legal_case.php");
 include_once("lib/class/class.legal_third_party.php");
 include_once("lib/class/class.legal_debt_collector.php");
 include_once("lib/class/class.legal_firm.php");
-include_once("lib/class/class.legal_case_root_actions.php");
-
 $objActiveLegal = new ActiveLegal();
 $objLegalCase = new LegalCase();
 $objThirdParty = new thirdParty();
 $objDebtCollector = new DebtCollector();
 $objLegalFirm = new LegalFirm();
-$objcaseRootAction = new CaseRootAction();
-include_once("lib/class/class.legal_temp_case.php");
-$objTempLegalCase = new LegalTempCase();
+$objCheque =   new Cheque();
+$objExpense = new Expense();
+$objCommonSelection = new CommonSelection();
+include_once("lib/class/class.legal_client.php");
+$objClients = new Clients();
+include_once("lib/class/class.legal_collection.php");
+$objCollection = new Collection();
+
+$array_clients    =   $objClients->Get_Client_Information();
+
+
 
 $action = $_GET['action'];
 $id = $_GET['param1'];
 
 if (!$action || !$id) {
-    header("location: " . ROOT_DIR . "activelegal/list.html");
+    header("location: " . ROOT_DIR . "expensereport/list/.html");
     exit;
 }
+
+
 switch ($action) {
     case 'view':
-
-        $_SESSION['ACTIVE_LEGAL_ID'] = $id;
-        $filter = ['id' => $id];
-        $case_filter = [];
-        $active_legal = $objActiveLegal->Get_ActiveLegal_Information($filter);
+        $active_legal = $objActiveLegal->Get_ActiveLegal_Information(['id' => $id]);
         $all_third_party = $objThirdParty->get_legal_third_Information('', '', '', 'A');
         $all_debt_collector = $objDebtCollector->getDebtCollectorInfo();
         $all_legal_firm = $objLegalFirm->getLegalFirmInformation();
 
-        $legal_case = $objLegalCase->get_case_info('', $id);
-        $temp_legalcase =   $objTempLegalCase->getTempCase(['active_legal_id'=>$id]);
-
-        // echo '<pre>';
-        // print_r($legal_case);
-        // exit;
-
-
-
-        if ($legal_case) {
-            // Define which subcategories you want and where to store them
-            $subcategories = [
-                1 => 'first_instance_description',   // First Instance Judgment
-                4 => 'execution_decision_description' // Execution Decision
-            ];
-
-            foreach ($legal_case as $key => $case) {
-                foreach ($subcategories as $subcategoryId => $fieldName) {
-                    $filter = [
-                        'case_id' => $case['id'],
-                        'action_subcategory_id' => $subcategoryId
-                    ];
-                    $case_roots = $objcaseRootAction->get_case_root('', $filter);
-
-                    if ($case_roots) {
-                        $legal_case[$key][$fieldName] = $case_roots[0]['description'];
-                    }
-                }
+        $legal_case = $objLegalCase->get_case('', $id);
+        if($legal_case){
+            foreach ($legal_case as $keycase => $case) {
+                $total_collection = $objCollection->total_collection($case['active_legal_id'],$case['id']);
+                $legal_case[$keycase]['total_collection'] = $total_collection;
+                $total_Expense= $objExpense->total_expense($case['active_legal_id'],$case['id']);
+                $legal_case[$keycase]['total_Expense'] = $total_Expense;
             }
         }
-
-
-
-
         $label_array = [
             'third_party' => 'Third Party',
             'debt_collector' => 'Debt Collector',
@@ -113,8 +95,22 @@ switch ($action) {
                 // $shifted_records[$key]['party_name_label']='$party_name';
             }
         }
+
+      
 }
-// echo"<pre>";print_r($legal_case);exit;
 
 
-$body   =   "view.tpl";
+
+
+
+// echo '<pre>';print_r($array_clients); 
+// echo '<pre>';print_r($legal_case);
+// exit; 
+
+// print_r($testdar);
+$array_users = array();
+
+$array_users = $objCommonSelection->get_all_users('yes', '21,1');
+
+
+$body = "expenselist.tpl";

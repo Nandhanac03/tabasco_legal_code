@@ -31,8 +31,6 @@ include_once("../../../lib/auth_ajax.php");
 
 
 
-
-
 // ✅ Sanitize Input 
 
 $marketing  = trim($_POST['marketing'] ?? '');
@@ -160,21 +158,6 @@ $next_val = min($totalPage, $page_no + 1);
 
 
 
-// ✅ Pagination Setup
-
-$totalPage = max(1, ceil($totalData / $limit));
-
-$start_page = max(1, $page_no - 5);
-
-$end_page = min($totalPage, $start_page + 9);
-
-$prev_val = max(1, $page_no - 1);
-
-$next_val = min($totalPage, $page_no + 1);
-
-
-
-
 $pagination = [
 
     '<ul class="pagination justify-content-center" style="margin:20px 0">',
@@ -205,6 +188,7 @@ $pagination[] = '</ul>';
 
 
 $pagination_output = implode("\n", $pagination);
+
 
 
 // ✅ Render Table
@@ -301,7 +285,7 @@ $fullText = $lastAction . ' ' . $lastDate;
       
       
       
-<td style="max-width:100px; min-width:100px; position: relative; vertical-align: top;">
+<td style="max-width:150px; min-width:150px; position: relative; vertical-align: top;">
     <div class="hover-container">
         <div class="text-box" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             '. htmlspecialchars($shortAction) .'<br>
@@ -364,6 +348,7 @@ if ($totalData > $limit) {
 }
 ?>
 
+
 <style>
 
 
@@ -397,7 +382,6 @@ if ($totalData > $limit) {
 }
 
 </style>
-
 
 
 

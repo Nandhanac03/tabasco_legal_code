@@ -2,18 +2,18 @@
 <div class="page-content-wrapper">
     <!-- start page content-->
     <div class="page-content">
+
         <!--start breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Expense</div>
+            <div class="breadcrumb-title pe-3">Collection Amount</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0 align-items-center">
                         <li class="breadcrumb-item"><a href="javascript:;"><ion-icon name="home-outline"></ion-icon></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Expense</li>
+                        <li class="breadcrumb-item active" aria-current="page">Collection Amount</li>
                     </ol>
                 </nav>
-
             </div>
         </div>
         <!--end breadcrumb-->
@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs nav-primary" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" href="<?= ROOT_DIR ?>expensereport/expense/view/<?= $id ?>.html">
+                                <a class="nav-link " href="<?= ROOT_DIR ?>expensereport/expense/view/<?= $legal_case[0]['id'] ?>.html">
                                     <div class="d-flex align-items-center">
                                         <div class="tab-icon"><ion-icon name="information-sharp"
                                                 class="me-1"></ion-icon>
@@ -32,11 +32,9 @@
                                         <div class="tab-title">Expense</div>
                                     </div>
                                 </a>
-
                             </li>
-
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="<?= ROOT_DIR ?>expensereport/claimamount/view/<?= $legal_case[0]['id'] ?>.html">
+                                <a class="nav-link active" href="<?= ROOT_DIR ?>expensereport/claimamount/view/<?= $id ?>.html">
                                     <div class="d-flex align-items-center">
                                         <div class="tab-icon"><ion-icon name="document-attach-sharp"
                                                 class="me-1"></ion-icon>
@@ -45,7 +43,6 @@
                                     </div>
                                 </a>
                             </li>
-
                         </ul>
                         <div class="tab-content py-3">
                             <div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
@@ -60,7 +57,7 @@
                                                         <div class="card">
                                                             <div class="card-header d-flex justify-content-between">
                                                                 <h6 class="mb-0"><i class="lni lni-user"></i>
-                                                                    Expense
+                                                                    Collection
                                                                     list</h6>
                                                                 <div class="">
                                                                     <button class="btn btn-outline-dark me-2"
@@ -74,9 +71,7 @@
                                                                     </button>
                                                                     <a href="<?= ROOT_DIR ?>expensereport/expenselist/view/<?= $active_legal_id ?>.html" class="btn btn-warning"><ion-icon name="return-down-back-outline"></ion-icon>BACK</a>
 
-
                                                                 </div>
-
                                                             </div>
                                                             <div class="card-body">
                                                                 <div class=" p-3  border">
@@ -103,9 +98,13 @@
                                                                     <style>
                                                                         .description-cell {
                                                                             max-width: 270px;
+                                                                            /* Adjust this width as needed */
                                                                             overflow-wrap: break-word;
+                                                                            /* Breaks long words to wrap */
                                                                             white-space: normal;
+                                                                            /* Allows text to wrap to multiple lines */
                                                                             text-align: justify;
+                                                                            /* Justifies the text */
                                                                         }
                                                                     </style>
                                                                     <table class="table align-middle mb-0">
@@ -113,26 +112,25 @@
                                                                             <tr>
                                                                                 <th>Date</th>
                                                                                 <th>Description</th>
-                                                                                <th>Fees Type</th>
-                                                                                <th>Expense</th>
+                                                                                <th>Claim Amount</th>
                                                                                 <th>Document</th>
 
                                                                                 <th>Remark</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <?php if ($expense) { ?>
-                                                                                <?php foreach ($expense as $data) { ?>
+
+                                                                            <?php if ($collection) { ?>
+                                                                                <?php foreach ($collection as $data) { ?>
                                                                                     <tr>
                                                                                         <td><?= $data['date'] ?></td>
                                                                                         <td class="description-cell"><?= $data['description'] ?></td>
                                                                                         </td>
-                                                                                       <td><?= !empty($data['fees_type_title']) ? $data['fees_type'] : $data['category_type'] ?></td>
                                                                                         <td><?= $data['amount'] ?></td>
                                                                                         <td>
                                                                                             <?php if (!empty($data['document'])): ?>
                                                                                                 <?php
-                                                                                                $root_doc = ROOT_DIR . 'uploads/expenses/' . $data['document'];
+                                                                                                $root_doc = ROOT_DIR . 'uploads/collection/' . $data['document'];
                                                                                                 ?>
                                                                                                 <a href="<?= htmlspecialchars($root_doc) ?>" target="_blank">
                                                                                                     <button type="button" class="btn text-success">
@@ -145,8 +143,6 @@
                                                                                                 </button>
                                                                                             <?php endif; ?>
                                                                                         </td>
-
-
                                                                                         <td width="25%" style="max-width:250px; min-width:200px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;"><?= $data['remark'] ?></td>
                                                                                     </tr>
                                                                                 <?php } ?>
@@ -156,8 +152,6 @@
                                                                                 </tr>
 
                                                                             <?php } ?>
-
-
 
                                                                         </tbody>
                                                                     </table>
@@ -177,10 +171,8 @@
                 </div>
             </div>
         </div>
+        <!--end row-->
     </div>
-    <!-- end page content-->
-
-
     <!-- Add Collection Modal -->
     <div class="modal fade" id="addClaimModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -190,6 +182,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" id="collection_modal" class="modal-form" data-form-type="collection">
+                    <input type="hidden" id="max_allowed_collection" value="<?= max(0, floatval($active_legal[0]['claim_amount']) - $objCollection->total_collection($active_legal_id)) ?>">
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
@@ -237,11 +230,13 @@
                                         <!-- <div class="mb-3">
                                             <label class="form-label">Fees Type:</label>
                                             <select class="form-select select-fee-type" name="coll_fee_type">
-                                                <option value="">------ Select ------</option>
+                                               <option value="">------ Select ------</option>
                                                 <?php if ($fees_types) { ?>
                                                     <?php foreach ($fees_types as $fee_type) { ?>
                                                         <option value="<?= $fee_type['id'] ?>"><?= $fee_type['title'] ?></option>
+
                                                     <?php } ?>
+
                                                 <?php } ?>
                                             </select>
                                         </div> -->
@@ -283,8 +278,8 @@
                                             <input type="number" name="coll_amount" class="form-control input-amount">
 
 
-                                          
-    <div class="form-check mt-2">
+                        
+                                            <div class="form-check mt-2">
  <input type="hidden" name="zero_commission" value="0">
         <input class="form-check-input"type="checkbox"  id="zeroCommissionCheck"  name="zero_commission"       value="1">
         <label class="form-check-label" for="zeroCommissionCheck">
@@ -297,8 +292,11 @@
     color:red!important;
 }
 </style>
+
+
+
                                             <!-- <small id="commissionMessage" class="text-success mt-2 d-block" style="display:none;"></small> -->
-                                            <small id="commissionMessage" class="text-info mt-2 d-block text-danger" style="color:red!important;display:none;"></small>
+                                            <small id="commissionMessage" class="text-info mt-2 d-block text-danger" style="display:none;"></small>
 
                                         </div>
                                         <div class="mb-3">
@@ -387,14 +385,12 @@
                                                 <?php if ($fees_types) { ?>
                                                     <?php foreach ($fees_types as $fee_type) { ?>
                                                         <option value="<?= $fee_type['id'] ?>"><?= $fee_type['title'] ?></option>
+
                                                     <?php } ?>
 
                                                 <?php } ?>
-
                                             </select>
                                         </div>
-
-
                                         <div class="mb-3">
 
                                             <label class="form-label">Category <span class="text-danger">*</span></label>
@@ -426,8 +422,6 @@
                                             </select>
 
                                         </div>
-
-
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
                                             <input type="number" name="amount" class="form-control input-amount">
@@ -441,6 +435,7 @@
                                             <label class="form-label">Description:</label>
                                             <textarea class="form-control input-description" name="description"></textarea>
                                         </div>
+
                                         <div class="mb-3">
                                             <label class="form-label">Remark:</label>
                                             <textarea class="form-control input-description" name="remark"></textarea>
@@ -458,8 +453,8 @@
             </div>
         </div>
     </div>
+    <!-- end page content-->
 </div>
-
 
 
 <!-- Toast Container -->
@@ -494,8 +489,8 @@
             }
         };
 
+        // Initialize Select2 for all select2-bootstrap elements
         $('.select2-bootstrap').select2();
-
 
 
         // Form validation and submission
@@ -545,82 +540,75 @@
                 }
             }
 
+            // Custom collection amount validation
+            if (config.fieldPrefix === 'coll_') {
+                const amountVal = parseFloat($form.find('.input-amount').val());
+                const maxAllowed = parseFloat($('#max_allowed_collection').val());
+                if (!isNaN(amountVal) && amountVal > maxAllowed) {
+                    const $amountField = $form.find('.input-amount');
+                    $amountField.addClass('is-invalid').removeClass('is-valid');
+                    
+                    let $feedback = $amountField.siblings('.invalid-amount-feedback');
+                    if ($feedback.length === 0) {
+                        $feedback = $('<span class="invalid-feedback invalid-amount-feedback" style="display:block; color: #dc3545;"></span>').insertAfter($amountField);
+                    }
+                    $feedback.text('Amount exceeds the balance claim amount (' + maxAllowed.toFixed(2) + ').').show();
+                    isValid = false;
+                } else {
+                    $form.find('.invalid-amount-feedback').hide();
+                }
+            }
+
             if (!isValid) return;
 
+            // Submit form via AJAX
+            const formData = new FormData($form[0]);
+            $.ajax({
+                url: config.ajaxUrl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
 
-const formData = new FormData($form[0]);
+                success: function(response) {
+                    const toastEl = document.getElementById('statusToast');
+                    const toastBody = document.getElementById('statusToastBody');
+                    const toast = new bootstrap.Toast(toastEl);
 
-$.ajax({
-    url: config.ajaxUrl,
-    type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    dataType: 'json',
+                    // Show commission comment (if any)
+                    if (response.c_comment) {
+                        $('#commissionMessage').text(response.c_comment).fadeIn();
+                    }
 
-    success: function(response) {
+                    if (response.success) {
+                        toastBody.textContent = response.message || config.successMessage;
+                        toastEl.classList.remove('bg-danger');
+                        toastEl.classList.add('bg-success');
+                        toast.show();
+                        setTimeout(() => location.reload(), 3500);
+                    } else {
+                        toastBody.textContent = response.message || 'Update failed.';
+                        toastEl.classList.remove('bg-success');
+                        toastEl.classList.add('bg-danger');
+                        toast.show();
+                        setTimeout(() => location.reload(), 5000);
+                    }
 
-        const toastEl = document.getElementById('statusToast');
-        const toastBody = document.getElementById('statusToastBody');
-        const toast = new bootstrap.Toast(toastEl);
+                },
 
-        if (response.c_comment) {
-            const isZero = response.c_comment.toLowerCase().includes('zero');
+                error: function(xhr, status, error) {
+                    const toastEl = document.getElementById('statusToast');
+                    const toastBody = document.getElementById('statusToastBody');
+                    const toast = new bootstrap.Toast(toastEl);
 
-            $('#commissionMessage')
-                .text(response.c_comment)
-                .css('color', isZero ? 'green' : 'red')
-                .fadeIn();
-        } else {
-            $('#commissionMessage').hide();
+                    toastBody.textContent = 'AJAX error: ' + error;
+                    toastEl.classList.remove('bg-success');
+                    toastEl.classList.add('bg-danger');
+                    toast.show();
+                }
+            });
         }
 
-  
-        if (response.success === true) {
-
-            toastBody.textContent =
-                response.message || 'Status updated successfully';
-
-            toastEl.classList.remove('bg-danger');
-            toastEl.classList.add('bg-success');
-
-            toast.show();
-
-            setTimeout(function () {
-                location.reload();
-            }, 3500);
-
-        } else {
-
-            toastBody.textContent =
-                response.message || response.c_comment || 'Update failed';
-
-            toastEl.classList.remove('bg-success');
-            toastEl.classList.add('bg-danger');
-
-            toast.show();
-        }
-    },
-
-    error: function(xhr, status, error) {
-
-        const toastEl = document.getElementById('statusToast');
-        const toastBody = document.getElementById('statusToastBody');
-        const toast = new bootstrap.Toast(toastEl);
-
-
-        console.log("Server Response:", xhr.responseText);
-
-        toastBody.textContent = 'AJAX error: ' + error;
-
-        toastEl.classList.remove('bg-success');
-        toastEl.classList.add('bg-danger');
-
-        toast.show();
-    }
-});
-
-        }
         // Event handlers for each modal
         $('.modal-form').each(function() {
             const $form = $(this);
@@ -650,7 +638,6 @@ $.ajax({
                 handleFormSubmission($form, config);
             });
         });
-
         $(".category_type").change(function() {
 
             const category_type = $(this).val()
@@ -681,8 +668,9 @@ $.ajax({
 
         })
 
-        
-$('#zeroCommissionCheck').change(function() {
+
+
+ $('#zeroCommissionCheck').change(function() {
 
 if ($(this).is(':checked')) {
 
@@ -702,6 +690,9 @@ if ($(this).is(':checked')) {
 }
 
 });
+  
+
+
 
 
     });

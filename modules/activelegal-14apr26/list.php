@@ -54,11 +54,6 @@ $array_users = $objCommonSelection->get_all_users('yes', '21,1');
 $array_legal_client_marketing    =   array();
 $array_legal_client_marketing    =   $objCommonSelection->get_marketing_legal_client();
 
-$array_legal_case    =   array();
-$array_legal_case = $objLegalCase->get_legal_case();
-// print_r($array_legal_case[0]->case_id);
-// exit;
-
 $actve_sub_menu = 'dashboard';
 
 $body   =   "list.tpl";

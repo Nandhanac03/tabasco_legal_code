@@ -78,4 +78,75 @@ WHERE
     } else
         return true;
 }//END FUNCTION
+
+
+
+
+
+
+
+
+
+function get_case_client() {
+    //usertype.usertype_Id = 1 AND
+        $params = array();
+    $Sqlcmd = "SELECT
+    user_Id,
+    user_name,
+    usertype_title
+    FROM
+    users
+    JOIN usertype ON users.user_typeId = usertype.usertype_Id
+    JOIN legal_client ON legal_client.marketing=users.user_Id
+    WHERE
+     users.user_status = 'A'
+    GROUP BY legal_client.marketing ORDER BY user_name ASC";
+        $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+        if ($this->_num_rows > 0) {
+            return $this->_result;
+        } else
+            return true;
+    }
+
+
+
+
+
+    function get_case_no() {
+        //usertype.usertype_Id = 1 AND
+            $params = array();
+        $Sqlcmd = "SELECT
+        user_Id,
+        user_name,
+        usertype_title
+        FROM
+        users
+        JOIN usertype ON users.user_typeId = usertype.usertype_Id
+
+        WHERE
+         users.user_status = 'A'
+        GROUP BY legal_client.marketing ORDER BY user_name ASC";
+            $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+            if ($this->_num_rows > 0) {
+                return $this->_result;
+            } else
+                return true;
+        }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }//end class

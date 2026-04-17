@@ -102,14 +102,36 @@
                   <style>
                      .description-cell {
                         max-width: 270px;
-                        /* Adjust this width as needed */
                         overflow-wrap: break-word;
-                        /* Breaks long words to wrap */
                         white-space: normal;
-                        /* Allows text to wrap to multiple lines */
                         text-align: justify;
-                        /* Justifies the text */
                      }
+
+
+                     .tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    background: #222;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 4px;
+    width: 260px;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+}
+
+
                   </style>
                   <thead>
                      <tr>
@@ -139,13 +161,135 @@
                               <td class="text-center"><?= $case['register_date'] ?></td>
                               <td class="text-center"><?= $case['total_outstanding'] ?></td>
                               <td class="text-center"><?= $case['lawyer_name'] ?></td>
-                              <td class="description-cell"><?= $case['first_instance_description'] ? $case['first_instance_description'] : '----'; ?></td>
-                              <td class=" description-cell"><?= $case['execution_decision_description'] ? $case['execution_decision_description'] : '----'; ?></td>
+
+
+<style>
+
+.custom-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Hidden box */
+.custom-tooltip .tooltip-box {
+    display: none;
+    position: absolute;
+    top: 25px;
+    left: 0;
+    
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    background-color: #ffffff; /* ✅ WHITE BACKGROUND */
+    color: #000;
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+
+    z-index: 9999;
+}
+
+/* Show on hover */
+.custom-tooltip:hover .tooltip-box {
+    display: block;
+}
+
+
+
+
+</style>
+
+
+
+
+                              <td class="description-cell">
+    <?php 
+    $desc = $case['first_instance_description'];
+
+    if (!empty($desc)) { ?>
+        <div class="custom-tooltip">
+            <?= substr($desc, 0, 50) . '...'; ?>
+            <div class="tooltip-box">
+                <?= htmlspecialchars($desc); ?>
+            </div>
+        </div>
+    <?php } else {
+        echo '----';
+    } ?>
+</td>
+
+
+
+                              <!-- <td class="description-cell"><?= $case['first_instance_description'] ? $case['first_instance_description'] : '----'; ?></td> -->
+                              <style>
+.table-responsive {
+  overflow-x: unset!important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hover-container {
+    position: relative;
+    cursor: pointer;
+}
+
+
+.full-content-tooltip {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 4px;
+    color: #333;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
+.hover-container:hover .full-content-tooltip {
+    display: block;
+}
+
+</style>
+               
+                            
+                            
+                            <?php
+$fullText  = $case['execution_decision_description'] ?? '----';
+$shortText = mb_strlen($fullText) > 20 
+    ? mb_substr($fullText, 0, 20) . '...' 
+    : $fullText;
+?>
+
+<td style="max-width:150px; min-width:150px; vertical-align: top;">
+    <div class="hover-container">
+        <div class="text-box">
+            <?= htmlspecialchars($shortText); ?>
+        </div>
+        <div class="full-content-tooltip">
+            <?= nl2br(htmlspecialchars($fullText)); ?>
+        </div>
+
+    </div>
+</td>
+
+                            
+                            
+                            
                               <td class="text-center">Pending</td>
 
                               <td class="text-center">
                                  <h4>
-                                    <a href="<?= ROOT_DIR . "case/list/view/{$case['id']}.html" ?>" class="text-dark">
+                                    <a href="<?= ROOT_DIR . "case/view/edit/{$case['id']}.html" ?>" class="text-dark">
                                        <ion-icon name="eye-outline" onclick="window.location.href='<?= ROOT_DIR ?>case/view.html';"></ion-icon>
                                     </a>
                                     <a href="<?= ROOT_DIR . "case/information/edit/{$case['id']}.html" ?>" class="text-dark">
@@ -173,7 +317,6 @@
          </div>
       </div>
    </div>
-   <!-- end page content-->
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -201,7 +344,6 @@
 
 
 
-<!-- Add Notification Modal -->
 <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -229,7 +371,7 @@
                            <option value="<?= $case['id'] ?>"><?= $case['case_number'] ?></option>
                         <?php } ?>
                      <?php } ?>
-                     <!-- Add more cases dynamically if needed -->
+
                   </select>
                </div>
 

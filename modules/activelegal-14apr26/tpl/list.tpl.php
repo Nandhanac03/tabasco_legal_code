@@ -74,35 +74,7 @@
 
               <div class="row g-3">
                 <div class="row g-3">
-                <div class="col-12 col-lg">
-                    <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
-                      <option value="">Case No.</option>
-                      <?php if (!empty($array_legal_case)): ?>
-                        <?php foreach ($array_legal_case as $legalMarketing): ?>
-                          <option value="<?= htmlspecialchars($legalMarketing['user_Id']) ?>">
-                            <?= htmlspecialchars($legalMarketing['user_name']) ?>
-                          </option>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </select>
-
-                  </div>
-
-
                   <div class="col-12 col-lg">
-                    <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
-                      <option value="">Client Name</option>
-                      <?php if (!empty($array_legal_client_marketing)): ?>
-                        <?php foreach ($array_legal_client_marketing as $legalMarketing): ?>
-                          <option value="<?= htmlspecialchars($legalMarketing['user_Id']) ?>">
-                            <?= htmlspecialchars($legalMarketing['user_name']) ?>
-                          </option>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </select>
-
-                  </div>
-                  <!-- <div class="col-12 col-lg">
                     <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
                       <option value="">Sort By Marketing / Internal Staff</option>
                       <?php if (!empty($array_legal_client_marketing)): ?>
@@ -114,15 +86,14 @@
                       <?php endif; ?>
                     </select>
 
-                  </div> -->
-                  <!-- <div class="col-12 col-lg">
+                  </div>
+                  <div class="col-12 col-lg">
                     <select class="form-select select2-bootstrap" id="sort_by_client" name="sort_by_client">
                       <option value="" selected>Sort By Client</option>
                     </select>
-                  </div> -->
+                  </div>
 
-                <!-- </div> -->
-                <!--end row-->
+                </div><!--end row-->
 
 
                 <!-- <div class="col-12 col-lg">
@@ -1051,3 +1022,4 @@
 
   });
 </script>
+

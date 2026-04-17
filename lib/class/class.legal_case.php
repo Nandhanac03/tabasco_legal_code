@@ -746,5 +746,23 @@ function get_defendant_by_client($client_id)
 
 
 
+public function get_legal_case($active_legal_id = '')
+{
+    $params = [];
+    $sql = "SELECT * FROM legal_case WHERE status = 'A'";
+
+    if (!empty($active_legal_id)) {
+        $sql .= " AND active_legal_id = :active_legal_id";
+        $params['active_legal_id'] = $active_legal_id;
+    }
+
+    $sql .= " ORDER BY id DESC";
+
+    $this->_result = $this->SELECT_MultiFetch($sql, $params);
+
+    return ($this->_num_rows > 0) ? $this->_result : [];
+}
+
+
 
 }

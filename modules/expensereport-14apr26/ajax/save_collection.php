@@ -31,7 +31,7 @@ if ($_POST) {
     $exp_date = isset($_POST['coll_exp_date']) ? clean_input($_POST['coll_exp_date']) : '';
     // $fee_type = isset($_POST['coll_fee_type']) ? clean_input($_POST['coll_fee_type']) : '';
     $amount = isset($_POST['coll_amount']) ? clean_input($_POST['coll_amount']) : '';
-    $zero_commission = isset($_POST['zero_commission']) ? clean_input($_POST['zero_commission']) : '';
+    $zero_commission = (isset($_POST['zero_commission']) && $_POST['zero_commission'] == '1') ? 1 : null;
     $description = isset($_POST['coll_description']) ? clean_input($_POST['coll_description']) : '';
     $remark = isset($_POST['remark']) ? clean_input($_POST['remark']) : '';
 
@@ -69,6 +69,20 @@ if (empty($amount) || !is_numeric($amount) || $amount <= 0) {
 // Validate category mapping
 if (!array_key_exists($_POST['coll_category_type'], $category_map)) {
     $errors[] = "Invalid category selected.";
+}
+
+// Fetch active legal data to check claim amount
+$activeLegalData = $objActiveLegal->Get_ActiveLegal_Information(['id' => $active_legal_id]);
+if ($activeLegalData) {
+    $claim_amount = (float)($activeLegalData[0]['claim_amount'] ?? 0);
+    $current_total_collection = (float)$objCollection->total_collection($active_legal_id);
+    
+    if (($current_total_collection + (float)$amount) > $claim_amount) {
+        $remaining = $claim_amount - $current_total_collection;
+        $errors[] = "Collection amount exceeds claim amount. Remaining balance: " . number_format($remaining, 2);
+    }
+} else {
+    $errors[] = "Invalid Active Legal ID.";
 }
 
 // Stop execution if validation fails
@@ -137,7 +151,7 @@ if (!empty($errors)) {
     $commission_percentage = $commission_details[0]['commission'];
     $commission_id = $commission_details[0]['id'];
     $com_amount  = 0;
-    if ($zero_commission == '1') {
+    if ($zero_commission == 1) {
         $commission_percentage = 0;
         $com_amount = 0;
         $c_comment = 'Zero Commission selected.';
@@ -151,7 +165,7 @@ if (!empty($errors)) {
     }
     
     // Ensure we proceed if we have commission details OR if it's zero commission override
-    if ($commission_details || $zero_commission == '1') {
+    if ($commission_details || $zero_commission == 1) {
         $input_array = [];
         $input_array['marketing_id'] = $marketing_id;
         $input_array['client_id'] = $client_id;
@@ -222,7 +236,7 @@ if (!empty($errors)) {
 
     //echo '<pre>';print_r($collection);exit;
     // If we have commission details OR it's a zero commission override
-    if ($commission_details || $zero_commission == '1') {
+    if ($commission_details || $zero_commission == 1) {
         $commision_array = array();
         $commision_array['active_legal_id'] = $active_legal_id;
         $commision_array['case_id'] = $case_id;
@@ -230,7 +244,7 @@ if (!empty($errors)) {
         $commision_array['parent_type'] = $category_type;
         $commision_array['party_id'] = $party_names_id;
         $commision_array['amount'] = $amount;
-        $commission_array['zero_commission']= $zero_commission;
+        $commision_array['zero_commission']= $zero_commission;
         $commision_array['date'] = $exp_date;
         $commision_array['created_by'] = $_SESSION['LOGIN_LEGAL_ID'];
         $commision_array['created_on'] = date('Y-m-d H:i:s');
@@ -243,7 +257,7 @@ if (!empty($errors)) {
         }
 
         // Update legal_activelegal_commission if zero commission is selected
-        if ($zero_commission == '1' && $commission_id) {
+        if ($zero_commission == 1 && $commission_id) {
             $active_legal_update = [];
             $active_legal_update['zero_commission'] = 1;
             $active_legal_update['updated_by'] = $_SESSION['LOGIN_LEGAL_ID'];
