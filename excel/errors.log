@@ -46,3 +46,506 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in C:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:56:26 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:14 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:15 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:15 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:15 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:15 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:57:50 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:58:24 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:59:02 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:59:05 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 10:59:09 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:06:02 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:06:02 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:06:03 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:06:03 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:06:03 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:07:57 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:07:58 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:40 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:40 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:40 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:40 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:41 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:41 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:41 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:41 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:08:50 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:09:46 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:09:56 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:21:00 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:23:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:23:30 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 11:23:38 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 12:47:08 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 12:53:18 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 12:53:19 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 12:58:09 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 12:58:11 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:81
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 81
+[22-Apr-2026 13:03:34 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:89
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 89
+[22-Apr-2026 13:04:20 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:89
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 89
+[22-Apr-2026 13:14:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:16:28 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:16:28 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:16:29 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:16:29 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:22 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:22 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:22 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:24 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:24 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:24 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:25 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:25 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:25 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:26 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:31 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:47 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:47 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:47 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:19:47 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(81): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[22-Apr-2026 13:21:45 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:89
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 89
+[22-Apr-2026 13:21:49 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:89
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 89
+[22-Apr-2026 13:51:34 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\thirdpartylist.php:107
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\thirdpartylist.php on line 107
+[22-Apr-2026 13:51:42 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\debtcollector.php:107
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\debtcollector.php on line 107
+[22-Apr-2026 14:05:18 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 14:05:23 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 14:07:16 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 14:24:33 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 14:24:50 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 14:24:50 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[22-Apr-2026 15:53:46 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:52
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 52
+[24-Apr-2026 09:31:18 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\legalfirm.php:107
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\legalfirm.php on line 107

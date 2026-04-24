@@ -100,6 +100,7 @@
                      <tr>
                         <th> Case no</th>
                         <th class="text-center" width="5%">Case Mode</th>
+                        <th class="text-center" width="5%">Case Category</th>
                         <th class="text-center" width="5%">Start Date</th>
                         <th class="text-center" width="10%">Claim Amount</th>
                         <th class="text-center" width="20%">Lwyer</th>
@@ -118,6 +119,7 @@
                                  <span class="text-inverse"><?= $case['case_number'] ?></span><br>
                               </td>
                               <td class="text-center"><?= $case['case_mode_title'] ?></td>
+                              <td class="text-center"><?= $case['category_name'] ?></td>
                               <td class="text-center"><?= $case['register_date'] ?></td>
                               <td class="text-center"><?= $case['total_outstanding'] ?></td>
                               <td class="text-center"><?= $case['lawyer'] ?></td>

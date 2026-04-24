@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $data['date'] = $_POST['date'] ?? null;
         $data['description'] = $_POST['description'] ?? null;
         $data['email'] = $_POST['email'] ?? null;
-        $data['uae_pass'] = $_POST['uae_pass'] ?? null;
+      //  $data['uae_pass'] = $_POST['uae_pass'] ?? null;
         $data['created_by'] = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
 
         $data['client_id'] = $_POST['client_id'] ?? null;
@@ -128,7 +128,29 @@ switch ($action) {
 
 
         $all_roots = $objLegalCase->all_get_roots('', $id, $active_legal_id);
-
+    //     echo "<pre>";
+    //  print_r($all_roots);
+    //  exit;
+        $selected_category_id = '';
+        
+        if (!empty($all_roots)) {
+        
+            $first = $all_roots[0];
+        
+            if (is_object($first) && isset($first->category)) {
+                $selected_category_id = $first->category;
+            } elseif (is_array($first) && isset($first['category'])) {
+                $selected_category_id = $first['category'];
+            }
+        }
+        
+        // echo "<pre>";
+        // print_r($all_sub_category);
+        // exit;
+        
+//         $this->data['selected_category_id'] = $selected_category_id;
+// $this->data['all_category'] = $all_category;
+         
         if ($all_roots) {
             foreach ($all_roots as $rootkey => $roots) {
 

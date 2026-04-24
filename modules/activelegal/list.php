@@ -9,7 +9,7 @@ include_once("lib/class/class.dbcon.php");
 include_once("lib/class/class.legal_active_legals.php");
 include_once("lib/class/class.legal_case.php");
 include_once("lib/class/class.legal_case_mode.php");
-
+include_once("lib/class/class.legal_client.php");
 include_once("lib/class/class.legal_common_selection.php");
 
 $objCommonSelection = new CommonSelection();
@@ -17,6 +17,7 @@ $objCommonSelection = new CommonSelection();
 $objCaseMode = new Case_mode();
 $objActiveLegal = new ActiveLegal();
 $objLegalCase = new LegalCase();
+$objClients = new Clients();
 
 
 
@@ -56,6 +57,9 @@ $array_legal_client_marketing    =   $objCommonSelection->get_marketing_legal_cl
 
 $array_legal_case    =   array();
 $array_legal_case = $objLegalCase->get_legal_case();
+
+$array_legal_clients = array();
+$array_legal_clients = $objClients->Get_Client_Information(null, null, null, 'A');
 // print_r($array_legal_case[0]->case_id);
 // exit;
 

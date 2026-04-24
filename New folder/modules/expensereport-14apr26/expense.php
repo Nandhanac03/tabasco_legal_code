@@ -1,0 +1,60 @@
+<?php
+ob_start();
+session_start();
+# including files here 
+include_once("lib/config.php");
+include_once("lib/class/class.dbcon.php");
+include_once("lib/class/class.legal_expense.php");
+$objExpense = new Expense();
+include_once("lib/class/class.legal_collection.php");
+
+$objCollection = new Collection();
+include_once("lib/class/class.legal_active_legals.php");
+include_once("lib/class/class.legal_case.php");
+include_once("lib/class/class.legal_fees_type.php");
+$objFees_type=   new LegalFees_type();
+
+$objActiveLegal = new ActiveLegal();
+$objLegalCase = new LegalCase();
+
+$action = $_GET['action'];
+$caseid = $_GET['param1'];
+
+$fees_types = $objFees_type->get_feesType();
+
+$legal_case = $objLegalCase->get_case($caseid);
+$active_legal = $objActiveLegal->Get_ActiveLegal_Information(['id' => $legal_case[0]['active_legal_id']]);
+ //echo '<pre>';print_r($active_legal);
+// echo '<pre>';print_r($fees_type);exit;
+
+
+$client_id = $active_legal[0]['client'];
+$active_legal_id = $active_legal[0]['id'];
+$case_id = $legal_case[0]['id'];
+$filter = [];
+$filter['client_id'] = $client_id;
+$filter['active_legal_id'] = $active_legal_id;
+$filter['case_id'] = $case_id;
+
+$collection = $objCollection->get_collection('', $filter);
+$expense = $objExpense->get_expense('', $filter);
+
+// $collection_id = '';
+// if ($collection) {
+//     $collection_id = $collection[0]['id'];
+// }
+
+//echo '<pre>';print_r($expense);exit;
+
+
+
+// echo '<pre>';
+// print_r([
+//     'client_id' => $client_id,
+//     'active_legal_id' => $active_legal_id,
+//     'case_id' => $case_id
+// ]);
+// exit;
+
+$actve_sub_menu =   'expensereport';
+$body = "expense.tpl";

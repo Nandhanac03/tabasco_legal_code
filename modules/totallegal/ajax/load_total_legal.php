@@ -38,7 +38,10 @@ $client     = trim($_POST['client'] ?? '');
 $search     = trim($_POST['search_code'] ?? '');
 $user_id     = trim($_POST['select_marketing'] ?? '');
 $client     = trim($_POST['select_client'] ?? '');
-
+$case_number = trim($_POST['case_number'] ?? '');
+$client_name = trim($_POST['client_name'] ?? '');
+$select_case_id = trim($_POST['select_case_id'] ?? '');
+$select_client_id = trim($_POST['select_client_id'] ?? '');
 
 
 $fromDate   = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['fromDate'] ?? '') ? $_POST['fromDate'] : '';
@@ -59,7 +62,8 @@ $search_filter = [];
 $search_filter['dateon'] = $fromDate;
 $search_filter['search'] = $search;
 $search_filter['user_id'] = $user_id;
-$search_filter['client'] = $client;
+$search_filter['client'] = $select_client_id ?: $client;
+$search_filter['case_id'] = $select_case_id;
 
 
 // ✅ Fetch Total Records
@@ -87,7 +91,8 @@ $filters = [
     'dateon' => $fromDate,
     'search' => $search,
     'user_id' => $user_id,
-    'client' => $client,
+    'client' => $select_client_id ?: $client,
+    'case_id' => $select_case_id,
 
     // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
 
@@ -202,6 +207,8 @@ if ($totalData > 0 && is_array($legalData)) {
 
                 <th>Client</th>
 
+                <th>Case <br>Category</th>
+
                 <th>Present <br>Legal Firm</th>
 
                 <th>Case <br>Status</th>
@@ -242,6 +249,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
             <td>' . htmlspecialchars($row['User_Client'] ?? '-') . ' <br><b>' . htmlspecialchars($row['Usertype_Client'] ?? '-') . '</b></td>
             <td>' . htmlspecialchars($row['ClientName'] ?? '-') . '</td>
+            <td>' . htmlspecialchars(ucwords(str_replace('_', ' ', $row['legal_firm_type_name'] ?? '-'))) . '</td>
            <td style="max-width:280px; min-width:240px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;">'
             . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>';
         if ($row['legal_status']) {

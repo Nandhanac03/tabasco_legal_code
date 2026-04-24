@@ -20,7 +20,43 @@
 
         <div class="row">
             <div class="col-12">
+                <form id="search_form">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12 col-lg">
+                                    <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
+                                        <option value="">Case No.</option>
+                                        <?php if (!empty($array_legal_case)): ?>
+                                            <?php foreach ($array_legal_case as $legalCase): ?>
+                                                <option value="<?= htmlspecialchars($legalCase['id']) ?>" data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                                                    <?= htmlspecialchars($legalCase['case_number']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-lg">
+                                    <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
+                                        <option value="">Client Name</option>
+                                        <?php if (!empty($array_legal_clients)): ?>
+                                            <?php foreach ($array_legal_clients as $legalClient): ?>
+                                                <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                                                    <?= htmlspecialchars($legalClient['name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-lg">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
 
+                            
+                        </div>
+                    </div>
+                </form>
                 <div class="card">
                     <div class="card-body">
                         <div class="col text-end py-2">
@@ -48,14 +84,34 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        function loadData(page) {
+        $('#sort_by_case').change(function() {
+            const clientId = $(this).find(':selected').data('client-id');
+            if (clientId) {
+                $('#sort_by_client_name').val(clientId).trigger('change');
+            } else {
+                $('#sort_by_client_name').val('').trigger('change');
+            }
+        });
+
+        document.getElementById('search_form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const select_case_id = document.getElementById('sort_by_case').value;
+            const select_client_id = document.getElementById('sort_by_client_name').value;
+            const filters = {
+                select_case_id: select_case_id,
+                select_client_id: select_client_id,
+            };
+            loadData(1, filters);
+        });
+
+        function loadData(page, filters = {}) {
             $.ajax({
                 url: "<?= ROOT_DIR ?>modules/actionreport/ajax/load_case_action.php",
                 type: "POST",
                 cache: false,
-                data: {
+                data: Object.assign({
                     page_no: page
-                },
+                }, filters),
                 success: function(response) {
                     $("#load_ajax_caseactions").html(response);
                 }
@@ -66,7 +122,14 @@
         $(document).on("click", ".pagination li a", function(e) {
             e.preventDefault();
             var pageId = $(this).attr("id");
-            loadData(pageId);
+            // get current filters
+            const select_case_id = document.getElementById('sort_by_case').value;
+            const select_client_id = document.getElementById('sort_by_client_name').value;
+            const filters = {
+                select_case_id: select_case_id,
+                select_client_id: select_client_id,
+            };
+            loadData(pageId, filters);
         });
     });
 </script>

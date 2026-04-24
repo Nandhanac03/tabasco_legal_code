@@ -30,7 +30,7 @@
                   <div class="card radius-10 bg-gradient-royal border-0">
                     <div class="card-body">
                       <i class="fadeIn animated lni lni-comments-alt fs-1 text-white mb-3"></i>
-                      <h5 class="text-white text-uppercase">Case Actions</h5>
+                      <h6 class="text-white text-uppercase">Case Actions</h6>
                     </div>
                   </div>
                 </a>
@@ -40,7 +40,7 @@
                   <div class="card radius-10 bg-gradient-danger border-0">
                     <div class="card-body">
                     <i class="fadeIn animated lni lni-pencil-alt fs-1 text-white mb-3"></i>
-                      <h5 class="text-white text-uppercase">Follow up Actions</h5>
+                      <h6 class="text-white text-uppercase">Follow up Actions</h6>
                     </div>
                   </div>
                 </a>

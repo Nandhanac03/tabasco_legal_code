@@ -41,7 +41,10 @@ $client     = trim($_POST['client'] ?? '');
 $search     = trim($_POST['search_code'] ?? '');
 $user_id     = trim($_POST['select_marketing'] ?? '');
 $client     = trim($_POST['select_client'] ?? '');
-
+$case_number = trim($_POST['case_number'] ?? '');
+$client_name = trim($_POST['client_name'] ?? '');
+$select_case_id = trim($_POST['select_case_id'] ?? '');
+$select_client_id = trim($_POST['select_client_id'] ?? '');
 
 
 $fromDate   = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['fromDate'] ?? '') ? $_POST['fromDate'] : '';
@@ -63,7 +66,10 @@ $search_filter = [];
 $search_filter['dateon'] = $fromDate;
 $search_filter['search'] = $search;
 $search_filter['user_id'] = $user_id;
-$search_filter['client'] = $client;
+$search_filter['client'] = $select_client_id ?: $client;
+$search_filter['case_number'] = $case_number;
+$search_filter['client_name'] = $client_name;
+$search_filter['case_id'] = $select_case_id;
 
 
 // ✅ Fetch Total Records
@@ -90,7 +96,10 @@ $filters = [
     'dateon' => $fromDate,
     'search' => $search,
     'user_id' => $user_id,
-    'client' => $client,
+    'client' => $select_client_id ?: $client,
+    'case_number' => $case_number,
+    'client_name' => $client_name,
+    'case_id' => $select_case_id,
 
     // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
 
@@ -226,6 +235,8 @@ if ($totalData > 0 && is_array($legalData)) {
                 <th style="border: 1px solid #00000014;">Client/<br>
                 Date</th>
 
+                <th style="border: 1px solid #00000014;">Case <br>Category</th>
+
                 <th style="border: 1px solid #00000014;">Present <br>Legal Firm</th>
 
                 <th style="border: 1px solid #00000014;">Case <br>Status</th>
@@ -280,6 +291,7 @@ $fullText = $lastAction . ' ' . $lastDate;
 
             <td style="border: 1px solid #00000014; max-width:150px; min-width:150px; white-space: normal;word-break: break-word;">' . htmlspecialchars($row['ClientName'] ?? '-') . '<br>
               <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b></td>
+            <td style="border: 1px solid #00000014; max-width:100px; min-width:100px;">' . htmlspecialchars(ucwords(str_replace('_', ' ', $row['legal_firm_type_name'] ?? '-'))) . '</td>
            <td style="border: 1px solid #00000014; max-width:180px; min-width:140px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;">' . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>
             <td style="max-width:80px; min-width:80px;">' . htmlspecialchars($row['case_status'] ?? 'OPEN') . '</td>';
             if (defined('LEGAL_AUTH_EDIT') && LEGAL_AUTH_EDIT) {

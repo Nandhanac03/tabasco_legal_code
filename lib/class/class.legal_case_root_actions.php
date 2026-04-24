@@ -26,10 +26,10 @@ class CaseRootAction extends dbcon
             $setParts[] = "case_root_id = :case_root_id";
             $params['case_root_id'] = $data['case_root_id'];
         }
-        if (!empty($data['email'])) {
-            $setParts[] = "email = :email";
-            $params['email'] = $data['email'];
-        }
+        // if (!empty($data['email'])) {
+        //     $setParts[] = "email = :email";
+        //     $params['email'] = $data['email'];
+        // }
         if (!empty($data['category_id'])) {
             $setParts[] = "category_id = :category_id";
             $params['category_id'] = $data['category_id'];
@@ -60,10 +60,10 @@ class CaseRootAction extends dbcon
             $setParts[] = "document = :document";
             $params['document'] = $data['document'];
         }
-        if (!empty($data['uae_pass'])) {
-            $setParts[] = "uae_pass = :uae_pass";
-            $params['uae_pass'] = $data['uae_pass'];
-        }
+        // if (!empty($data['uae_pass'])) {
+        //     $setParts[] = "uae_pass = :uae_pass";
+        //     $params['uae_pass'] = $data['uae_pass'];
+        // }
         if (!empty($data['status'])) {
             $setParts[] = "status = :status";
             $params['status'] = $data['status'];

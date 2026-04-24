@@ -108,8 +108,8 @@ class ActiveLegal extends dbcon
     U1.user_name AS createdBy,
     U2.user_name AS User_Client,
     UT.usertype_title AS Usertype_Client,
-    LC.name AS ClientName,
-    LC.type AS ClientType,
+    IF(AL.client = 0, 'Tabasco Corporate', LC.name) AS ClientName,
+    IF(AL.client = 0, 'T', LC.type) AS ClientType,
     LC.mobile_number AS Clientmobile_number,
     LDC.contact_no AS Deptmobile_number,
     LF.contact_no AS legalfirmmobile_number,
@@ -174,6 +174,18 @@ WHERE 1";
             $params['search1'] = '%' . $filters['search'] . '%';
             $params['search2'] = '%' . $filters['search'] . '%';
         }
+        if (!empty($filters['case_number'])) {
+            $sql .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :case_number)";
+            $params['case_number'] = '%' . $filters['case_number'] . '%';
+        }
+        if (!empty($filters['case_id'])) {
+            $sql .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.id = :case_id)";
+            $params['case_id'] = $filters['case_id'];
+        }
+        if (!empty($filters['client_name'])) {
+            $sql .= " AND LC.name LIKE :client_name";
+            $params['client_name'] = '%' . $filters['client_name'] . '%';
+        }
         if (!empty($filters['status'])) {
             $sql .= " AND AL.status = :status";
             $params['status'] = $filters['status'];
@@ -212,33 +224,45 @@ WHERE 1";
     function Get_LEGAL_TOTAL_COUNT($offset = '', $limit = '', $status = '', $legal_status = '', $filters = [])
     {
         $params = [];
-        $Sqlcmd = "SELECT COUNT(*) AS TOTAL_RECORDS FROM legal_activelegal WHERE 1";
+        $Sqlcmd = "SELECT COUNT(*) AS TOTAL_RECORDS FROM legal_activelegal AL LEFT JOIN legal_client LC ON LC.id = AL.client WHERE 1";
         if (!empty($status)) {
-            $Sqlcmd .= " AND legal_activelegal.status = :status";
+            $Sqlcmd .= " AND AL.status = :status";
             $params['status'] = $status;
         }
         if (!empty($legal_status)) {
-            $Sqlcmd .= " AND legal_activelegal.legal_status = :legal_status";
+            $Sqlcmd .= " AND AL.legal_status = :legal_status";
             $params['legal_status'] = $legal_status;
         }
         if (!empty($filters['dateon'])) {
-            $Sqlcmd .= " AND DATE(legal_activelegal.dateon) = :dateon";
+            $Sqlcmd .= " AND DATE(AL.dateon) = :dateon";
             $params['dateon'] = $filters['dateon'];
         }
         if (!empty($filters['user_id'])) {
-            $Sqlcmd .= " AND legal_activelegal.user_id = :user_id";
+            $Sqlcmd .= " AND AL.user_id = :user_id";
             $params['user_id'] = $filters['user_id'];
         }
         if (!empty($filters['client'])) {
-            $Sqlcmd .= " AND legal_activelegal.client = :client";
+            $Sqlcmd .= " AND AL.client = :client";
             $params['client'] = $filters['client'];
         }
         if (!empty($filters['search'])) {
-            $Sqlcmd .= " AND (legal_activelegal.code LIKE :search OR legal_activelegal.notes LIKE :search1 )";
+            $Sqlcmd .= " AND (AL.code LIKE :search OR AL.notes LIKE :search1 )";
             $params['search'] = '%' . $filters['search'] . '%';
             $params['search1'] = '%' . $filters['search'] . '%';
         }
-        $Sqlcmd .= " ORDER BY legal_activelegal.id DESC";
+        if (!empty($filters['case_number'])) {
+            $Sqlcmd .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :case_number)";
+            $params['case_number'] = '%' . $filters['case_number'] . '%';
+        }
+        if (!empty($filters['case_id'])) {
+            $Sqlcmd .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.id = :case_id)";
+            $params['case_id'] = $filters['case_id'];
+        }
+        if (!empty($filters['client_name'])) {
+            $Sqlcmd .= " AND LC.name LIKE :client_name";
+            $params['client_name'] = '%' . $filters['client_name'] . '%';
+        }
+        $Sqlcmd .= " ORDER BY AL.id DESC";
         if ($limit > 0) {
             $Sqlcmd .= " LIMIT " . (int)$offset . ", " . (int)$limit;
         }

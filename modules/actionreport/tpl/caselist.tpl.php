@@ -19,10 +19,27 @@
             </div>
 
         </div>
+
+
+        <div class="text-end">
+
+
+<!-- Back Button -->
+<a href="javascript:history.back()"
+   class="btn btn-secondary">
+    <ion-icon name="arrow-back-outline"></ion-icon> Back
+</a>
+
+</div>
+
+
+
+
         <!--end breadcrumb-->
         <div class="row">
             <div class="col-12">
                 <div class="card">
+              
                     <div class="card-body">
                         <div class="col py-2 d-flex justify-content-between">
                             <div class="border p-3">

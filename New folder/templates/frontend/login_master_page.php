@@ -1,0 +1,1 @@
+<?php include_once("templates/frontend/content_holder.php"); ?>

@@ -39,7 +39,37 @@
           <div class="card">
             <div class="card-body">
               <div class="row g-3">
-                <div class="col-12 col-lg">
+
+
+
+
+              <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
+                      <option value="">Case No.</option>
+                      <?php if (!empty($array_legal_case)): ?>
+                        <?php foreach ($array_legal_case as $legalCase): ?>
+                          <option value="<?= htmlspecialchars($legalCase['id']) ?>" data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                            <?= htmlspecialchars($legalCase['case_number']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
+                  </div>
+
+
+                  <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
+                      <option value="">Client Name</option>
+                      <?php if (!empty($array_legal_clients)): ?>
+                        <?php foreach ($array_legal_clients as $legalClient): ?>
+                          <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                            <?= htmlspecialchars($legalClient['name']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
+                  </div>
+                <!-- <div class="col-12 col-lg">
                   <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
                     <option value="">Sort By Marketing / Internal Staff</option>
                     <?php if (!empty($array_legal_client_marketing)): ?>
@@ -56,7 +86,7 @@
                   <select class="form-select select2-bootstrap" id="sort_by_client" name="sort_by_client">
                     <option value="" selected>Sort By Client</option>
                   </select>
-                </div>
+                </div> -->
 
               </div><!--end row-->
 
@@ -182,6 +212,20 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+
+
+
+    $('#sort_by_case').change(function() {
+      const clientId = $(this).find(':selected').data('client-id');
+      if (clientId) {
+        $('#sort_by_client_name').val(clientId).trigger('change');
+      } else {
+        $('#sort_by_client_name').val('').trigger('change');
+      }
+    });
+
+
+
     /* Load Client list  : This used in client creation Pop UP*/
     $('#select_marketing').change(function() {
       const marketingId = $(this).val();
@@ -383,33 +427,40 @@
     });
 
 
-    function loadData(page) {
-
-      var marketing = $("#sort_by_marketing").val();
-      var client = $("#sort_by_client").val();
-      var fromDate = $("#sort_by_fromDate").val();
-      var toDate = $("#sort_by_toDate").val();
-      var keyword = $("#text_keyword").val();
-
-      $.ajax({
-        url: "<?= ROOT_DIR ?>modules/client/ajax/load_client.php",
-        type: "POST",
-        cache: false,
-        data: {
-          marketing: marketing,
-          client: client,
-          fromDate: fromDate,
-          toDate: toDate,
-          keyword: keyword,
-          page_no: page
-        },
-        success: function(response) {
-          $("#load_ajax_client").html(response);
 
 
-        }
-      });
-    }
+    
+
+
+   // 🔹 Main AJAX loader
+   function loadData(page) {
+
+var client = $("#sort_by_client_name").val(); // ✅ FIXED
+var keyword = $("#text_keyword").val();
+var fromDate = $("#sort_by_fromDate").val();
+var toDate = $("#sort_by_toDate").val();
+
+console.log("Sending:", { client, keyword }); // 🔍 debug
+
+$.ajax({
+  url: "<?= ROOT_DIR ?>modules/client/ajax/load_client.php",
+  type: "POST",
+  cache: false,
+  data: {
+    client: client,
+    keyword: keyword,
+    fromDate: fromDate,
+    toDate: toDate,
+    page_no: page
+  },
+  success: function (response) {
+    $("#load_ajax_client").html(response);
+  },
+  error: function () {
+    console.error("AJAX error");
+  }
+});
+}
 
     loadData(1);
     // Pagination code

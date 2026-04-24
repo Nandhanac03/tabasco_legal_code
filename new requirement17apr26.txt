@@ -1,0 +1,38 @@
+New system required updates
+1- The code is Deferent between categories (client, active legal, total legal) the code must be same for the same client in all categories.
+
+2- In Active legal & total legal& closed legal: search by client is not working.
+
+3- We can't add cases out of tabasco Client list (we need an option to the cases when tabasco is part of it against companies or individuals who are not clients of Tabasco.
+
+4- In Client section: the outstanding amount must have option to add the Paid court fees and expense (because this expenses will be added to total claim in the judgment) the options must be as follows:
+A. Court Filing Case fees
+B. Expert fee
+C. Announcement fee (optional to add many times)
+D. Emirates Judgment Enforcement fee (EJE) (optional to add many times)
+E. Notary Public Fee.
+F. Other expense (with an option to name the fee reason and the amount)
+All These expenses must reflect directly as expense in Collection & Expense section.
+
+ 5- In Dashboard - View Active legal -closed legal - total legal - case action: the case category should be shown.
+
+6- In Add new action: category must be automatically shown same what we add in active legal, case information. Also: remover the following: Email link. stage. UAE pass, they are not required 
+
+7- List download in all sections is not working.
+
+8- In Add case: an option to link (Related Cases) to the case of the same client must be added. This option must show automatically all case related to the same client and I will have the option to choose between them. However, this option should be optional because the same client can have multiple cases not linked to each other.
+
+9- Case action: search bar required
+
+10- Follow-up Action: search bar required
+
+11- In collection & Expense: I can't add Decimals and I'm forced to Cheech the 0% Commission.
+
+12-Outstanding amount is different than legal claimed amount. Claimed amount must add
+separately
+
+13-In all sections, search by case number and client name must be added.
+
+14- In Al Qranfal file, the amount in not correct. Total 2 cases 220000 should be. the system made them 220000 $ 120000.
+
+15-In Add case claimed amount must be added because usually its deferent from the outstanding, mentioned in the client section

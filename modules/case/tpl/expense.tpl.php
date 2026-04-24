@@ -31,14 +31,14 @@
                         <ul class="nav nav-tabs nav-primary" role="tablist">
                             <ul class="nav nav-tabs nav-primary" role="tablist">
                             <?php
-                                echo createNavItem(
-                                    "case",
-                                    "Case Root",
-                                    "git-pull-request",
-                                    "view",
-                                    $edit_id,
-                                    false
-                                ); // Active tab 
+                                // echo createNavItem(
+                                //     "case",
+                                //     "Case Root",
+                                //     "git-pull-request",
+                                //     "view",
+                                //     $edit_id,
+                                //     false
+                                // ); // Active tab 
                                 ?>
                                 <?php
                                 echo createNavItem(
@@ -72,14 +72,14 @@
                                 ); // Active tab 
                                 ?>
                                 <?php
-                                echo createNavItem(
-                                    "case",
-                                    "Expense",
-                                    "cash",
-                                    "expense",
-                                    $edit_id,
-                                    true
-                                ); // Active tab 
+                                //echo createNavItem(
+                                //    "case",
+                                //    "Expense",
+                                  //  "cash",
+                                  //  "expense",
+                                  //  $edit_id,
+                                  //  true
+                               // ); // Active tab 
                                 ?>
                                 <?php
                                 echo createNavItem(

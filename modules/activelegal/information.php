@@ -41,10 +41,13 @@ if ($_POST) {
         $user_id = $_POST['select_internal'] ?? null;
         $client  = $_POST['select_Internalclient'] ?? null;
         // $client_type = 'I';
+    } else if ($_POST['which_type_user'] == 'tabasco') {
+        $user_id = '0';
+        $client = '0';
     }
 
 
-    if ($_POST['dateon'] != '' && $_POST['code'] != '' && $user_id != '' && $client != '' && $_POST['category'] != '' && $_POST['agencies_id'] != '') {
+    if ($_POST['dateon'] != '' && $_POST['code'] != '' && $user_id !== null && $user_id !== '' && $client !== null && $client !== '' && $_POST['category'] != '' && $_POST['agencies_id'] != '') {
         $is_edit = false;
         if ($edit_id > 0 && $action == 'edit') {
             $update_id = $edit_id;

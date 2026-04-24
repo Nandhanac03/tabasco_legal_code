@@ -117,7 +117,7 @@
                         <h6><i class="fadeIn animated bx bx-file-blank me-2"></i>Bad Debts Statement</h6>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow:auto!important;">
 
                             <div id="load_ajax_bad_depts"></div>
                         </div>

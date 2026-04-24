@@ -34,7 +34,9 @@ $toDate     = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['toDate'] ?? '') ? $_PO
 
 $keyword    = htmlspecialchars(strip_tags(trim($_POST['keyword'] ?? '')));
 
+$select_case_id = trim($_POST['select_case_id'] ?? '');
 
+$select_client_id = trim($_POST['select_client_id'] ?? '');
 
 // ✅ Validate Page Number
 
@@ -44,21 +46,6 @@ $offset = ($page_no - 1) * $limit;
 
 
 
-// ✅ Fetch Total Records
-
-$totalData = 0;
-
-$countResult = $objActiveLegal->Get_LEGAL_TOTAL_COUNT('', '', 'A','Active');
-
-if (is_array($countResult) && isset($countResult[0]['TOTAL_RECORDS'])) {
-
-    $totalData = (int)$countResult[0]['TOTAL_RECORDS'];
-}
-
-
-
-// ✅ Fetch Paginated Legal Data
-
 $filters = [
 
     'status' => 'A',
@@ -67,13 +54,27 @@ $filters = [
 
     'limit' => $limit,
 
-    'offset' => $offset
+    'offset' => $offset,
 
-    // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
+    'case_id' => $select_case_id,
+
+    'client' => $select_client_id
 
 ];
 
 
+// ✅ Fetch Total Records
+
+$totalData = 0;
+
+$countResult = $objActiveLegal->Get_LEGAL_TOTAL_COUNT('', '', 'A','Active', $filters);
+
+if (is_array($countResult) && isset($countResult[0]['TOTAL_RECORDS'])) {
+
+    $totalData = (int)$countResult[0]['TOTAL_RECORDS'];
+}
+
+// ✅ Fetch Paginated Legal Data
 
 $legalData = $objActiveLegal->Get_ActiveLegal_Information($filters);
 
@@ -145,6 +146,8 @@ if ($totalData > 0 && is_array($legalData)) {
 
                 <th>Client</th>
 
+                <th>Case <br>Category</th>
+
                 <th>Present <br>Legal Firm</th>
 
                 <th>Last <br>Action & Date</th>
@@ -169,6 +172,8 @@ if ($totalData > 0 && is_array($legalData)) {
             <td>' . htmlspecialchars($row['User_Client'] ?? '-') . ' <b>' . htmlspecialchars($row['Usertype_Client'] ?? '-') . '</b></td>
 
             <td>' . htmlspecialchars($row['ClientName'] ?? '-') . '</td>
+
+            <td>' . htmlspecialchars(ucwords(str_replace('_', ' ', $row['legal_firm_type_name'] ?? '-'))) . '</td>
 
            <td>' . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>
 

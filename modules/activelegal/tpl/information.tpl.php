@@ -251,33 +251,34 @@
 
                                                                         <?php if ($edit_id) { ?>
                                                                             <div class="mb-3">
-
-                                                                                <?php if ($data["ClientType"] == 'M') { ?>
-                                                                                    <label>
-                                                                                        <input type="radio" name="which_type_user" value="marketing" checked />
-                                                                                        Marketing
-                                                                                    </label>
-                                                                                <?php } else if ($data["ClientType"] == 'I') { ?>
-                                                                                    <label style="margin-left:15px;">
-                                                                                        <input type="radio" name="which_type_user" value="internal" checked />
-                                                                                        Internal Staff
-                                                                                    </label>
-                                                                                <?php } ?>
+                                                                                <label>
+                                                                                    <input type="radio" name="which_type_user" value="marketing" <?= $data["ClientType"] == 'M' ? 'checked' : '' ?> />
+                                                                                    Marketing
+                                                                                </label>
+                                                                                <label style="margin-left:15px;">
+                                                                                    <input type="radio" name="which_type_user" value="internal" <?= $data["ClientType"] == 'I' ? 'checked' : '' ?> />
+                                                                                    Internal Staff
+                                                                                </label>
+                                                                                <label style="margin-left:15px;">
+                                                                                    <input type="radio" name="which_type_user" value="tabasco" <?= $data["ClientType"] == 'T' ? 'checked' : '' ?> />
+                                                                                    Tabasco Corporate
+                                                                                </label>
                                                                             </div>
-
                                                                         <?php } else { ?>
                                                                             <div class="mb-3">
                                                                                 <label>
                                                                                     <input type="radio" name="which_type_user" value="marketing" checked />
                                                                                     Marketing
                                                                                 </label>
-
                                                                                 <label style="margin-left:15px;">
                                                                                     <input type="radio" name="which_type_user" value="internal" />
                                                                                     Internal Staff
                                                                                 </label>
+                                                                                <label style="margin-left:15px;">
+                                                                                    <input type="radio" name="which_type_user" value="tabasco" />
+                                                                                    Tabasco Corporate
+                                                                                </label>
                                                                             </div>
-
                                                                         <?php } ?>
 
                                                                         <div id="marketingStaff">
@@ -764,11 +765,24 @@
             if (type === 'marketing') {
                 $('#marketingStaff').show();
                 $('#internalStaff').hide();
-
+                $('#select_marketing').prop('required', true);
+                $('#select_client').prop('required', true);
+                $('#select_internal').prop('required', false);
+                $('#select_Internalclient').prop('required', false);
             } else if (type === 'internal') {
                 $('#marketingStaff').hide();
                 $('#internalStaff').show();
-
+                $('#select_marketing').prop('required', false);
+                $('#select_client').prop('required', false);
+                $('#select_internal').prop('required', true);
+                $('#select_Internalclient').prop('required', true);
+            } else if (type === 'tabasco') {
+                $('#marketingStaff').hide();
+                $('#internalStaff').hide();
+                $('#select_marketing').prop('required', false);
+                $('#select_client').prop('required', false);
+                $('#select_internal').prop('required', false);
+                $('#select_Internalclient').prop('required', false);
             }
         }
 

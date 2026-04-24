@@ -1,0 +1,104 @@
+[2025-07-17 11:24:03] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 5000.00,
+            outstanding_cheque = 5499.99,
+            outstanding_without_cheque = -499.99
+        WHERE id = 1001
+    
+[2025-07-17 11:24:08] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 5000.00,
+            outstanding_cheque = 5499.99,
+            outstanding_without_cheque = -499.99
+        WHERE id = 1001
+    
+[2025-07-17 11:24:13] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 5000.00,
+            outstanding_cheque = 4500.00,
+            outstanding_without_cheque = 500
+        WHERE id = 1001
+    
+[2025-07-17 11:24:21] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 5000.00,
+            outstanding_cheque = 4500.00,
+            outstanding_without_cheque = 500
+        WHERE id = 1001
+    
+[2025-07-17 11:24:29] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 0.00,
+            outstanding_cheque = 10500.00,
+            outstanding_without_cheque = -10500
+        WHERE id = 1009
+    
+[2025-07-17 11:24:55] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 10000.00,
+            outstanding_cheque = 10500.00,
+            outstanding_without_cheque = -500
+        WHERE id = 1009
+    
+[2025-07-17 11:25:02] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 10000.00,
+            outstanding_cheque = 10500.00,
+            outstanding_without_cheque = -500
+        WHERE id = 1009
+    
+[2025-07-17 11:25:06] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 10000.00,
+            outstanding_cheque = 10000.00,
+            outstanding_without_cheque = 0
+        WHERE id = 1009
+    
+[2025-07-17 11:25:28] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 0,
+            outstanding_cheque = 0,
+            outstanding_without_cheque = 0
+        WHERE id = 1015
+    
+[2025-07-17 11:25:37] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 1500.00,
+            outstanding_cheque = 0.00,
+            outstanding_without_cheque = 1500
+        WHERE id = 1015
+    
+[2025-07-17 11:26:02] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 1500.00,
+            outstanding_cheque = 0.00,
+            outstanding_without_cheque = 1500
+        WHERE id = 1015
+    
+[2025-07-17 11:32:43] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 1500.00,
+            outstanding_cheque = 0.00,
+            outstanding_without_cheque = 1500
+        WHERE id = 1015
+    
+[2025-07-17 11:43:25] Executing SQL: 
+        UPDATE legal_client
+        SET
+            total_outstanding = 1500.00,
+            outstanding_cheque = 0.00,
+            outstanding_without_cheque = 1500
+        WHERE id = 1015
+    

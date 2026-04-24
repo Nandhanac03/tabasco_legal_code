@@ -538,38 +538,144 @@ return $result;
         return ($this->_num_rows > 0) ? $this->_result : false;
     }
 
+
+
+//     function all_get_roots($case_id, $id = '', $active_legal_id = '')
+// {
+//     // ❗ Force case_id
+//     if (empty($case_id)) {
+//         return false; // or throw error
+//     }
+
+//     $params = [
+//         'case_id' => $case_id
+//     ];
+
+//     $Sqlcmd = "
+//         SELECT 
+//             r.*, 
+//             c.title AS court_name, 
+//             cat.title AS category_name
+//         FROM legal_case_roots r
+//         LEFT JOIN legal_court c ON r.court = c.id
+//         LEFT JOIN legal_category cat ON r.category = cat.id
+//         WHERE r.status = 'A'
+//         AND r.case_id = :case_id
+//     ";
+
+//     // Optional filters
+//     if (!empty($id)) {
+//         $Sqlcmd .= " AND r.id = :id";
+//         $params['id'] = $id;
+//     }
+
+//     if (!empty($active_legal_id)) {
+//         $Sqlcmd .= " AND r.active_legal_id = :active_legal_id";
+//         $params['active_legal_id'] = $active_legal_id;
+//     }
+
+//     $Sqlcmd .= " ORDER BY r.id DESC";
+
+//     $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+
+//     return ($this->_num_rows > 0) ? $this->_result : false;
+// }
+
+
+    // function all_get_roots($id = '', $case_id = '', $active_legal_id = '')
+    // {
+    //     $params = [];
+    
+    //     $Sqlcmd = "
+    //         SELECT 
+    //             r.*, 
+    //             c.title AS court_name, 
+    //             cat.title AS category_name
+    //         FROM legal_case_roots r
+    //         LEFT JOIN legal_court c ON r.court = c.id
+    //         LEFT JOIN legal_category cat ON r.category = cat.id
+    //         WHERE r.status = 'A'
+    //     ";
+    
+    //     if ($id) {
+    //         $Sqlcmd .= " AND r.id = :id";
+    //         $params['id'] = $id;
+    //     }
+    
+    //     if ($case_id) {
+    //         $Sqlcmd .= " AND r.case_id = :case_id";
+    //         $params['case_id'] = $case_id;
+    //     }
+    
+    //     if ($active_legal_id) {
+    //         $Sqlcmd .= " AND r.active_legal_id = :active_legal_id";
+    //         $params['active_legal_id'] = $active_legal_id;
+    //     }
+    
+    //     $Sqlcmd .= " ORDER BY r.id DESC";
+    
+    //     $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+    
+    //     return ($this->_num_rows > 0) ? $this->_result : false;
+    // }
+    
+
+
+
     function all_get_roots($id = '', $case_id = '', $active_legal_id = '')
     {
         $params = [];
+    
         $Sqlcmd = "
-        SELECT 
-            r.*, 
-            c.title AS court_name, 
-            cat.title AS category_name 
-        FROM legal_case_roots r
-        LEFT JOIN legal_court c ON r.court = c.id
-        LEFT JOIN legal_category cat ON r.category = cat.id
-        WHERE r.status = 'A'
-    ";
-
+            SELECT 
+                r.*, 
+                c.title AS court_name, 
+                cat.title AS category_name,
+    
+                a.id AS action_id,
+                a.date AS action_date,
+                a.description AS action_description,
+                a.document,
+                a.uae_pass
+    
+            FROM legal_case_roots r
+    
+            LEFT JOIN legal_court c 
+                ON r.court = c.id
+    
+            LEFT JOIN legal_category cat 
+                ON r.category = cat.id
+    
+            LEFT JOIN legal_case_root_actions a 
+                ON a.case_root_id = r.id 
+                AND a.status = 'A'
+    
+            WHERE r.status = 'A'
+        ";
+    
         if ($id) {
             $Sqlcmd .= " AND r.id = :id";
             $params['id'] = $id;
         }
+    
         if ($case_id) {
             $Sqlcmd .= " AND r.case_id = :case_id";
             $params['case_id'] = $case_id;
         }
+    
         if ($active_legal_id) {
             $Sqlcmd .= " AND r.active_legal_id = :active_legal_id";
             $params['active_legal_id'] = $active_legal_id;
         }
-
-        $Sqlcmd .= " ORDER BY r.id DESC";
-
+    
+        $Sqlcmd .= " ORDER BY r.id DESC, a.date DESC";
+    
         $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+    
         return ($this->_num_rows > 0) ? $this->_result : false;
     }
+    
+
 
 
     function get_case_root_clients($case_id) {
@@ -749,14 +855,14 @@ function get_defendant_by_client($client_id)
 public function get_legal_case($active_legal_id = '')
 {
     $params = [];
-    $sql = "SELECT * FROM legal_case WHERE status = 'A'";
+    $sql = "SELECT LC.*, AL.client FROM legal_case LC JOIN legal_activelegal AL ON LC.active_legal_id = AL.id WHERE LC.status = 'A'";
 
     if (!empty($active_legal_id)) {
-        $sql .= " AND active_legal_id = :active_legal_id";
+        $sql .= " AND LC.active_legal_id = :active_legal_id";
         $params['active_legal_id'] = $active_legal_id;
     }
 
-    $sql .= " ORDER BY id DESC";
+    $sql .= " ORDER BY LC.id DESC";
 
     $this->_result = $this->SELECT_MultiFetch($sql, $params);
 

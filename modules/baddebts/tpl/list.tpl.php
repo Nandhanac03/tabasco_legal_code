@@ -62,21 +62,27 @@
 
                 <div class="row g-3">
                   <div class="col-12 col-lg">
-                    <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
-                      <option value="">Sort By Marketing / Internal Staff</option>
-                      <?php if (!empty($array_legal_client_marketing)): ?>
-                        <?php foreach ($array_legal_client_marketing as $legalMarketing): ?>
-                          <option value="<?= htmlspecialchars($legalMarketing['user_Id']) ?>">
-                            <?= htmlspecialchars($legalMarketing['user_name']) ?>
+                    <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
+                      <option value="">Case No.</option>
+                      <?php if (!empty($array_legal_case)): ?>
+                        <?php foreach ($array_legal_case as $legalCase): ?>
+                          <option value="<?= htmlspecialchars($legalCase['id']) ?>" data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                            <?= htmlspecialchars($legalCase['case_number']) ?>
                           </option>
                         <?php endforeach; ?>
                       <?php endif; ?>
                     </select>
-
                   </div>
                   <div class="col-12 col-lg">
-                    <select class="form-select select2-bootstrap" id="sort_by_client" name="sort_by_client">
-                      <option value="" selected>Sort By Client</option>
+                    <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
+                      <option value="">Client Name</option>
+                      <?php if (!empty($array_legal_clients)): ?>
+                        <?php foreach ($array_legal_clients as $legalClient): ?>
+                          <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                            <?= htmlspecialchars($legalClient['name']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
                     </select>
                   </div>
 
@@ -152,7 +158,7 @@
 
             </div>
 
-            <div class="table-responsive mt-3">
+            <div class="table-responsive mt-3" style="overflow-x:auto!important;">
 
               <div id="load_ajax_active_legal"></div>
 
@@ -305,35 +311,12 @@
   $(document).ready(function() {
 
 
-    $('#sort_by_marketing').change(function() {
-      const marketingId = $(this).val();
-
-      //Load search panel Client List
-      $('#sort_by_client').html('<option value="">-- Select Client --</option>');
-
-      if (marketingId) {
-        $.ajax({
-          url: '<?= ROOT_DIR ?>modules/client/ajax/get_client.php', // Adjust as needed
-          type: 'POST',
-          data: {
-            marketingId: marketingId,
-            action: 'client_legal_list'
-          },
-          dataType: 'json',
-          success: function(response) {
-            console.log(response);
-            if (Array.isArray(response)) {
-              response.forEach(item => {
-                $('#sort_by_client').append(`<option value="${item.id}">${item.name}</option>`);
-              });
-            } else {
-              $('#sort_by_client').append('<option value="">No Clients found</option>');
-            }
-          },
-          error: function(xhr, status, error) {
-            console.error('Error:', error);
-          }
-        });
+    $('#sort_by_case').change(function() {
+      const clientId = $(this).find(':selected').data('client-id');
+      if (clientId) {
+        $('#sort_by_client_name').val(clientId).trigger('change');
+      } else {
+        $('#sort_by_client_name').val('').trigger('change');
       }
     });
 
@@ -367,17 +350,15 @@
 
       const fromDate = document.getElementById('fromDate').value;
       const search_code = document.getElementById('search_code').value;
-      const select_marketing = document.getElementById('sort_by_marketing').value;
-      const select_client = document.getElementById('sort_by_client').value;
+      const select_case_id = document.getElementById('sort_by_case').value;
+      const select_client_id = document.getElementById('sort_by_client_name').value;
 
       // Build filters
       const filters = {
         fromDate: fromDate,
         search_code: search_code,
-        select_marketing: select_marketing,
-        select_client: select_client,
-
-
+        select_case_id: select_case_id,
+        select_client_id: select_client_id,
       };
 
       // Reset to page 1 when searching

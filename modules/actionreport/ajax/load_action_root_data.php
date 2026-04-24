@@ -11,7 +11,16 @@ if (isset($_POST['id'])) {
 
     $objCaseRootAction = new CaseRootAction();
 
-    $rows = $objCaseRootAction->get_case_root('', ['case_root_id' => $id,'created_from'=>'CA']);
+    $case_id = isset($_POST['case_id']) ? intval($_POST['case_id']) : 0;
+    
+    $filter = ['created_from' => 'CA'];
+    if ($case_id > 0) {
+        $filter['case_id'] = $case_id;
+    } else {
+        $filter['case_root_id'] = $id;
+    }
+
+    $rows = $objCaseRootAction->get_case_root('', $filter);
 /* Adjust this width as needed */
 
     if ($rows) {

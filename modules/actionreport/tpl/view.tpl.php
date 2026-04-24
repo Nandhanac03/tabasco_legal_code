@@ -20,7 +20,14 @@
                 <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                     data-bs-target="#addActionmodal">
                     <i class="fadeIn animated bx bx-plus"></i> Add Action</a>
+<!-- Back Button -->
+<a href="javascript:history.back()"
+   class="btn btn-secondary btn-sm">
+    <ion-icon name="arrow-back-outline"></ion-icon> Back
+</a>
             </div>
+
+
         </div>
         <!--end breadcrumb-->
         <div class="row">
@@ -218,21 +225,28 @@
                                                     <label class="form-label">Case</label>
                                                     <input type="text" class="form-control" id="case_number" value="<?= $legal_case[0]['case_number'] ?>" readonly>
                                                 </div>
-                                                <div class="col-12">
+                                                <!-- <div class="col-12">
                                                     <label class="form-label">Email Link</label>
                                                     <input type="text" class="form-control" id="email">
-                                                </div>
+                                                </div> -->
                                                 <div class="col-12">
                                                     <label class="form-label">Category</label>
-                                                    <select type="text" class="form-select" id="category_id">
-                                                        <option value="">--- Select type ---</option>
-                                                        <?php if ($all_category) { ?>
-                                                            <?php foreach ($all_category as $category) { ?>
-                                                                <option value="<?= $category['id'] ?>"><?= $category['title'] ?></option>
+                                                    <select class="form-select" id="category_id" name="category_id">
+    <option value="">--- Select type ---</option>
 
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
+    <?php if ($all_category) { ?>
+        <?php foreach ($all_category as $category) { ?>
+
+            <option value="<?= $category['id'] ?>"
+    <?= ($category['id'] == $selected_category_id) ? 'selected' : '' ?>>
+    <?= $category['title'] ?>
+</option>
+
+
+        <?php } ?>
+    <?php } ?>
+</select>
+
                                                     <div class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="col-12">
@@ -249,7 +263,7 @@
                                                     <div class="invalid-feedback"></div>
 
                                                 </div>
-                                                <div class="col-12">
+                                                 <!-- <div class="col-12">
                                                     <label class="form-label">Stage</label>
                                                     <select class="form-select" id="stage">
                                                         <option value="">--- Select Stage ---</option>
@@ -257,7 +271,7 @@
 
                                                     <div class="invalid-feedback"></div>
 
-                                                </div>
+                                                </div> 
                                                 <div class="col-12">
                                                     <label class="form-label">UAE Pass</label>
                                                     <select type="text" class="form-select" id="uae_pass">
@@ -266,7 +280,7 @@
                                                     </select>
                                                     <div class="invalid-feedback"></div>
 
-                                                </div>
+                                                </div> -->
                                                 <div class="col-12">
                                                     <label class="form-label">Date</label>
                                                     <input type="date" class="form-control" id="date">
@@ -455,10 +469,10 @@
             'case_number',
             'category_id',
             'sub_category_id',
-            'stage',
+            //'stage',
             'date',
             'description',
-            'uae_pass'
+            //'uae_pass'
         ];
         let isValid = true;
 
@@ -504,8 +518,8 @@
         formData.append('action', 'new_action');
 
         // Handle email (optional, no pattern validation)
-        const email = document.getElementById('email').value.trim();
-        formData.append('email', email); // Always append, even if empty
+       // const email = document.getElementById('email').value.trim();
+       // formData.append('email', email); // Always append, even if empty
 
         const client_id = document.getElementById('client_id').value;
         const firm_id = document.getElementById('firm_id').value;
@@ -576,7 +590,8 @@
                 url: "<?= ROOT_DIR ?>modules/actionreport/ajax/load_action_root_data.php",
                 type: "POST",
                 data: {
-                    id: recordId
+                    id: recordId,
+                    case_id: $("#case_id").val()
                 },
                 beforeSend: function() {
                     targetDiv.html('<div class="text-center p-3">Loading...</div>');
