@@ -31,7 +31,42 @@
                             <div class="row g-3">
 
                                 <div class="row g-3">
-                                    <div class="col-12 col-lg">
+
+
+
+
+                                <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
+                      <option value="">Case No.</option>
+                      <?php if (!empty($array_legal_case)): ?>
+                        <?php foreach ($array_legal_case as $legalCase): ?>
+                          <option value="<?= htmlspecialchars($legalCase['id']) ?>" data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                            <?= htmlspecialchars($legalCase['case_number']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
+                  </div>
+
+
+                  <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
+                      <option value="">Client Name</option>
+                      <?php if (!empty($array_legal_clients)): ?>
+                        <?php foreach ($array_legal_clients as $legalClient): ?>
+                          <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                            <?= htmlspecialchars($legalClient['name']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
+                  </div>
+
+
+
+
+
+                                    <!-- <div class="col-12 col-lg">
                                         <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
                                             <option value="">Sort By Marketing / Internal Staff</option>
                                             <?php if (!empty($array_legal_client_marketing)): ?>
@@ -48,7 +83,7 @@
                                         <select class="form-select select2-bootstrap" id="sort_by_client" name="sort_by_client">
                                             <option value="" selected>Sort By Client</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                 </div><!--end row-->
 
@@ -128,6 +163,22 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
+
+
+
+        $('#sort_by_case').change(function() {
+      const clientId = $(this).find(':selected').data('client-id');
+      if (clientId) {
+        $('#sort_by_client_name').val(clientId).trigger('change');
+      } else {
+        $('#sort_by_client_name').val('').trigger('change');
+      }
+    });
+
+
+
+
+
         $('#sort_by_marketing').change(function() {
             const marketingId = $(this).val();
 
@@ -160,42 +211,42 @@
             }
         });
 
+        // Store current search filters globally so pagination retains them
+        var currentFilters = {};
+
         loadData(1);
 
-        // Pagination code
-
+        // Pagination code – pass stored filters
         $(document).on("click", ".pagination li a", function(e) {
 
             e.preventDefault();
 
             var pageId = $(this).attr("id");
 
-            loadData(pageId);
+            loadData(pageId, currentFilters);
 
         });
 
 
         // Search form submission
-        document.getElementById('search_form').addEventListener('submit', function(e) {
+          document.getElementById('search_form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const fromDate = document.getElementById('fromDate').value;
-            const search_code = document.getElementById('search_code').value;
-            const select_marketing = document.getElementById('sort_by_marketing').value;
-            const select_client = document.getElementById('sort_by_client').value;
+            const fromDate    = document.getElementById('fromDate')             ? document.getElementById('fromDate').value             : '';
+            const search_code = document.getElementById('search_code')          ? document.getElementById('search_code').value          : '';
+            const select_case = document.getElementById('sort_by_case')         ? document.getElementById('sort_by_case').value         : '';
+            const select_client = document.getElementById('sort_by_client_name') ? document.getElementById('sort_by_client_name').value : '';
 
-            // Build filters
-            const filters = {
-                fromDate: fromDate,
-                search_code: search_code,
-                select_marketing: select_marketing,
+            // Save filters globally so pagination can reuse them
+            currentFilters = {
+                fromDate:      fromDate,
+                search_code:   search_code,
+                select_case:   select_case,
                 select_client: select_client,
-
-
             };
 
             // Reset to page 1 when searching
-            loadData(1, filters);
+            loadData(1, currentFilters);
         });
 
         $('#select_marketing').change(function() {

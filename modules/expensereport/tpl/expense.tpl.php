@@ -280,7 +280,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="coll_amount" class="form-control input-amount">
+                                            <input type="number" name="coll_amount" class="form-control input-amount" step="0.01" min="0">
 
 
                                           
@@ -430,7 +430,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="amount" class="form-control input-amount">
+                                            <input type="number" name="amount" class="form-control input-amount" step="0.01" min="0">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Attachment:</label>

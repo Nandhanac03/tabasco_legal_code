@@ -18,12 +18,57 @@
         </div>
         <!--end breadcrumb-->
 
+
+
+
         <div class="row">
+
             <div class="col-12">
 
                 <div class="card">
                     <div class="card-body">
+
+                    <div class="row mb-3">
+
+<div class="col-md-4">
+    <select class="form-select" id="sort_by_case">
+        <option value="">Case No.</option>
+        <?php foreach ($array_legal_case as $legalCase): ?>
+            <option value="<?= htmlspecialchars($legalCase['id']) ?>"
+                    data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                <?= htmlspecialchars($legalCase['case_number']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+<div class="col-md-4">
+    <select class="form-select" id="sort_by_client_name">
+        <option value="">Client Name</option>
+        <?php foreach ($array_legal_clients as $legalClient): ?>
+            <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                <?= htmlspecialchars($legalClient['name']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+<div class="col-md-2">
+    <button id="searchBtn" class="btn btn-primary w-100">Search</button>
+</div>
+
+<div class="col-md-2">
+    <button id="resetBtn" class="btn btn-secondary w-100">Reset</button>
+</div>
+
+</div>
+
+
+
+
+
                         <div class="col text-end py-2">
+
 
                             <button type="button" class="btn btn-sm btn-outline-primary px-1">
                                 <i class="lni lni-download"></i>

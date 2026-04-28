@@ -13,10 +13,7 @@ $objActiveLegal =   new ActiveLegal();
 $objLegalCase =   new LegalCase();
 $objCheque =   new Cheque();
 
-if (LEGAL_AUTH_VIEW == false) {
-    header("Location: " . ROOT_DIR . "permission_denied.php");
-    exit();
-}
+
 
 $action = $_GET['action'];
 $id = $_GET['param1'];

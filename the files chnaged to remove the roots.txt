@@ -1,0 +1,24 @@
+🔴 Case Module 
+
+modules/case/information.php	Remove saveRoots() call + $root_array['stage'] = 1 block
+modules/case/view.php	Remove get_roots('', $id) call
+modules/case/ajax/roots_handling.php	Delete entire file — only handles roots CRUD
+
+
+🔴 Action Report Module 
+
+modules/actionreport/view.php	Remove get_roots() usage
+modules/actionreport/ajax/load_action_root_data.php	Uses case_root_id — must be reworked
+modules/actionreport/ajax/load_action_stage.php	Uses get_roots() — must be reworked
+modules/actionreport/followupview.php	Uses case_root_id — must be reworked
+
+
+
+🟠 Active Legal Module 
+
+modules/activelegal/ajax/case_notification.php	Uses case_root_id
+
+
+🟡 Case View Template
+
+modules/case/tpl/view.tpl.php	Remove "Add Roots" button, Roots table section, Add/Edit Roots modals.

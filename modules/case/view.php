@@ -48,12 +48,12 @@ $categories = $objCategory->get_category();
 
 
 
-if (!$action || !$id) {
+// if (!$action || !$id) {
 
-    header("location: " . ROOT_DIR . "activelegal/list.html");
+//     header("location: " . ROOT_DIR . "activelegal/list.html");
 
-    exit;
-}
+//     exit;
+// }
 
 
 

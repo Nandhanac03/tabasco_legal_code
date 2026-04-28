@@ -28,6 +28,17 @@ $array_users = $objCommonSelection->get_all_users('yes', '21,1');
 $array_legal_client_marketing    =   array();
 $array_legal_client_marketing    =   $objCommonSelection->get_marketing_legal_client();
 
+include_once("lib/class/class.legal_case.php");
+$objLegalCase = new LegalCase();
+include_once("lib/class/class.legal_client.php");
+$objClients = new Clients();
+
+$array_legal_case    =   array();
+$array_legal_case = $objLegalCase->get_legal_case();
+
+$array_legal_clients = array();
+$array_legal_clients = $objClients->Get_Client_Information(null, null, null, 'A');
+
 
 
 $actve_sub_menu =   'total_legal_report';

@@ -274,7 +274,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="coll_amount" class="form-control input-amount">
+                                            <input type="number" name="amount" class="form-control input-amount" step="0.01" min="0">
 
 
                         
@@ -649,13 +649,12 @@
         })
 
 
-
- $('#zeroCommissionCheck').change(function() {
+        $('#zeroCommissionCheck').on('change', function () {
 
 if ($(this).is(':checked')) {
 
     $('#commissionMessage')
-        .text("Zero Commission selected. The actual amount will be paid to the client.")
+        .text("Zero Commission selected.")
         .removeClass('text-danger')
         .addClass('text-success')
         .show();
@@ -663,15 +662,12 @@ if ($(this).is(':checked')) {
 } else {
 
     $('#commissionMessage')
-        .text("Please select the commission.")
+        .text("Commission will be applied based on configuration.")
         .removeClass('text-success')
         .addClass('text-danger')
         .show();
 }
-
 });
-  
-
 
 
 

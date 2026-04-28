@@ -36,7 +36,7 @@ $marketing  = trim($_POST['marketing'] ?? '');
 
 $client     = trim($_POST['client'] ?? '');
 $search     = trim($_POST['search_code'] ?? '');
-$user_id     = trim($_POST['select_marketing'] ?? '');
+$case_id    = trim($_POST['select_case'] ?? '');
 $client     = trim($_POST['select_client'] ?? '');
 
 
@@ -59,7 +59,7 @@ $offset = ($page_no - 1) * $limit;
 $search_filter = [];
 $search_filter['dateon'] = $fromDate;
 $search_filter['search'] = $search;
-$search_filter['user_id'] = $user_id;
+$search_filter['case_id'] = $case_id;
 $search_filter['client'] = $client;
 
 // ✅ Fetch Total Records
@@ -88,7 +88,7 @@ $filters = [
     'offset' => $offset,
     'dateon' => $fromDate,
     'search' => $search,
-    'user_id' => $user_id,
+    'case_id' => $case_id,
     'client' => $client,
 
     // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering

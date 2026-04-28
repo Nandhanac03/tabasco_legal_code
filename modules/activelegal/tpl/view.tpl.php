@@ -148,8 +148,16 @@
                               <td class="text-center">
                                  <h4>
                                     <a href="<?= ROOT_DIR . "case/list/view/{$case['id']}.html" ?>" class="text-dark">
-                                       <ion-icon name="eye-outline" onclick="window.location.href='<?= ROOT_DIR ?>case/view.html';"></ion-icon>
+                                       <ion-icon name="eye-outline"></ion-icon>
                                     </a>
+
+                                    <!-- <a href="<?= ROOT_DIR . "case/list/view/{$case['id']}.html" ?>" class="text-dark">
+                                       <ion-icon name="eye-outline" onclick="window.location.href='<?= ROOT_DIR ?>case/view.html';"></ion-icon>
+                                    </a> -->
+
+                                    <!-- <a href="<?= ROOT_DIR . "case/list/view/{$case['id']}.html" ?>" class="text-dark">
+                                       <ion-icon name="eye-outline"></ion-icon>
+                                    </a> -->
                                     <a href="<?= ROOT_DIR . "case/information/edit/{$case['id']}.html" ?>" class="text-dark">
                                        <ion-icon name="pencil-outline"></ion-icon>
                                     </a>

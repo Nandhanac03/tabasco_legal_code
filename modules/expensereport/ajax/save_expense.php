@@ -26,7 +26,8 @@ if ($_POST) {
     $party_names_id = isset($_POST['party_names']) ? clean_input($_POST['party_names']) : '';
     $exp_date = isset($_POST['exp_date']) ? clean_input($_POST['exp_date']) : '';
     $fee_type = isset($_POST['fee_type']) ? clean_input($_POST['fee_type']) : '';
-    $amount = isset($_POST['amount']) ? clean_input($_POST['amount']) : '';
+    // $amount = $_POST['amount'] ?? '';
+    $amount = isset($_POST['amount']) ? (float) $_POST['amount'] : 0.00;
     $description = isset($_POST['description']) ? clean_input($_POST['description']) : '';
     $remark = isset($_POST['remark']) ? clean_input($_POST['remark']) : '';
 

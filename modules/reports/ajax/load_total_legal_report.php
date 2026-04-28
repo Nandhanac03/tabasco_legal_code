@@ -36,7 +36,7 @@ $marketing  = trim($_POST['marketing'] ?? '');
 
 $client     = trim($_POST['client'] ?? '');
 $search     = trim($_POST['search_code'] ?? '');
-$user_id     = trim($_POST['select_marketing'] ?? '');
+$case_id    = trim($_POST['select_case'] ?? '');
 $client     = trim($_POST['select_client'] ?? '');
 
 
@@ -59,7 +59,7 @@ $offset = ($page_no - 1) * $limit;
 $search_filter = [];
 $search_filter['dateon'] = $fromDate;
 $search_filter['search'] = $search;
-$search_filter['user_id'] = $user_id;
+$search_filter['case_id'] = $case_id;
 $search_filter['client'] = $client;
 
 // ✅ Fetch Total Records
@@ -88,7 +88,7 @@ $filters = [
     'offset' => $offset,
     'dateon' => $fromDate,
     'search' => $search,
-    'user_id' => $user_id,
+    'case_id' => $case_id,
     'client' => $client,
 
     // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
@@ -278,11 +278,13 @@ if ($totalData > 0 && is_array($legalData)) {
 
 
     echo '<tr>
-            <th class="text-center" width="10%" colspan="5">Total</th>
-            <th class="text-left" width="10%">' . htmlspecialchars($total_claim_amount ?? '-') . '</th>
-             <th class="text-left" width="10%">' . htmlspecialchars($all_totalCollection ?? '-') . '</th>
-             <th class="text-left" width="10%">' . htmlspecialchars($all_totalExpense ?? '-') . '</th>
-             <th class="text-left" width="10%">' . htmlspecialchars($allBalance ?? '-') . '</th>
+            <th class="text-center" colspan="5">Total</th>
+            <th class="text-left">' . htmlspecialchars($total_claim_amount ?? '-') . '</th>
+            <th class="text-left">' . htmlspecialchars($all_totalCollection ?? '-') . '</th>
+            <th class="text-left">' . htmlspecialchars($all_totalExpense ?? '-') . '</th>
+            <th class="text-left">' . htmlspecialchars($allBalance ?? '-') . '</th>
+            <th></th>
+            <th></th>
             </tr></tbody></table>';
 } else {
 
