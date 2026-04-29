@@ -98,6 +98,31 @@
                                                                             <input type="text" class="form-control" name="case_number" id="case_number"
                                                                                 value="<?= isset($current_legal_case[0]['case_number']) && $current_legal_case[0]['case_number'] != '' ? $current_legal_case[0]['case_number'] : $_POST['case_number'] ?>">
                                                                         </div>
+                                                                         
+                                                                         <div class="mb-3">
+                                                                             <label class="form-label">Related Case (Optional):</label>
+                                                                             <select class="form-select" name="related_case_id" id="related_case_id">
+                                                                                 <option value="">-- None --</option>
+                                                                             </select>
+                                                                         </div>
+
+
+
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Cases: <span class="text-danger">*</span></label>
+                                                                            <select class="form-select" name="category" id="category">
+                                                                                <option value="">- - select - -</option>
+                                                                                <?php if ($categories) { ?>
+                                                                                    <?php foreach ($categories as $category) { ?>
+                                                                                        <option value="<?= $category['id'] ?>" <?= $current_legal_case[0]['category'] == $category['id'] ? 'selected' : '' ?>><?= $category['title'] ?></option>
+                                                                                    <?php } ?>
+                                                                                <?php } ?>
+                                                                            </select>
+                                                                        </div>
+
+
+
+
 
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Category: <span class="text-danger">*</span></label>
@@ -240,6 +265,22 @@
                         id="outstanding_without_cheque"
                         value="<?= isset($current_legal_case[0]['outstanding_without_cheque']) && $current_legal_case[0]['outstanding_without_cheque'] != '' ? $current_legal_case[0]['outstanding_without_cheque'] : '0' ?>">
                 </div>
+
+                <!-- <div class="mb-3">
+                    <label class="form-label">Active Legal Claim Amount:</label>
+                    <input type="text" class="form-control"
+                        id="active_legal_claim_amount"
+                        value="<?= isset($activeLegal[0]['claim_amount']) ? $activeLegal[0]['claim_amount'] : '0' ?>" readonly>
+                </div> -->
+
+                <div class="mb-3">
+                    <label class="form-label">Claimed Amount: <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control"
+                        name="claim_amount"
+                        id="claim_amount"
+                        step="any"
+                        value="<?= isset($current_legal_case[0]['claim_amount']) && $current_legal_case[0]['claim_amount'] != '' ? $current_legal_case[0]['claim_amount'] : (isset($activeLegal[0]['claim_amount']) ? $activeLegal[0]['claim_amount'] : '0') ?>" required>
+                </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -283,7 +324,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <!-- Cheque List -->
+                                                            Cheque List
                                                             <div class="col">
                                                                 <div class="card">
                                                                     <div class="card-header">
@@ -388,29 +429,34 @@
             });
         <?php } ?>
 
-        function fetchActiveLegalInfo(legalId) {
-            if (!legalId) return;
-            $.ajax({
-                type: 'POST',
-                url: '<?= ROOT_DIR ?>modules/case/ajax/case_autopopulate.php',
-                data: { Active_legal_id: legalId },
-                success: function(jsonResponse) {
-                    console.log('Response:', jsonResponse);
-                    if (jsonResponse && typeof jsonResponse === 'object') {
-                        $('#total_outstanding').val(jsonResponse.total_outstanding || '0');
-                        $('#outstanding_with_cheque').val(jsonResponse.outstanding_cheque || '0');
-                        $('#outstanding_without_cheque').val(jsonResponse.outstanding_without_cheque || '0');
-                    } else {
-                        $('#total_outstanding').val('0');
-                        $('#outstanding_with_cheque').val('0');
-                        $('#outstanding_without_cheque').val('0');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                }
-            });
-        }
+        // function fetchActiveLegalInfo(legalId) {
+        //     if (!legalId) return;
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '<?= ROOT_DIR ?>modules/case/ajax/case_autopopulate.php',
+        //         data: { Active_legal_id: legalId },
+        //         success: function(jsonResponse) {
+        //             console.log('Response:', jsonResponse);
+        //             if (jsonResponse && typeof jsonResponse === 'object') {
+        //                 $('#total_outstanding').val(jsonResponse.total_outstanding || '0');
+        //                 $('#outstanding_with_cheque').val(jsonResponse.outstanding_cheque || '0');
+        //                 $('#outstanding_without_cheque').val(jsonResponse.outstanding_without_cheque || '0');
+        //                 $('#active_legal_claim_amount').val(jsonResponse.active_legal_claim_amount || '0');
+        //                 // Only auto-fill if not in edit mode
+        //                 <?php// if (!$edit_id) { ?>
+        //                 $('#claim_amount').val(jsonResponse.active_legal_claim_amount || jsonResponse.total_outstanding || '0');
+        //                 <?php //} ?>
+        //             } else {
+        //                 $('#total_outstanding').val('0');
+        //                 $('#outstanding_with_cheque').val('0');
+        //                 $('#outstanding_without_cheque').val('0');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('AJAX Error:', status, error);
+        //         }
+        //     });
+        // }
 
         fetchActiveLegalInfo($('#code').val());
 
@@ -423,28 +469,31 @@
     // Each <tr> in #cheque_table_body must have:
     //   data-amount="123"         (the cheque amount)
     //   data-has-doc="1" or "0"   (1 = has document/file, 0 = no document)
-    function recalculateTotals() {
-        let totalOutstanding = 0;
-        let withCheque = 0;
-        let withoutCheque = 0;
 
-        $('#cheque_table_body tr[data-amount]').each(function() {
-            let amount = parseFloat($(this).data('amount')) || 0;
-            let hasDoc  = parseInt($(this).data('has-doc')) || 0;
 
-            totalOutstanding += amount;
 
-            if (hasDoc === 1) {
-                withCheque += amount;
-            } else {
-                withoutCheque += amount;
-            }
-        });
+    // function recalculateTotals() {
+    //     let totalOutstanding = 0;
+    //     let withCheque = 0;
+    //     let withoutCheque = 0;
 
-        $('#total_outstanding').val(totalOutstanding.toFixed(2));
-        $('#outstanding_with_cheque').val(withCheque.toFixed(2));
-        $('#outstanding_without_cheque').val(withoutCheque.toFixed(2));
-    }
+    //     $('#cheque_table_body tr[data-amount]').each(function() {
+    //         let amount = parseFloat($(this).data('amount')) || 0;
+    //         let hasDoc  = parseInt($(this).data('has-doc')) || 0;
+
+    //         totalOutstanding += amount;
+
+    //         if (hasDoc === 1) {
+    //             withCheque += amount;
+    //         } else {
+    //             withoutCheque += amount;
+    //         }
+    //     });
+
+    //     $('#total_outstanding').val(totalOutstanding.toFixed(2));
+    //     $('#outstanding_with_cheque').val(withCheque.toFixed(2));
+    //     $('#outstanding_without_cheque').val(withoutCheque.toFixed(2));
+    // }
 
     $("#save_cheque").click(function() {
         let chequeDate   = $("#cheque_date");
@@ -634,6 +683,36 @@
         });
 
         fetchCheques(csrf_token, hid_module, hid_page, hid_parentID, active_legal);
+        fetchRelatedCases(active_legal);
+        
+        $("#code").on("change", function() {
+            fetchRelatedCases($(this).val());
+        });
+    }
+
+    function fetchRelatedCases(activeLegalId) {
+        if (!activeLegalId) return;
+        $.ajax({
+            type: 'POST',
+            url: '<?= ROOT_DIR ?>modules/case/ajax/get_related_cases.php',
+            data: { 
+                active_legal_id: activeLegalId,
+                exclude_case_id: '<?= $edit_id ?>'
+            },
+            success: function(jsonResponse) {
+                try {
+                    let response = JSON.parse(jsonResponse);
+                    if (response.success) {
+                        $('#related_case_id').html(response.html);
+                        // Set current selection if editing
+                        let selectedRelated = '<?= $current_legal_case[0]['related_case_id'] ?? '' ?>';
+                        if (selectedRelated) {
+                            $('#related_case_id').val(selectedRelated);
+                        }
+                    }
+                } catch(e) { console.error("Error parsing related cases", e); }
+            }
+        });
     }
 
     // CHANGE 5: Extracted AJAX call into its own function to avoid duplication

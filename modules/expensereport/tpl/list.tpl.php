@@ -28,6 +28,8 @@
                 <div class="card">
                     <div class="card-body">
 
+
+                    <form id="search_form">
                     <div class="row mb-3">
 
 <div class="col-md-4">
@@ -54,16 +56,14 @@
 </div>
 
 <div class="col-md-2">
-    <button id="searchBtn" class="btn btn-primary w-100">Search</button>
-</div>
-
-<div class="col-md-2">
-    <button id="resetBtn" class="btn btn-secondary w-100">Reset</button>
-</div>
-
+    <button type="submit"  class="btn btn-primary w-100">Search</button>
 </div>
 
 
+
+</div>
+
+        </form>
 
 
 
@@ -91,28 +91,58 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
+<script>
+$(document).ready(function () {
 
-        function loadData(page) {
-            $.ajax({
-                url: "<?= ROOT_DIR ?>modules/expensereport/ajax/load_all_clients.php",
-                type: "POST",
-                cache: false,
-                data: {
-                    page_no: page
-                },
-                success: function(response) {
-                    $("#load_ajax_caseactions").html(response);
-                }
-            });
+    let currentFilters = {};
+
+    // Auto select client when case changes
+    $('#sort_by_case').change(function () {
+        const clientId = $(this).find(':selected').data('client-id');
+        if (clientId) {
+            $('#sort_by_client_name').val(clientId);
+        } else {
+            $('#sort_by_client_name').val('');
         }
-        loadData(1);
-        // Pagination code
-        $(document).on("click", ".pagination li a", function(e) {
-            e.preventDefault();
-            var pageId = $(this).attr("id");
-            loadData(pageId);
-        });
     });
+
+    // FORM SUBMIT
+    $('#search_form').on('submit', function (e) {
+        e.preventDefault();
+
+        currentFilters = {
+            select_case_id: $('#sort_by_case').val(),
+            select_client_id: $('#sort_by_client_name').val()
+        };
+
+        loadData(1);
+    });
+
+    // LOAD DATA FUNCTION
+    function loadData(page) {
+        $.ajax({
+            url: "<?= ROOT_DIR ?>modules/expensereport/ajax/load_all_clients.php",
+            type: "POST",
+            data: {
+                page_no: page,
+                select_case_id: currentFilters.select_case_id || '',
+                select_client_id: currentFilters.select_client_id || ''
+            },
+            success: function (response) {
+                $("#load_ajax_caseactions").html(response);
+            }
+        });
+    }
+
+    // Initial load
+    loadData(1);
+
+    // Pagination
+    $(document).on("click", ".pagination li a", function (e) {
+        e.preventDefault();
+        var pageId = $(this).attr("id");
+        loadData(pageId);
+    });
+
+});
 </script>

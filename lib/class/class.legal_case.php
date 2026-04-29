@@ -96,6 +96,14 @@ class LegalCase extends dbcon
             $sqlCmd .= ", outstanding_without_cheque =:outstanding_without_cheque";
             $params['outstanding_without_cheque'] = $data['outstanding_without_cheque'];
         }
+        if (isset($data['claim_amount'])) {
+            $sqlCmd .= ", claim_amount =:claim_amount";
+            $params['claim_amount'] = $data['claim_amount'];
+        }
+        if (isset($data['related_case_id'])) {
+            $sqlCmd .= ", related_case_id =:related_case_id";
+            $params['related_case_id'] = $data['related_case_id'];
+        }
         if ($id) {
             $sqlCmd .= " WHERE id=$id";
         }
@@ -157,7 +165,8 @@ class LegalCase extends dbcon
       law.user_name AS lawyer,
     
              
-                lchs.id AS plantiff
+                lchs.id AS plantiff,
+                lc.related_case_id
     
             FROM legal_case AS lc
     

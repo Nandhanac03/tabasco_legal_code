@@ -218,15 +218,18 @@
                                                                     <form>
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Total Outstanding:</label>
-                                                                            <input type="text" class="form-control" name="total_outstanding" id="total_outstanding" value="<?= $activeLegal[0]['final_total_outstanding'] ?>" disabled>
+                                                                            <input type="text" class="form-control" name="total_outstanding" id="total_outstanding" value="<?= $legal_case[0]['total_outstanding'] ?>" disabled>
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Outstanding with cheque:</label>
-                                                                            <input type="text" class="form-control" name="outstanding_with_cheque" id="outstanding_with_cheque" value="<?= $activeLegal[0]['final_outstanding_cheque'] ?>" disabled>
+                                                                            <input type="text" class="form-control" name="outstanding_with_cheque" id="outstanding_with_cheque" value="<?= $legal_case[0]['outstanding_with_cheque'] ?>" disabled>
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Outstanding without cheque:</label>
-                                                                            <input type="text" class="form-control" name="outstanding_without_cheque" id="outstanding_without_cheque" value="<?= $activeLegal[0]['final_outstanding_without_cheque'] ?>" disabled>
+                                                                            <input type="text" class="form-control" name="outstanding_without_cheque" id="outstanding_without_cheque" value="<?= $legal_case[0]['outstanding_without_cheque'] ?>" disabled>
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Claimed Amount:</label>
+                                                                            <input type="text" class="form-control" name="claim_amount" id="claim_amount" value="<?= $legal_case[0]['claim_amount'] ?>" disabled>
                                                                         </div>
                                                                     </form>
                                                                 </div>

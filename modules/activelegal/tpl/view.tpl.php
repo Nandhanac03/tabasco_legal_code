@@ -139,7 +139,8 @@
                               <td class="text-center"><?= $case['case_mode_title'] ?></td>
                               <td class="text-center"><?= $case['category_name'] ?></td>
                               <td class="text-center"><?= $case['register_date'] ?></td>
-                              <td class="text-center"><?= $case['total_outstanding'] ?></td>
+                   
+                                 <td class="text-center"><?= $case['claim_amount'] ?></td>
                               <td class="text-center"><?= $case['lawyer_name'] ?></td>
                               <td class="description-cell"><?= $case['first_instance_description'] ? $case['first_instance_description'] : '----'; ?></td>
                               <td class=" description-cell"><?= $case['execution_decision_description'] ? $case['execution_decision_description'] : '----'; ?></td>

@@ -34,7 +34,8 @@ $toDate     = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['toDate'] ?? '') ? $_PO
 
 $keyword    = htmlspecialchars(strip_tags(trim($_POST['keyword'] ?? '')));
 
-
+$select_case_id = trim($_POST['select_case_id'] ?? '');
+$select_client_id = trim($_POST['select_client_id'] ?? '');
 
 // ✅ Validate Page Number
 
@@ -67,7 +68,9 @@ $filters = [
 
     'limit' => $limit,
 
-    'offset' => $offset
+    'offset' => $offset,
+    'case_id' => $select_case_id,
+    'client_id' => $select_client_id
 
     // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
 

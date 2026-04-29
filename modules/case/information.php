@@ -106,6 +106,8 @@ if ($_POST) {
         $input_data['total_outstanding']         = $_POST['total_outstanding']         ?? '0';
         $input_data['outstanding_with_cheque']   = $_POST['outstanding_with_cheque']   ?? '0';
         $input_data['outstanding_without_cheque'] = $_POST['outstanding_without_cheque'] ?? '0';
+        $input_data['claim_amount']              = $_POST['claim_amount']              ?? '0';
+        $input_data['related_case_id']           = $_POST['related_case_id']           ?? 0;
         $input_data['created_id']                = $user_id;
         $input_data['created_on']                = date('Y-m-d H:i:s');
         $input_data['updated_id']                = $user_id;

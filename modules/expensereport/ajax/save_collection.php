@@ -1,19 +1,25 @@
 <?php
 ob_start();
 session_start();
-error_reporting(0);
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 include_once("../../../lib/config.php");
 include_once("../../../lib/class/class.dbcon.php");
 include_once("../../../lib/class/class.legal_collection.php");
 include_once("../../../lib/class/class.legal_active_legals.php");
 include_once("../../../lib/class/class.legal_collection_commission.php");
+include_once("../../../lib/class/class.legal_case.php"); // ✅ FIXED
 
 $objActiveLegal = new ActiveLegal();
 $objCollection = new Collection();
 $objCollectionCommission = new LegalCollectionCommission();
+$objLegalCase = new LegalCase(); // ✅ FIXED
 
-if ($_POST) {
+header('Content-Type: application/json'); // ✅ IMPORTANT
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     function clean_input($v){
         return trim(htmlspecialchars($v, ENT_QUOTES, 'UTF-8'));
@@ -27,7 +33,7 @@ if ($_POST) {
     $party_names_id    = clean_input($_POST['coll_party_names'] ?? '');
     $exp_date          = clean_input($_POST['coll_exp_date'] ?? '');
     $fee_type          = clean_input($_POST['coll_fee_type'] ?? '');
-    $amount_raw        = $_POST['amount'] ?? '';
+    $amount_raw        = $_POST['coll_amount'] ?? '';
     $zero_commission   = $_POST['zero_commission'] ?? '0';
     $description       = clean_input($_POST['coll_description'] ?? '');
     $remark            = clean_input($_POST['remark'] ?? '');
@@ -40,36 +46,56 @@ if ($_POST) {
         'legal_team'=>'LT'
     ];
 
-    // VALIDATION
     $errors = [];
 
+    // VALIDATION
     if (!$active_legal_id) $errors[] = "Active Legal ID missing";
     if (!$category_raw || !isset($category_map[$category_raw])) $errors[] = "Invalid category";
     if (!$party_names_id) $errors[] = "Firm/Party required";
     if (!$exp_date) $errors[] = "Date required";
 
-    if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount_raw)) {
+    if (!is_numeric($amount_raw) || $amount_raw < 0) {
         $errors[] = "Invalid amount";
     }
 
-    // ✅ FORCE CHECKBOX
     if ($zero_commission != '1') {
-        $errors[] = "Please select 0% Commission to continue";
+        $errors[] = "Please select 0% Commission";
     }
 
+    // RETURN ERRORS
     if (!empty($errors)) {
-        ob_clean();
         echo json_encode([
             'success' => false,
-            'message' => implode(" ", $errors)
+            'message' => implode(" | ", $errors)
         ]);
         exit;
     }
 
     $amount = (float)$amount_raw;
+
+    // ✅ CLAIM VALIDATION
+    if ($case_id) {
+        $case_data = $objLegalCase->get_case($case_id);
+
+        if ($case_data) {
+            $claim_amount = (float)$case_data[0]['claim_amount'];
+            $total_collected = (float)$objCollection->total_collection('', $case_id);
+
+            if (($total_collected + $amount) > $claim_amount) {
+                $remaining = $claim_amount - $total_collected;
+
+                echo json_encode([
+                    'success' => false,
+                    'message' => "Exceeds Claim Amount. Remaining: " . number_format($remaining, 2)
+                ]);
+                exit;
+            }
+        }
+    }
+
     $category = $category_map[$category_raw];
 
-    // SAVE COLLECTION (NO CONDITION NOW)
+    // DATA
     $data = [
         'marketing_id'=>$marketing_id,
         'client_id'=>$client_id,
@@ -80,14 +106,14 @@ if ($_POST) {
         'date'=>$exp_date,
         'fees_type'=>$fee_type,
         'amount'=>$amount,
-        'zero_commission'=>1, // always 1
+        'zero_commission'=>$zero_commission,
         'description'=>$description,
         'remark'=>$remark,
-        'created_by'=>$_SESSION['LOGIN_LEGAL_ID'],
+        'created_by'=>$_SESSION['LOGIN_LEGAL_ID'] ?? 0,
         'created_on'=>date('Y-m-d H:i:s')
     ];
 
-    // FILE UPLOAD
+    // ✅ FILE UPLOAD
     if (!empty($_FILES['coll_attachment_file']['name'])) {
 
         $tmp  = $_FILES['coll_attachment_file']['tmp_name'];
@@ -95,7 +121,7 @@ if ($_POST) {
         $type = mime_content_type($tmp);
 
         if (!in_array($type,['image/jpeg','image/png','application/pdf'])) {
-            echo json_encode(['success'=>false,'message'=>'Invalid file']);
+            echo json_encode(['success'=>false,'message'=>'Invalid file type']);
             exit;
         }
 
@@ -113,34 +139,33 @@ if ($_POST) {
         $data['document'] = $name;
     }
 
+    // ✅ SAVE COLLECTION
     $result = $objCollection->save_collection($data);
 
-    // SAVE COMMISSION
     if ($result) {
 
-        $collection = $objCollection->get_last_collection();
+        $collection_id = $objCollection->mysqlInsertid();
 
         $objCollectionCommission->save_collection_commission([
             'active_legal_id'=>$active_legal_id,
             'case_id'=>$case_id,
-            'collection_id'=>$collection['id'],
+            'collection_id'=>$collection_id,
             'parent_type'=>$category,
             'party_id'=>$party_names_id,
             'amount'=>$amount,
-            'zero_commission'=>1,
+            'zero_commission'=>$zero_commission,
             'date'=>$exp_date,
-            'created_by'=>$_SESSION['LOGIN_LEGAL_ID'],
+            'created_by'=>$_SESSION['LOGIN_LEGAL_ID'] ?? 0,
             'created_on'=>date('Y-m-d H:i:s'),
             'commission_percentage'=>0,
             'active_legal_commisionId'=>0
         ]);
     }
 
-    ob_clean();
     echo json_encode([
-        'success'=>$result,
+        'success'=>(bool)$result,
+        'message'=>$result ? "Collection saved successfully" : "Save failed",
         'c_comment'=>"Saved with Zero Commission"
     ]);
     exit;
 }
-?>

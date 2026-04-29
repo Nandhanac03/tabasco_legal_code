@@ -9,6 +9,18 @@ include_once("lib/class/class.legal_commission_voucher.php");
 $objCollectionCommission = new LegalCollectionCommission();
 $objCommissionVoucher = new LegalCommissionVoucher();
 
+include_once("lib/class/class.legal_case.php");
+$objLegalCase = new LegalCase();
+
+include_once("lib/class/class.legal_client.php");
+$objClients = new Clients();
+
+$array_legal_case    =   array();
+$array_legal_case = $objLegalCase->get_legal_case();
+
+$array_legal_clients = array();
+$array_legal_clients = $objClients->Get_Client_Information(null, null, null, 'A');
+
 include_once("lib/auth.php");
 if (LEGAL_AUTH_VIEW==false){
     header("Location: ".ROOT_DIR."permission_denied.php");

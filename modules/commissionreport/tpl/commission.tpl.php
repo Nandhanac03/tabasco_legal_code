@@ -19,30 +19,51 @@
 
         <div class="row">
             <div class="card">
-                <div class="card-body row">
-                    <div class="col-2">
-                        <select class="form-select">
-                            <option value="">Select Category</option>
-                            <option value="">Third Party</option>
-                            <option value="">Debt Collector</option>
-                            <option value="">Legal Firm</option>
-                            <option value="">Legal Team</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Case no. (eg: 112/1985)">
-                    </div>
-                    <div class="col-3 col-lg">
-                        <input type="date" class="form-control" placeholder="From Date" readonly="true" />
-                        <span class="small text-muted">From Date</span>
-                    </div>
-                    <div class="col-3 col-lg">
-                        <input type="date" class="form-control" placeholder="To Date" readonly="true" />
-                        <span class="small text-muted">To Date</span>
-                    </div>
-                    <div class="col-1">
-                        <button type="button" class="btn btn-primary">Search</button>
-                    </div>
+                <div class="card-body">
+                    <form id="search_form" class="row g-2 align-items-end">
+                        <!-- Case No. dropdown -->
+                        <div class="col-12 col-lg">
+                            <label class="form-label mb-1">Case No.</label>
+                            <select class="form-select" id="sort_by_case" name="sort_by_case">
+                                <option value="">-- All Cases --</option>
+                                <?php if (!empty($array_legal_case)): ?>
+                                    <?php foreach ($array_legal_case as $legalCase): ?>
+                                        <option value="<?= htmlspecialchars($legalCase['id']) ?>"
+                                            data-client-id="<?= htmlspecialchars($legalCase['client']) ?>">
+                                            <?= htmlspecialchars($legalCase['case_number']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+
+                        <!-- Client Name dropdown -->
+                        <div class="col-12 col-lg">
+                            <label class="form-label mb-1">Client Name</label>
+                            <select class="form-select" id="sort_by_client_name" name="sort_by_client_name">
+                                <option value="">-- All Clients --</option>
+                                <?php if (!empty($array_legal_clients)): ?>
+                                    <?php foreach ($array_legal_clients as $legalClient): ?>
+                                        <option value="<?= htmlspecialchars($legalClient['id']) ?>">
+                                            <?= htmlspecialchars($legalClient['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-lg-auto">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+
+                        <div class="col-12 col-lg-auto">
+                            <button type="button" class="btn btn-primary btn-sm commission_vouchers"
+                                onclick="window.location.href='printedcommission.html'">
+                                Commission Vouchers
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
 <style>
 .btn.btn-primary.btn-sm.commission_vouchers {
@@ -54,22 +75,11 @@
 
     </style>
 
-                    <div class="col-2">
-                      <button 
-  type="button"
-  class="btn btn-primary btn-sm commission_vouchers"
-  onclick="window.location.href='printedcommission.html'">
-Commission Vouchers
-</button>   
-
-
-
       <!-- <button class="btn btn-primary btn-sm printed" style="height:37px;"
         data-bs-toggle="modal"
         data-bs-target="#printedCommissionModal">
         Printed Commission
     </button>   -->
-</div>
 
 
 
@@ -176,63 +186,7 @@ Commission Vouchers
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <div class="table-responsive mt-3">
-                        <table class="table align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Sl no.</th>
-                                    <!-- <th>Category</th>
-                                    <th>Firm/Party/Debt</th> -->
-                                    <!-- <th>Case no.</th> -->
-                                    <th>Client Name</th>
-                                    <th>Claim Amount</th>
-                                    <th>Received Collection</th>
-                                    <!-- <th>Commission (%)</th>
-                                    <th>Commission Payable</th> -->
-                                    <th>Payment Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if ($commissions) { ?>
-                                    <?php foreach ($commissions as $key => $commission) { ?>
-                                        <tr>
-                                            <td><?= ++$key ?></td>
-                                            <!-- <td>Legal Firm</td>
-                                    <td>XYZ Associates</td> -->
-                                            <!-- <td>7191/1985</td> -->
-                                            <td><?= $commission['client_name'] ?></td>
-                                            <td><?= $commission['total_outstanding'] ?></td>
-                                            <td><?= $commission['total_collection_amount'] ?></td>
-                                            <!-- <td><?= $commission['commission_percentage'] ?></td>
-                                            <td><?= number_format($commission['received_amount'], 2)  ?></td> -->
-                                            <td>Pending</td>
-
-                                            <td>
-                                                <a href="#"
-                                                    class="btn btn-sm open-modal"
-                                                    data-id="<?= $commission['active_legal_id'] ?>"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#exampleExtraLargeModal">
-                                                    <i class="fadeIn animated bx bx-info-circle"></i>
-                                                </a>
-                                            </td>
-
-                                        </tr>
-                                    <?php } ?>
-                                <?php } else { ?>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                        <td style="color: red;">No records found </td>
-                                        <td colspan="4"></td>
-
-                                    </tr>
-                                <?php } ?>
-
-
-                            </tbody>
-                        </table>
-                    </div>
+                    <div id="load_ajax_commission_list"></div>
                 </div>
             </div>
         </div>
@@ -379,6 +333,44 @@ Commission Vouchers
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
+
+        var currentFilters = {
+            case_id:   '',
+            client_id: ''
+        };
+
+        function loadData(page, filters) {
+            filters = filters || currentFilters;
+            $.ajax({
+                url: "<?= ROOT_DIR ?>modules/commissionreport/ajax/load_commission_list.php",
+                type: "POST",
+                cache: false,
+                data: {
+                    page_no:   page,
+                    case_id:   filters.case_id,
+                    client_id: filters.client_id
+                },
+                success: function(response) {
+                    $("#load_ajax_commission_list").html(response);
+                }
+            });
+        }
+        loadData(1, currentFilters);
+
+        $('#sort_by_case').on('change', function() {
+            var clientId = $(this).find(':selected').data('client-id');
+            $('#sort_by_client_name').val(clientId || '');
+        });
+
+        $('#search_form').on('submit', function(e) {
+            e.preventDefault();
+            currentFilters = {
+                case_id:   $('#sort_by_case').val(),
+                client_id: $('#sort_by_client_name').val()
+            };
+            loadData(1, currentFilters);
+        });
+
     // Load commission data into modal
     $('#exampleExtraLargeModal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);

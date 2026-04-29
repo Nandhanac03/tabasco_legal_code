@@ -4,7 +4,8 @@ ob_start();
 
 session_start();
 
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 
 
@@ -34,24 +35,10 @@ include_once("../../../lib/auth_ajax.php");
 
 
 // ✅ Sanitize Input 
-
-$marketing  = trim($_POST['marketing'] ?? '');
-
-$client     = trim($_POST['client'] ?? '');
-$search     = trim($_POST['search_code'] ?? '');
-$user_id     = trim($_POST['select_marketing'] ?? '');
-$client     = trim($_POST['select_client'] ?? '');
-$case_number = trim($_POST['case_number'] ?? '');
-$client_name = trim($_POST['client_name'] ?? '');
-$select_case_id = trim($_POST['select_case_id'] ?? '');
+$search           = trim($_POST['search_code'] ?? '');
+$select_case_id   = trim($_POST['select_case_id'] ?? '');
 $select_client_id = trim($_POST['select_client_id'] ?? '');
-
-
-$fromDate   = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['fromDate'] ?? '') ? $_POST['fromDate'] : '';
-
-$toDate     = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['toDate'] ?? '') ? $_POST['toDate'] : '';
-
-$keyword    = htmlspecialchars(strip_tags(trim($_POST['keyword'] ?? '')));
+$fromDate         = trim($_POST['fromDate'] ?? '');
 
 
 
@@ -65,10 +52,7 @@ $offset = ($page_no - 1) * $limit;
 $search_filter = [];
 $search_filter['dateon'] = $fromDate;
 $search_filter['search'] = $search;
-$search_filter['user_id'] = $user_id;
-$search_filter['client'] = $select_client_id ?: $client;
-$search_filter['case_number'] = $case_number;
-$search_filter['client_name'] = $client_name;
+$search_filter['client'] = $select_client_id;
 $search_filter['case_id'] = $select_case_id;
 
 
@@ -95,14 +79,8 @@ $filters = [
     'offset' => $offset,
     'dateon' => $fromDate,
     'search' => $search,
-    'user_id' => $user_id,
-    'client' => $select_client_id ?: $client,
-    'case_number' => $case_number,
-    'client_name' => $client_name,
-    'case_id' => $select_case_id,
-
-    // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
-
+    'client' => $select_client_id,
+    'case_id' => $select_case_id
 ];
 
 
@@ -265,7 +243,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
     foreach ($legalData as $row) {
         $balance = 0;
-        $balance = $row['final_total_outstanding'] - $row['total_collection'];
+        $balance = $row['claim_amount'] - $row['total_collection'];
     
 
 
@@ -306,7 +284,7 @@ $fullText = $lastAction . ' ' . $lastDate;
                 echo '<td style="border: 1px solid #00000014;">' . htmlspecialchars($row['legal_status'] ?? '-') . '</td>';
             }
             echo '
-            <td style="border: 1px solid #00000014;">' . htmlspecialchars($row['final_total_outstanding'] ?? '-') . '</td>
+            <td style="border: 1px solid #00000014;">' . htmlspecialchars($row['claim_amount'] ?? '-') . '</td>
             <td style="border: 1px solid #00000014;">' . htmlspecialchars($row['total_collection'] ?? '-') . '</td>
             <td style="border: 1px solid #00000014;">' . htmlspecialchars($balance ?? '-') . '</td>
             <td style="border: 1px solid #00000014;">' . htmlspecialchars($row['total_Expense'] ?? '-') . '</td>

@@ -349,7 +349,7 @@
                                             </select>
 
                                         </div>
-
+<!-- 
                                         <div class="col-12">
                                             <label class="form-label">Stage <span class="text-danger">*</span></label>
                                             <select class="form-select modal-form format_data" id="add_roots_stage">
@@ -359,7 +359,7 @@
                                                     <option value="<?= $i ?>"><?= $i ?></option>
                                                 <?php endfor; ?>
                                             </select>
-                                        </div>
+                                        </div> -->
 
 
 

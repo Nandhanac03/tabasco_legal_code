@@ -27,6 +27,8 @@ $limit = PAGINATION_PERPAGE;
 $marketing  = trim($_POST['marketing'] ?? '');
 
 $client     = trim($_POST['client'] ?? '');
+$case_id    = trim($_POST['case_id'] ?? '');
+$client_id  = trim($_POST['client_id'] ?? '');
 
 $fromDate   = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['fromDate'] ?? '') ? $_POST['fromDate'] : '';
 
@@ -34,7 +36,9 @@ $toDate     = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['toDate'] ?? '') ? $_PO
 
 $keyword    = htmlspecialchars(strip_tags(trim($_POST['keyword'] ?? '')));
 
-
+$search_filter = [];
+$search_filter['case_id'] = $case_id;
+$search_filter['client']  = $client_id;
 
 // ✅ Validate Page Number
 
@@ -67,10 +71,9 @@ $filters = [
 
     'limit' => $limit,
 
-    'offset' => $offset
-
-    // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
-
+    'offset' => $offset,
+    'case_id' => $case_id,
+    'client' => $client_id
 ];
 
 

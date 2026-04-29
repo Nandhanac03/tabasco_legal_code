@@ -482,13 +482,13 @@
 
                                                                             <label class="form-label">Total Outstanding:</label>
 
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="number" class="form-control"
 
-                                                                                id="total_outstanding"
+                                                                                id="total_outstanding" step="any"
 
                                                                                 name="total_outstanding"
 
-                                                                                value="<?= $data['total_outstanding'] ?>" required readonly />
+                                                                                value="<?= $data['total_outstanding'] ?>" required />
 
                                                                         </div>
 
@@ -496,13 +496,13 @@
 
                                                                             <label class="form-label">Outstanding with cheque:</label>
 
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="number" class="form-control"
 
-                                                                                id="outstanding_with_cheque"
+                                                                                id="outstanding_with_cheque" step="any"
 
                                                                                 name="outstanding_with_cheque"
 
-                                                                                value="<?= $data['outstanding_with_cheque'] ?>" required readonly />
+                                                                                value="<?= $data['outstanding_with_cheque'] ?>" required />
 
                                                                         </div>
 
@@ -510,13 +510,13 @@
 
                                                                             <label class="form-label">Outstanding without cheque:</label>
 
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="number" class="form-control"
 
-                                                                                id="outstanding_without_cheque"
+                                                                                id="outstanding_without_cheque" step="any"
 
                                                                                 name="outstanding_without_cheque"
 
-                                                                                value="<?= $data['outstanding_without_cheque'] ?>" required readonly />
+                                                                                value="<?= $data['outstanding_without_cheque'] ?>" required />
 
                                                                         </div>
 
@@ -550,16 +550,25 @@
                                                                     <div class="card-body">
 
                                                                         <div class="mb-3">
+                                                                            <label class="form-label">Client Outstanding Reference:</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="outstanding_reference"
+                                                                                value="<?= $data['total_outstanding'] ?>" readonly />
+                                                                            <small class="text-muted">Total balance based on cheques.</small>
+                                                                        </div>
+
+                                                                        <div class="mb-3">
 
                                                                             <label class="form-label">Claim Amount:</label>
 
-                                                                            <input type="text" class="form-control"
+                                                                            <input type="number" class="form-control"
 
-                                                                                id="claim_amount"
+                                                                                id="claim_amount" step="any"
 
                                                                                 name="claim_amount"
 
-                                                                                value="<?= $data['claim_amount'] ?>" readonly />
+                                                                                value="<?= $data['claim_amount'] ?>" />
+                                                                            <small id="claim_warning" class="text-danger" style="display:none;">Claim amount cannot be less than the collected amount.</small>
 
                                                                         </div>
 
@@ -872,6 +881,15 @@
                     return;
                 }
 
+                // Financial validation
+                const claimAmt = parseFloat($('#claim_amount').val()) || 0;
+                const collectedAmt = parseFloat($('#collected_amount').val()) || 0;
+                if (claimAmt < collectedAmt) {
+                    alert('Claim Amount cannot be less than the Collected Amount ($' + collectedAmt.toFixed(2) + ')');
+                    $('#claim_amount').addClass('is-invalid').focus();
+                    return;
+                }
+
                 $('#frm_activelegal_information')
                     .off('submit')
                     .submit();
@@ -944,10 +962,11 @@
                                     $('#claim_amount').val(0);
                                     return;
                                 }
-                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0);
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0);
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0);
-                                $('#claim_amount').val(selectedItem.total_outstanding ?? 0);
+                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
+                                // Claim amount must be added separately, so we don't auto-fill it from outstanding
+                                // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
                             });
 
                             // Set initial selection and trigger change
@@ -1092,10 +1111,11 @@
                                     $('#claim_amount').val(0);
                                     return;
                                 }
-                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0);
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0);
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0);
-                                $('#claim_amount').val(selectedItem.total_outstanding ?? 0);
+                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
+                                // Claim amount must be added separately, so we don't auto-fill it from outstanding
+                                // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
                             });
 
                             // Set initial selection and trigger change
@@ -1191,23 +1211,50 @@
 </script>
 
 <script>
-    // Get the input elements
     const claimAmountInput = document.getElementById('claim_amount');
     const collectedAmountInput = document.getElementById('collected_amount');
     const balanceClaimInput = document.getElementById('balance_claim');
+    
+    const totalOutstandingInput = document.getElementById('total_outstanding');
+    const withChequeInput = document.getElementById('outstanding_with_cheque');
+    const withoutChequeInput = document.getElementById('outstanding_without_cheque');
 
-    // Add an event listener to the collected_amount input
-    collectedAmountInput.addEventListener('input', function() {
-        // Get the values and convert to numbers
+    function updateBalance() {
         const claimAmount = parseFloat(claimAmountInput.value) || 0;
         const collectedAmount = parseFloat(collectedAmountInput.value) || 0;
-
-        // Calculate the balance
         const balance = claimAmount - collectedAmount;
-
-        // Update the balance_claim input field
+        
+        if (balance < 0) {
+            $(claimAmountInput).addClass('is-invalid');
+            $('#claim_warning').show();
+        } else {
+            $(claimAmountInput).removeClass('is-invalid');
+            $('#claim_warning').hide();
+        }
+        
         balanceClaimInput.value = balance >= 0 ? balance.toFixed(2) : 0;
-    });
+    }
+
+    function updateOutstanding() {
+        const withCheque = parseFloat(withChequeInput.value) || 0;
+        const withoutCheque = parseFloat(withoutChequeInput.value) || 0;
+        const total = withCheque + withoutCheque;
+        totalOutstandingInput.value = total.toFixed(2);
+        document.getElementById('outstanding_reference').value = total.toFixed(2);
+    }
+
+    claimAmountInput.addEventListener('input', updateBalance);
+    collectedAmountInput.addEventListener('input', updateBalance);
+    
+    withChequeInput.addEventListener('input', updateOutstanding);
+    withoutChequeInput.addEventListener('input', updateOutstanding);
+    
+    // Also trigger on change for when values are set via JS
+    $(claimAmountInput).on('change', updateBalance);
+    $(collectedAmountInput).on('change', updateBalance);
+    
+    $(withChequeInput).on('change', updateOutstanding);
+    $(withoutChequeInput).on('change', updateOutstanding);
 </script>
 
 <?php if ($action == "edit" && $edit_id > 0 && $data['user_id'] > 0 && $data['category'] > 0) { ?>

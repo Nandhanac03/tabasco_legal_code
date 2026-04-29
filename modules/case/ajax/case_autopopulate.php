@@ -49,6 +49,7 @@ if ($_POST['Active_legal_id']) {
     $value['outstanding_cheque']         = $outstanding_cheque;
     $value['outstanding_without_cheque'] = $outstanding_without_cheque;
     $value['total_outstanding']          = $total_outstanding;
+    $value['active_legal_claim_amount']  = $activeLegal[0]['claim_amount'] ?? '0';
     
     // Return JSON response
     header('Content-Type: application/json');

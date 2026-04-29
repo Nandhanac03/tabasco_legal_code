@@ -280,7 +280,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="coll_amount" class="form-control input-amount" step="0.01" min="0">
+                                            <input type="number" name="coll_amount" class="form-control input-amount" step="any" min="0">
 
 
                                           
@@ -430,7 +430,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="amount" class="form-control input-amount" step="0.01" min="0">
+                                            <input type="number" name="amount" class="form-control input-amount" step="any" min="0">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Attachment:</label>
@@ -545,6 +545,19 @@
                 }
             }
 
+            // Commission checkbox validation (only for collection forms)
+            if (config.formId === '#collection_modal') {
+                const $check = $form.find('#zeroCommissionCheck');
+                if (!$check.is(':checked')) {
+                    $check.addClass('is-invalid');
+                    isValid = false;
+                    // Optional: Show message
+                    $('#commissionMessage').text("You must confirm 0% Commission to save.").addClass('text-danger').show();
+                } else {
+                    $check.removeClass('is-invalid');
+                }
+            }
+
             if (!isValid) return;
 
 
@@ -576,7 +589,7 @@ $.ajax({
         }
 
   
-        if (response.success === true) {
+        if (response.success) {
 
             toastBody.textContent =
                 response.message || 'Status updated successfully';
@@ -684,22 +697,19 @@ $.ajax({
         
 $('#zeroCommissionCheck').change(function() {
 
-if ($(this).is(':checked')) {
-
-    $('#commissionMessage')
-        .text("Zero Commission selected. The actual amount will be paid to the client.")
-        .removeClass('text-danger')
-        .addClass('text-success')
-        .show();
-
-} else {
-
-    $('#commissionMessage')
-        .text("Please select the commission.")
-        .removeClass('text-success')
-        .addClass('text-danger')
-        .show();
-}
+    if ($(this).is(':checked')) {
+        $('#commissionMessage')
+            .text("Zero Commission selected. The actual amount will be paid to the client.")
+            .removeClass('text-danger')
+            .addClass('text-success')
+            .show();
+    } else {
+        $('#commissionMessage')
+            .text("You must select 0% Commission to continue.")
+            .removeClass('text-success')
+            .addClass('text-danger')
+            .show();
+    }
 
 });
 

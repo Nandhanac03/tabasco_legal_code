@@ -274,7 +274,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="amount" class="form-control input-amount" step="0.01" min="0">
+                                            <input type="number" name="coll_amount" class="form-control input-amount" step="any" min="0">
 
 
                         
@@ -423,7 +423,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Amount:</label>
-                                            <input type="number" name="amount" class="form-control input-amount">
+                                            <input type="number" name="amount" class="form-control input-amount" step="any">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Attachment:</label>
@@ -472,6 +472,18 @@
 
 <script>
     $(document).ready(function() {
+        // Current financial state for validation
+        const currentClaimAmount = parseFloat("<?= $legal_case[0]['claim_amount'] ?? 0 ?>") || 0;
+        const totalCollectedSoFar = parseFloat("<?php 
+            $sum = 0;
+            if ($collection) {
+                foreach ($collection as $c) {
+                    $sum += (float)$c['amount'];
+                }
+            }
+            echo $sum;
+        ?>") || 0;
+
         // Configuration object for modal-specific settings
         const formConfig = {
             collection: {
@@ -539,6 +551,30 @@
                 }
             }
 
+            // Commission checkbox validation (only for collection forms)
+            if (config.formId === '#collection_modal') {
+                const $check = $form.find('#zeroCommissionCheck');
+                if (!$check.is(':checked')) {
+                    $check.addClass('is-invalid');
+                    isValid = false;
+                    // Optional: Show message
+                    $('#commissionMessage').text("You must confirm 0% Commission to save.").addClass('text-danger').show();
+                } else {
+                    $check.removeClass('is-invalid');
+                }
+            }
+
+            // Validate against Claim Amount (Only for collections)
+            if (config.formId === '#collection_modal') {
+                const newAmount = parseFloat($form.find('.input-amount').val()) || 0;
+                if ((totalCollectedSoFar + newAmount) > currentClaimAmount) {
+                    const remaining = currentClaimAmount - totalCollectedSoFar;
+                    $form.find('.input-amount').addClass('is-invalid');
+                    isValid = false;
+                    alert(`The total collection cannot exceed the Claim Amount of ${currentClaimAmount.toFixed(2)}.\n\nRemaining Balance: ${remaining.toFixed(2)}\nYour Entry: ${newAmount.toFixed(2)}`);
+                }
+            }
+
             if (!isValid) return;
 
             // Submit form via AJAX
@@ -549,6 +585,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
+                dataType: 'json',
 
                 success: function(response) {
                     const toastEl = document.getElementById('statusToast');
@@ -651,22 +688,19 @@
 
         $('#zeroCommissionCheck').on('change', function () {
 
-if ($(this).is(':checked')) {
-
-    $('#commissionMessage')
-        .text("Zero Commission selected.")
-        .removeClass('text-danger')
-        .addClass('text-success')
-        .show();
-
-} else {
-
-    $('#commissionMessage')
-        .text("Commission will be applied based on configuration.")
-        .removeClass('text-success')
-        .addClass('text-danger')
-        .show();
-}
+    if ($(this).is(':checked')) {
+        $('#commissionMessage')
+            .text("Zero Commission selected. The actual amount will be paid to the client.")
+            .removeClass('text-danger')
+            .addClass('text-success')
+            .show();
+    } else {
+        $('#commissionMessage')
+            .text("You must select 0% Commission to continue.")
+            .removeClass('text-success')
+            .addClass('text-danger')
+            .show();
+    }
 });
 
 

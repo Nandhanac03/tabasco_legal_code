@@ -169,10 +169,16 @@ WHERE 1";
             $params['client'] = $filters['client'];
         }
         if (!empty($filters['search'])) {
-            $sql .= " AND (AL.code LIKE :search OR AL.notes LIKE :search1 OR U1.user_name LIKE :search2)";
+            $sql .= " AND (AL.code LIKE :search 
+                        OR AL.notes LIKE :search1 
+                        OR U2.user_name LIKE :search2 
+                        OR LC.name LIKE :search3 
+                        OR EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :search4))";
             $params['search'] = '%' . $filters['search'] . '%';
             $params['search1'] = '%' . $filters['search'] . '%';
             $params['search2'] = '%' . $filters['search'] . '%';
+            $params['search3'] = '%' . $filters['search'] . '%';
+            $params['search4'] = '%' . $filters['search'] . '%';
         }
         if (!empty($filters['case_number'])) {
             $sql .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :case_number)";
@@ -224,7 +230,10 @@ WHERE 1";
     function Get_LEGAL_TOTAL_COUNT($offset = '', $limit = '', $status = '', $legal_status = '', $filters = [])
     {
         $params = [];
-        $Sqlcmd = "SELECT COUNT(*) AS TOTAL_RECORDS FROM legal_activelegal AL LEFT JOIN legal_client LC ON LC.id = AL.client WHERE 1";
+        $Sqlcmd = "SELECT COUNT(*) AS TOTAL_RECORDS FROM legal_activelegal AL 
+                   LEFT JOIN legal_client LC ON LC.id = AL.client 
+                   LEFT JOIN users U1 ON AL.user_id = U1.user_Id
+                   WHERE 1";
         if (!empty($status)) {
             $Sqlcmd .= " AND AL.status = :status";
             $params['status'] = $status;
@@ -246,9 +255,16 @@ WHERE 1";
             $params['client'] = $filters['client'];
         }
         if (!empty($filters['search'])) {
-            $Sqlcmd .= " AND (AL.code LIKE :search OR AL.notes LIKE :search1 )";
+            $Sqlcmd .= " AND (AL.code LIKE :search 
+                         OR AL.notes LIKE :search1 
+                         OR U1.user_name LIKE :search2 
+                         OR LC.name LIKE :search3 
+                         OR EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :search4))";
             $params['search'] = '%' . $filters['search'] . '%';
             $params['search1'] = '%' . $filters['search'] . '%';
+            $params['search2'] = '%' . $filters['search'] . '%';
+            $params['search3'] = '%' . $filters['search'] . '%';
+            $params['search4'] = '%' . $filters['search'] . '%';
         }
         if (!empty($filters['case_number'])) {
             $Sqlcmd .= " AND EXISTS (SELECT 1 FROM legal_case C WHERE C.active_legal_id = AL.id AND C.case_number LIKE :case_number)";

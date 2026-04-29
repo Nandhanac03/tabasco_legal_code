@@ -55,114 +55,82 @@ if ($conn->connect_error) {
 // Get Filters
 
 // ✅ Sanitize Input
-
-$marketing  = trim($_GET['marketing'] ?? '');
-
-$client     = trim($_GET['client'] ?? '');
-
-$fromDate   = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['fromDate'] ?? '') ? $_GET['fromDate'] : '';
-
-$toDate     = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['toDate'] ?? '') ? $_GET['toDate'] : '';
-
-$keyword    = htmlspecialchars(strip_tags(trim($_GET['keyword'] ?? '')));
-
-$keyword = $_GET['keyword'] ?? '';
-
-
+$search           = trim($_GET['search_code'] ?? '');
+$select_case_id   = trim($_GET['select_case_id'] ?? '');
+$select_client_id = trim($_GET['select_client_id'] ?? '');
+$fromDate         = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['fromDate'] ?? '') ? $_GET['fromDate'] : '';
 
 // Prepare SQL Query
-
 $filters = [
-
     'status' => 'A',
-
-    // You can also add 'fromDate', 'toDate', 'marketing', etc., if your method supports filtering
-
+    'legal_status' => 'Active',
+    'dateon' => $fromDate,
+    'search' => $search,
+    'client' => $select_client_id,
+    'case_id' => $select_case_id
 ];
 
 $legalData = $objActiveLegal->Get_ActiveLegal_Information($filters);
 
-
-
 // Create Spreadsheet
-
 $spreadsheet = new Spreadsheet();
-
 $sheet = $spreadsheet->getActiveSheet();
-
 $sheet->setTitle('Debt Collector');
 
-
-
 // Set Headers
-
-$headers = ["Code", "Date", "Marketing", "Client", "Present Legal Firm", "Case Status", "Claim Amount", "Received Claim", "Balance to Claim", "Expense"];
-
+$headers = ["Code", "Date", "Marketing", "Client", "Present Legal Firm", "Case Status", "Claim Amount", "Collection Received", "Balance to Claim", "Expense"];
 $sheet->fromArray($headers, null, 'A1');
 
-
-
 // Style Headers
-
 $headerStyle = [
-
     'font' => ['bold' => true],
-
     'borders' => ['bottom' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]]
-
 ];
-
 $sheet->getStyle('A1:J1')->applyFromArray($headerStyle);
 
 // Auto Column Width
-
 foreach (range('A', 'J') as $col) {
-
     $sheet->getColumnDimension($col)->setAutoSize(true);
-
 }
 
 $dataRows = [];
+if ($legalData) {
+    include_once("../lib/class/class.legal_expense.php");
+    $objExpense = new Expense();
+    include_once("../lib/class/class.legal_collection.php");
+    $objCollection = new Collection();
 
-foreach ($legalData as $data) {
+    foreach ($legalData as $data) {
+        $total_collection = $objCollection->total_collection($data['id']);
+        $total_Expense = $objExpense->total_expense($data['id']);
+        $balance = $data['claim_amount'] - $total_collection;
 
-    array_push($dataRows, [$data['code'], $data['dateon'], "{$data['User_Client']}({$data['Usertype_Client']})", $data['ClientName'], $data['Present_Legal_Firm_Name'], $data['case_status'] ?? 'Open', $data['claim_amount'], $data['balance_claim'], $data['expense_amount'], "----",]);
-
+        array_push($dataRows, [
+            $data['code'], 
+            $data['dateon'], 
+            "{$data['User_Client']} ({$data['Usertype_Client']})", 
+            $data['ClientName'], 
+            $data['Present_Legal_Firm_Name'], 
+            "Active", // legal_status
+            $data['claim_amount'], 
+            $total_collection, 
+            $balance, 
+            $total_Expense
+        ]);
+    }
 }
-
-
 
 $rowNumber = 2;
-
 foreach ($dataRows as $row) {
-
     $sheet->fromArray($row, null, 'A' . $rowNumber++);
-
 }
 
-
-
 // Send as Excel file
-
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
 header('Content-Disposition: attachment; filename="legal_activelegal_' . date("Y-m-d_H-i-s") . '.xlsx"');
-
-
+header('Cache-Control: max-age=0'); // Clear buffer for clean file
 
 $writer = new Xlsx($spreadsheet);
-
 $writer->save('php://output');
-
-
-
-// Free Resources
-
-$stmt->free_result();
-
-$stmt->close();
-
-$conn->close();
-
 exit();
 

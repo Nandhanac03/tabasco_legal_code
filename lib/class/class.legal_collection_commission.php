@@ -70,10 +70,14 @@ class LegalCollectionCommission extends dbcon
             $params['created_on'] = $data['created_on'] ?? date('Y-m-d H:i:s');
         }
 
-        $setParts[] = "updated_by = :updated_by";
-        $params['updated_by'] = $data['updated_by'];
-        $setParts[] = "updated_on = :updated_on";
-        $params['updated_on'] = $data['updated_on'];
+        if (!empty($data['updated_by'])) {
+            $setParts[] = "updated_by = :updated_by";
+            $params['updated_by'] = $data['updated_by'];
+        }
+        if (!empty($data['updated_on'])) {
+            $setParts[] = "updated_on = :updated_on";
+            $params['updated_on'] = $data['updated_on'];
+        }
 
         // join set parts with commas
         $SqlCmd .= " " . implode(", ", $setParts);
@@ -314,6 +318,11 @@ class LegalCollectionCommission extends dbcon
             ON la.client = lc.id
         WHERE 1
     ";
+        if (!empty($filters['client'])) {
+            $SqlCmd .= " AND la.client = :client";
+            $params['client'] = $filters['client'];
+        }
+    
 
         // ✅ Optional filters
         if (!empty($filters['case_id'])) {

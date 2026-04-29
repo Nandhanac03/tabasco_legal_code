@@ -43,7 +43,7 @@
 
 
 
-              <div class="col-12 col-lg">
+              <div class="col-12 col-lg-5">
                     <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
                       <option value="">Case No.</option>
                       <?php if (!empty($array_legal_case)): ?>
@@ -57,7 +57,7 @@
                   </div>
 
 
-                  <div class="col-12 col-lg">
+                  <div class="col-12 col-lg-5">
                     <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
                       <option value="">Client Name</option>
                       <?php if (!empty($array_legal_clients)): ?>
@@ -69,6 +69,18 @@
                       <?php endif; ?>
                     </select>
                   </div>
+
+
+
+                  <div class="col-12 col-lg-2 ">
+                  <button type="button" class="btn btn-primary" id="btn_search_client">Search</button>
+                  <button type="reset" class="btn btn-secondary ms-2" id="btn_clear_client">Clear</button>
+                  <input type="hidden" class="form-control" id="sort_by_fromDate" placeholder="From Date" value="" />
+                  <input type="hidden" class="form-control" id="sort_by_toDate" placeholder="To Date" value="" />
+
+                </div>
+
+
                 <!-- <div class="col-12 col-lg">
                   <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
                     <option value="">Sort By Marketing / Internal Staff</option>
@@ -91,22 +103,7 @@
               </div><!--end row-->
 
             </div>
-            <div class="card-body">
-              <div class="row g-3">
-
-                <div class="col-12 col-lg">
-                  <input type="text" class="form-control" id="text_keyword" placeholder="Search By Client Name, Email , Contact Name & Numbers" value="" />
-                </div>
-                <div class="col-12 col-lg ">
-                  <button type="button" class="btn btn-primary" id="btn_search_client">Search</button>
-                  <button type="reset" class="btn btn-secondary ms-2" id="btn_clear_client">Clear</button>
-                  <input type="hidden" class="form-control" id="sort_by_fromDate" placeholder="From Date" value="" />
-                  <input type="hidden" class="form-control" id="sort_by_toDate" placeholder="To Date" value="" />
-
-                </div>
-
-              </div><!--end row-->
-            </div>
+          
           </div>
 
           <div class="card">
