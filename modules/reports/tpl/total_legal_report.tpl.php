@@ -30,7 +30,7 @@
 
                             <div class="row g-3">
 
-                                <div class="row g-3">
+                            <div class="row g-3">
                                   <div class="col-12 col-lg">
                     <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
                       <option value="">Case No.</option>
@@ -79,20 +79,7 @@
                         <div class="card-body">
 
                             <div class="row g-3">
-                                <div class="col-12 col-lg">
-
-                                    <input class="form-control" type="text" placeholder="Search by Code" id="search_code">
-
-                                </div>
-
-
-                                <div class="col-12 col-lg">
-
-                                    <input type="date" class="form-control" placeholder="From Date" id="fromDate" />
-
-                                    <span class="small text-muted">Date</span>
-
-                                </div>
+                                
 
 
 
@@ -118,10 +105,10 @@
             <div class="col-12 col-md-12">
                 <div class="card radius-10">
                     <div class="card-header">
-                        <h6><i class="fadeIn animated bx bx-file-blank me-2"></i>Total Legal Statement</h6>
+                        <h6><i class="fadeIn animated bx bx-file-blank me-2"></i>Bad Debts Statement</h6>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" style="overflow:auto!important;">
+                        <div class="table-responsive">
 
                             <div id="load_ajax_bad_depts"></div>
                         </div>
@@ -138,6 +125,8 @@
     $(document).ready(function() {
 
 
+
+
         $('#sort_by_case').change(function() {
       const clientId = $(this).find(':selected').data('client-id');
       if (clientId) {
@@ -146,8 +135,6 @@
         $('#sort_by_client_name').val('').trigger('change');
       }
     });
-
-
 
 
 
@@ -185,25 +172,23 @@
             }
         });
 
-        // Store current search filters globally so pagination retains them
-        var currentFilters = {};
-
         loadData(1);
 
-        // Pagination code – pass stored filters
+        // Pagination code
+
         $(document).on("click", ".pagination li a", function(e) {
 
             e.preventDefault();
 
             var pageId = $(this).attr("id");
 
-            loadData(pageId, currentFilters);
+            loadData(pageId);
 
         });
 
 
-        // Search form submission
-        document.getElementById('search_form').addEventListener('submit', function(e) {
+         // Search form submission
+         document.getElementById('search_form').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const fromDate    = document.getElementById('fromDate')            ? document.getElementById('fromDate').value            : '';
@@ -241,6 +226,7 @@
 
 
     });
+
 
 
 

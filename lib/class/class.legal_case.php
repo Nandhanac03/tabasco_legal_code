@@ -109,7 +109,7 @@ class LegalCase extends dbcon
         }
         $this->_output_alert = 'Ok';
         $this->_last_query = $sqlCmd;
-        $this->_inserted_id = $this->mysqlInsertid();
+        
         $result = $this->Query($sqlCmd, $params);
 
         /* ===== GET INSERTED ID ===== */
@@ -117,6 +117,7 @@ class LegalCase extends dbcon
         
         if ($result && !$isUpdate) {
             $id = $this->mysqlInsertid();
+            $this->_inserted_id = $id;
         }
         
         /* ===== ACTIVITY LOG ===== */
@@ -481,7 +482,7 @@ return $result;
         }
         $this->_output_alert = 'Ok';
         $this->_last_query = $sqlCmd;
-        $this->_inserted_id = $this->mysqlInsertid();
+        
         $result = $this->Query($sqlCmd, $params);
 
         /* ===== GET INSERTED ID ===== */
@@ -489,6 +490,7 @@ return $result;
         
         if ($result && !$isUpdate) {
             $id = $this->mysqlInsertid();
+            $this->_inserted_id = $id;
         }
         
         /* ===== ACTIVITY LOG ===== */

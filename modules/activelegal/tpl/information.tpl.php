@@ -153,6 +153,24 @@
 
 
 
+
+                            
+                            echo createNavItem(
+
+                                "activelegal",
+
+                                "RelatedCases",
+ 
+                                "cash",
+
+                                "relatedcases",
+
+                                $edit_id
+
+                            );
+
+
+
                             // Inactive tab
 
                             ?>

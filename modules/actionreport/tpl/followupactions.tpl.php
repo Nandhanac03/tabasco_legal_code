@@ -21,6 +21,7 @@
     <!--end breadcrumb-->
     <div class="row">
       <div class="col-12">
+      <form id="search_form">
         <div class="card">
           <div class="card-body">
  <div class="row g-3">
@@ -71,9 +72,9 @@
             </div>
           </div>
         </div>
+                                            </form>
       </div>
     </div>
-
     <!-- end page content-->
 
   </div>
@@ -81,13 +82,14 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<script>
+$(document).ready(function () {
 
+  let currentFilters = {};
 
-
-    $('#sort_by_case').change(function() {
+  $('#sort_by_case').change(function() {
             const clientId = $(this).find(':selected').data('client-id');
             if (clientId) {
                 $('#sort_by_client_name').val(clientId).trigger('change');
@@ -96,45 +98,44 @@
             }
         });
 
-        document.getElementById('search_form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const select_case_id = document.getElementById('sort_by_case').value;
-            const select_client_id = document.getElementById('sort_by_client_name').value;
-            const filters = {
-                select_case_id: select_case_id,
-                select_client_id: select_client_id,
-            };
-            loadData(1, filters);
-        });
+  // ✅ AJAX loader with filters
+  function loadData(page, filters = {}) {
+    $.ajax({
+      url: "<?= ROOT_DIR ?>modules/actionreport/ajax/load_followup_action.php",
+      type: "POST",
+      data: {
+        page_no: page,
+        select_case_id: filters.select_case_id || '',
+        select_client_id: filters.select_client_id || ''
+      },
+      success: function (response) {
+        $("#load_ajax_followcaseactions").html(response);
+      }
+    });
+  }
 
+  // ✅ Initial load
+  loadData(1);
 
+  // ✅ Search submit
+  $('#search_form').on('submit', function (e) {
+    e.preventDefault();
 
-    function loadData(page) {
-      $.ajax({
-        url: "<?= ROOT_DIR ?>modules/actionreport/ajax/load_followup_action.php",
-        type: "POST",
-        cache: false,
-        data: {
-          page_no: page
-        },
-        success: function(response) {
-          $("#load_ajax_followcaseactions").html(response);
-        }
-      });
-    }
-    loadData(1);
-           // Pagination code
-           $(document).on("click", ".pagination li a", function(e) {
-            e.preventDefault();
-            var pageId = $(this).attr("id");
-            // get current filters
-            const select_case_id = document.getElementById('sort_by_case').value;
-            const select_client_id = document.getElementById('sort_by_client_name').value;
-            const filters = {
-                select_case_id: select_case_id,
-                select_client_id: select_client_id,
-            };
-            loadData(pageId, filters);
-        });
+    currentFilters = {
+      select_case_id: $('#sort_by_case').val(),
+      select_client_id: $('#sort_by_client_name').val()
+    };
+
+    loadData(1, currentFilters);
   });
+
+  // ✅ Pagination with filters preserved
+  $(document).on("click", ".pagination li a", function (e) {
+    e.preventDefault();
+
+    let pageId = $(this).attr("id");
+    loadData(pageId, currentFilters);
+  });
+
+});
 </script>

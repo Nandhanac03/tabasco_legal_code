@@ -24,15 +24,15 @@ All These expenses must reflect directly as expense in Collection & Expense sect
 
 9- Case action: search bar required
 
-10- Follow-up Action: search bar required
+10- Follow-up Action: search bar required - check in local
 
 11- In collection & Expense: I can't add Decimals and I'm forced to Cheech the 0% Commission.
 
 12-Outstanding amount is different than legal claimed amount. Claimed amount must add
 separately
 
-13-In all sections, search by case number and client name must be added.
+13-In all sections, search by case number and client name must be added. = total legal cross 
 
-14- In Al Qranfal file, the amount in not correct. Total 2 cases 220000 should be. the system made them 220000 $ 120000.
+14- In Al Qranfal file, the amount in not correct. Total 2 cases 220000 should be. the system made them 220000 $ 120000.-done 
 
-15-In Add case claimed amount must be added because usually its deferent from the outstanding, mentioned in the client section
+15-In Add case claimed amount must be added because usually its deferent from the outstanding, mentioned in the client section - done

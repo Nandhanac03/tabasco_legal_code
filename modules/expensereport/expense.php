@@ -21,6 +21,9 @@ $action = $_GET['action'];
 $caseid = $_GET['param1'];
 
 $fees_types = $objFees_type->get_feesType();
+// echo"<pre>";
+// print_r($fees_types);
+// exit;
 
 $legal_case = $objLegalCase->get_case($caseid);
 $active_legal = $objActiveLegal->Get_ActiveLegal_Information(['id' => $legal_case[0]['active_legal_id']]);
@@ -38,7 +41,9 @@ $filter['case_id'] = $case_id;
 
 $collection = $objCollection->get_collection('', $filter);
 $expense = $objExpense->get_expense('', $filter);
-
+//  echo"<pre>";
+//  print_r($expense);
+//  exit;
 // $collection_id = '';
 // if ($collection) {
 //     $collection_id = $collection[0]['id'];

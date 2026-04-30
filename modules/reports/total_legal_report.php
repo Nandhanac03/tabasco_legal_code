@@ -39,7 +39,7 @@ $array_legal_case = $objLegalCase->get_legal_case();
 $array_legal_clients = array();
 $array_legal_clients = $objClients->Get_Client_Information(null, null, null, 'A');
 
-
+//echo '<pre>';print_r($array_legal_client_marketing);exit;
 
 $actve_sub_menu =   'total_legal_report';
 

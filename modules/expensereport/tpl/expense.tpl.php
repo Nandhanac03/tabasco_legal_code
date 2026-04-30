@@ -127,7 +127,7 @@
                                                                                         <td><?= $data['date'] ?></td>
                                                                                         <td class="description-cell"><?= $data['description'] ?></td>
                                                                                         </td>
-                                                                                       <td><?= !empty($data['fees_type_title']) ? $data['fees_type'] : $data['category_type'] ?></td>
+                                                                                       <td><?= !empty($data['fees_type']) ? $data['fees_type'] : $data['fees_type'] ?></td>
                                                                                         <td><?= $data['amount'] ?></td>
                                                                                         <td>
                                                                                             <?php if (!empty($data['document'])): ?>
@@ -386,7 +386,7 @@
                                                 <option value="">------ Select ------</option>
                                                 <?php if ($fees_types) { ?>
                                                     <?php foreach ($fees_types as $fee_type) { ?>
-                                                        <option value="<?= $fee_type['id'] ?>"><?= $fee_type['title'] ?></option>
+                                                        <option value="<?= $fee_type['title'] ?>"><?= $fee_type['title'] ?></option>
                                                     <?php } ?>
 
                                                 <?php } ?>

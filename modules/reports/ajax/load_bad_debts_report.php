@@ -98,6 +98,7 @@ $filters = [
 
 
 $legalData = $objActiveLegal->Get_ActiveLegal_Information($filters);
+//echo '<pre>';print_r($legalData);exit;
 if ($legalData) {
     foreach ($legalData as $key => $value) {
         $with_client = $objCheque->get_cheque_total($value['client'], 'C');
