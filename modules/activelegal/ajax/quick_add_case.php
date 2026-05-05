@@ -4,49 +4,56 @@ include_once("../../../lib/class/class.dbcon.php");
 include_once("../../../lib/class/class.legal_case.php");
 
 session_start();
+header('Content-Type: application/json');
 
 $objLegalCase = new LegalCase();
-$user_id = $_SESSION['LOGIN_LEGAL_ID'];
+$user_id = $_SESSION['LOGIN_LEGAL_ID'] ?? 0;
 
-if ($_POST) {
-    $input_data = [];
-    $input_data['active_legal_id']           = $_POST['active_legal_id'];
-    $input_data['case_number']               = $_POST['case_number'];
-    $input_data['category']                  = $_POST['category'];
-    $input_data['court']                     = $_POST['court'];
-    $input_data['register_date']             = $_POST['register_date'];
-    $input_data['case_mode']                 = $_POST['case_mode'];
-    $input_data['lawyer']                    = $_POST['lawyer'];
-    $input_data['location']                  = $_POST['location'];
-    $input_data['created_id']                = $user_id;
-    $input_data['created_on']                = date('Y-m-d H:i:s');
-    $input_data['updated_id']                = $user_id;
-    $input_data['updated_on']                = date('Y-m-d H:i:s');
-    $input_data['status']                    = 'A';
+$case_id = $_POST['case_id'] ?? '';
+$related_ids = $_POST['related_case_ids'] ?? [];
 
-    if ($objLegalCase->saveCase($input_data)) {
-        $id = $objLegalCase->_inserted_id;
-        
-        // Also save root (required by the system)
-        $root_array = [];
-        $root_array['case_id']        = $id;
-        $root_array['active_legal_id'] = $_POST['active_legal_id'];
-        $root_array['court']          = $_POST['court'];
-        $root_array['stage']          = 1;
-        $root_array['lawyer']         = $_POST['lawyer'];
-        $root_array['register_date']  = $_POST['register_date'];
-        $root_array['category']       = $_POST['category'];
-        $root_array['created_on']     = date('Y-m-d H:i:s');
-        $root_array['created_by']     = $user_id;
-        $root_array['status']         = 'A';
-        
-        $objLegalCase->saveRoots($root_array);
-
-        echo json_encode(['success' => true, 'message' => 'Case added successfully']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to add case']);
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+if (!$case_id) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing case_id'
+    ]);
+    exit;
 }
-?>
+
+if (empty($related_ids)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'No related cases selected'
+    ]);
+    exit;
+}
+
+try {
+
+    foreach ($related_ids as $rid) {
+
+        if (!$rid || $rid == $case_id) continue;
+
+        $result = $objLegalCase->saveCaseRelation(
+            $case_id,
+            $rid,
+            $user_id
+        );
+
+        if (!$result) {
+            throw new Exception("Insert failed for ID: " . $rid);
+        }
+    }
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Saved successfully'
+    ]);
+
+} catch (Exception $e) {
+
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
+}

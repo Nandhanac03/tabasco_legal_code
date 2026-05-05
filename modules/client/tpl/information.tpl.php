@@ -90,21 +90,43 @@
                                     </div>
 
                                     <?php if ($edit_id) { ?>
-                                      <div class="mb-3">
-                                        <?php if (empty($data['type']) || $data['type'] == 'M') { ?>
-                                          <label class="form-label"> </label>
-                                          <label>
-                                            <input type="radio" name="which_type_user" value="M" onchange="toggleDiv()"
-                                              <?php echo (empty($data['type']) || $data['type'] == 'M') ? 'checked' : ''; ?> />
-                                            Marketing
-                                          </label>
-                                        <?php } else if ($data['type'] == 'I') { ?>
-                                          <label>
-                                            <input type="radio" name="which_type_user" value="I" onchange="toggleDiv()"
-                                              <?php echo ($data['type'] == 'I') ? 'checked' : ''; ?> />
-                                            Internal Staff
-                                          </label>
-                                        <?php } ?>
+                                   
+
+<div class="mb-3">
+    <label class="form-label">Type</label><br>
+
+    <!-- Marketing -->
+    <label>
+        <input type="radio" name="which_type_user" value="M"
+            onchange="toggleDiv()"
+            <?= (empty($data['type']) || $data['type'] == 'M') ? 'checked' : '' ?>>
+        Marketing
+    </label>
+
+    &nbsp;&nbsp;
+
+    <!-- Internal -->
+    <label>
+        <input type="radio" name="which_type_user" value="I"
+            onchange="toggleDiv()"
+            <?= ($data['type'] == 'I') ? 'checked' : '' ?>>
+        Internal Staff
+    </label>
+
+    &nbsp;&nbsp;
+
+    <!-- External Client -->
+    <label>
+        <input type="radio" name="which_type_user" value="E"
+            onchange="toggleDiv()"
+            <?= ($data['type'] == 'E') ? 'checked' : '' ?>>
+        External Client
+    </label>
+
+</div>
+
+
+
                                       </div>
                                     <?php } else { ?>
                                       <div class="mb-3">
@@ -119,6 +141,13 @@
                                           <input type="radio" name="which_type_user" value="I" onchange="toggleDiv()"
                                             <?php echo ($data['type'] == 'I') ? 'checked' : ''; ?> />
                                           Internal Staff
+                                        </label>
+
+
+                                        <label>
+                                          <input type="radio" name="which_type_user" value="E" onchange="toggleDiv()"
+                                            <?php echo ($data['type'] == 'E') ? 'checked' : ''; ?> />
+                                        External Staff
                                         </label>
 
 
@@ -182,7 +211,7 @@
                                           </select>
 
                                           <a href="javascript:void(0);" id="addClientLink" class="text-primary mt-1 d-inline-block">
-                                            + Add Client
+                                            + Add Cliaent
                                           </a>
                                         </div>
 
@@ -275,6 +304,11 @@
 
 
 
+                            
+
+
+                                    <!-- ************ -->
+                                    <div id="externalClient" >
 
                                     <div class="mb-3">
                                       <label class="form-label">Office
@@ -350,11 +384,13 @@
                                     <?php }
                                     ?>
 
+
                                     <div class="mb-3">
                                       <button type="submit" class="btn btn-primary px-5">Save</button>
                                       <button type="reset" class="btn btn-secondary px-5">Reset</button>
                                     </div>
 
+                                    </div>
 
 
                                   </div>
@@ -598,19 +634,47 @@ if ($action == 'edit') {
       });
   }
 
+
   function toggleDiv() {
     var marketingStaff = document.getElementById("marketingStaff");
     var internalStaff = document.getElementById("internalStaff");
-    var which_type_user = document.querySelector('input[name="which_type_user"]:checked').value;
 
-    if (which_type_user === "M") {
-      marketingStaff.style.display = "block";
-      internalStaff.style.display = "none";
-    } else {
-      marketingStaff.style.display = "none";
-      internalStaff.style.display = "block";
+    var type = document.querySelector('input[name="which_type_user"]:checked').value;
+
+    if (type === "M") {
+        marketingStaff.style.display = "block";
+        internalStaff.style.display = "none";
+    } 
+    else if (type === "I") {
+        marketingStaff.style.display = "none";
+        internalStaff.style.display = "block";
+    } 
+    else if (type === "E") {
+        marketingStaff.style.display = "none";
+        internalStaff.style.display = "none";
+
+        // show only external fields if you have a div for it
+        document.getElementById("externalClient")?.classList.remove("d-none");
     }
-  }
+}
+
+
+  // function toggleDiv() {
+  //   var marketingStaff = document.getElementById("marketingStaff");
+  //   var internalStaff = document.getElementById("internalStaff");
+  //   var externalClient = document.getElementById("externalClient");
+  //   var which_type_user = document.querySelector('input[name="which_type_user"]:checked').value;
+
+  //   if (which_type_user === "M") {
+  //     marketingStaff.style.display = "block";
+  //     internalStaff.style.display = "none";
+  //     externalClient.style.display = "block";
+  //   } else {
+  //     marketingStaff.style.display = "none";
+  //     internalStaff.style.display = "block";
+  //     externalClient.style.display = "none";
+  //   }
+  // }
 </script>
 <?php if ($action == 'edit') { ?>
   <script>

@@ -30,11 +30,21 @@ $case_modes       = $objLegalCaseMode->get_case_mode();
 $array_legal_case    =   array();
 $array_legal_case = $objLegalCase->get_legal_case();
 
+// Fetch all active legals for the dropdown (with client info)
+$dbTemp = new Dbcon();
+$array_active_legals = $dbTemp->SELECT_MultiFetch(
+    "SELECT al.id, al.code AS case_number, al.client, cli.name AS client_name
+     FROM legal_activelegal AS al
+     LEFT JOIN legal_client AS cli ON al.client = cli.id
+     WHERE al.status = 'A'
+     ORDER BY al.id DESC"
+) ?: [];
+
 $list1            = $objUsers->get_all_Users(null, '', 23) ?: [];
 $list2            = $objUsers->get_all_Users(null, '', 24) ?: [];
 $lawyerusersList  = array_merge($list1, $list2);
 
-
+$array_legal_clients    =   array();
 $array_legal_clients = $objClients->Get_Client_Information(null, null, null, 'A');
 
 

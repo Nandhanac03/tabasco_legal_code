@@ -109,7 +109,7 @@ class LegalCase extends dbcon
         }
         $this->_output_alert = 'Ok';
         $this->_last_query = $sqlCmd;
-        
+        $this->_inserted_id = $this->mysqlInsertid();
         $result = $this->Query($sqlCmd, $params);
 
         /* ===== GET INSERTED ID ===== */
@@ -117,7 +117,6 @@ class LegalCase extends dbcon
         
         if ($result && !$isUpdate) {
             $id = $this->mysqlInsertid();
-            $this->_inserted_id = $id;
         }
         
         /* ===== ACTIVITY LOG ===== */
@@ -145,6 +144,41 @@ class LegalCase extends dbcon
         return $result;
         
     }
+
+
+
+    public function saveCaseRelation($case_id, $related_case_id, $user_id)
+    {
+        // Check for existing relation in either direction
+        $check = $this->SQL_Fetch(
+            "SELECT id FROM legal_case_relations 
+             WHERE status = 'A' 
+             AND ((case_id = :a AND related_case_id = :b) OR (case_id = :b2 AND related_case_id = :a2))",
+            ['a' => $case_id, 'b' => $related_case_id, 'b2' => $related_case_id, 'a2' => $case_id]
+        );
+
+        if ($check) {
+            // Relation already exists, skip
+            return true;
+        }
+
+        $sql = "INSERT INTO legal_case_relations 
+                (case_id, related_case_id, created_on, created_by, status)
+                VALUES 
+                (:case_id, :related_case_id, NOW(), :created_by, 'A')";
+    
+        $params = [
+            'case_id' => $case_id,
+            'related_case_id' => $related_case_id,
+            'created_by' => $user_id
+        ];
+    
+        return $this->Query($sql, $params);
+    }
+    
+    
+    
+
 
     function get_case($id = '', $active_legal_id = '', $case_number = '')
     {
@@ -482,7 +516,7 @@ return $result;
         }
         $this->_output_alert = 'Ok';
         $this->_last_query = $sqlCmd;
-        
+        $this->_inserted_id = $this->mysqlInsertid();
         $result = $this->Query($sqlCmd, $params);
 
         /* ===== GET INSERTED ID ===== */
@@ -490,7 +524,6 @@ return $result;
         
         if ($result && !$isUpdate) {
             $id = $this->mysqlInsertid();
-            $this->_inserted_id = $id;
         }
         
         /* ===== ACTIVITY LOG ===== */
