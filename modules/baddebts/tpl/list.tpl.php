@@ -577,58 +577,27 @@
 
   $("#exportExcel").click(() => {
 
-    // console.log('haielo')
+    var select_case_id   = $("#sort_by_case").val().trim();
+    var select_client_id = $("#sort_by_client_name").val().trim();
+    var search_code      = $("#search_code").val().trim();
+    var fromDate         = $("#fromDate").val().trim();
 
+    var exportUrl = "<?= ROOT_DIR ?>excel/baddepts.php?type=excel";
 
-
-    var marketing = $("#marketing").val().trim();
-
-    var client = $("#client").val().trim();
-
-    var searchFirm = $("#search_firm").val().trim();
-
-    var fromDate = $("#fromDate").val().trim();
-
-    var toDate = $("#toDate").val().trim();
-
-    var actionDate = $("#action_date").val().trim();
-
-    var exportUrl = "<?= ROOT_DIR ?>excel/activelegal.php?type=excel";
-
-    if (marketing.length > 0) {
-
-      exportUrl += "&marketing=" + encodeURIComponent(marketing);
-
+    if (select_case_id.length > 0) {
+      exportUrl += "&select_case_id=" + encodeURIComponent(select_case_id);
     }
 
-    if (client.length > 0) {
-
-      exportUrl += "&client=" + encodeURIComponent(client);
-
+    if (select_client_id.length > 0) {
+      exportUrl += "&select_client_id=" + encodeURIComponent(select_client_id);
     }
 
-    if (searchFirm.length > 0) {
-
-      exportUrl += "&searchfirm=" + encodeURIComponent(searchFirm);
-
+    if (search_code.length > 0) {
+      exportUrl += "&search_code=" + encodeURIComponent(search_code);
     }
 
-    if (fromDate != '') {
-
-      exportUrl += "&fromdate=" + encodeURIComponent(fromDate);
-
-    }
-
-    if (toDate != '') {
-
-      exportUrl += "&todate=" + encodeURIComponent(toDate);
-
-    }
-
-    if (actionDate != '') {
-
-      exportUrl += "&actiondate=" + encodeURIComponent(actionDate);
-
+    if (fromDate !== '') {
+      exportUrl += "&fromDate=" + encodeURIComponent(fromDate);
     }
 
     window.location.href = exportUrl;

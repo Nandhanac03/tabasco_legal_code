@@ -323,7 +323,10 @@
                                                                             </div>
 
                                                                             <div class="mb-3">
-                                                                                <label class="form-label" for="select_client"> Client:<span class="asterisk text-danger">*</span>
+                                                                                <label class="form-label w-100" for="select_client"> Client:<span class="asterisk text-danger">*</span>
+                                                                                    <?php if (!$isEdit): ?>
+                                                                                        <a href="javascript:void(0);" onclick="openAddClientModal('marketing')" class="float-end btn btn-sm btn-outline-primary py-0"><i class="lni lni-plus"></i> Add External Client</a>
+                                                                                    <?php endif; ?>
                                                                                 </label>
 
                                                                                 <select
@@ -366,7 +369,10 @@
                                                                             </div>
 
                                                                             <div class="mb-3">
-                                                                                <label class="form-label" for="select_Internalclient"> Client:<span class="asterisk text-danger">*</span>
+                                                                                <label class="form-label w-100" for="select_Internalclient"> Client:<span class="asterisk text-danger">*</span>
+                                                                                    <?php if (!$isEdit): ?>
+                                                                                        <a href="javascript:void(0);" onclick="openAddClientModal('internal')" class="float-end btn btn-sm btn-outline-primary py-0"><i class="lni lni-plus"></i> Add External Client</a>
+                                                                                    <?php endif; ?>
                                                                                 </label>
 
                                                                                 <select
@@ -769,6 +775,29 @@
 
     </div>
 
+    <!-- Add External Client Modal -->
+    <div class="modal fade" id="addExternalClientModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="lni lni-plus"></i> Add External Client</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ext_client_type" value="">
+                    <div class="mb-3">
+                        <label class="form-label">Client Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="ext_client_name" placeholder="Enter External Client Name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveExtClient">Save Client</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <!-- Toast Container -->
 <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
@@ -785,7 +814,85 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    function openAddClientModal(type) {
+        let staffId = '';
+        if (type === 'marketing') {
+            staffId = $('#select_marketing').val();
+            if (!staffId) {
+                alert('Please select Marketing staff first');
+                return;
+            }
+        } else {
+            staffId = $('#select_internal').val();
+            if (!staffId) {
+                alert('Please select Internal staff first');
+                return;
+            }
+        }
+        
+        $('#ext_client_type').val(type);
+        $('#ext_client_name').val('');
+        $('#addExternalClientModal').modal('show');
+    }
+
     $(document).ready(function() {
+        $('#btnSaveExtClient').click(function() {
+            const clientName = $('#ext_client_name').val().trim();
+            const type = $('#ext_client_type').val();
+            let staffId = '';
+            
+            if (type === 'marketing') {
+                staffId = $('#select_marketing').val();
+            } else {
+                staffId = $('#select_internal').val();
+            }
+            
+            if (!clientName) {
+                alert('Please enter client name');
+                return;
+            }
+
+            const btn = $(this);
+            btn.prop('disabled', true).text('Saving...');
+            
+            $.ajax({
+                type: 'POST',
+                url: '<?= ROOT_DIR ?>modules/client/ajax/save_external_client.php',
+                data: {
+                    marketing_id: staffId,
+                    client_name: clientName
+                },
+                dataType: 'json',
+                success: function(response) {
+                    btn.prop('disabled', false).text('Save Client');
+                    if (response.success) {
+                        $('#addExternalClientModal').modal('hide');
+                        
+                        // Refresh the corresponding client list and select the new one
+                        if (type === 'marketing') {
+                            listClient(staffId, response.client_id);
+                        } else {
+                            listInternal(staffId, response.client_id);
+                        }
+                        
+                        const toastEl = document.getElementById('statusToast');
+                        const toastBody = document.getElementById('statusToastBody');
+                        const toast = new bootstrap.Toast(toastEl);
+                        toastBody.textContent = response.message;
+                        toastEl.classList.remove('bg-danger');
+                        toastEl.classList.add('bg-success');
+                        toast.show();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    btn.prop('disabled', false).text('Save Client');
+                    alert('Error occurred while adding client.');
+                }
+            });
+        });
+
         function toggleUserType() {
             const type = $('input[name="which_type_user"]:checked').val();
             if (type === 'marketing') {

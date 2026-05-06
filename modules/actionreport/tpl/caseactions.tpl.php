@@ -60,7 +60,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col text-end py-2">
-                            <button type="button" class="btn btn-sm btn-outline-primary px-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
                                 <i class="lni lni-download"></i>
                             </button>
                         </div>
@@ -130,6 +130,15 @@
                 select_client_id: select_client_id,
             };
             loadData(pageId, filters);
+        });
+
+        $("#exportExcel").click(() => {
+            const select_case_id = document.getElementById('sort_by_case').value;
+            const select_client_id = document.getElementById('sort_by_client_name').value;
+            let exportUrl = "<?= ROOT_DIR ?>excel/caseactions.php?type=excel";
+            if (select_case_id) exportUrl += "&select_case_id=" + encodeURIComponent(select_case_id);
+            if (select_client_id) exportUrl += "&select_client_id=" + encodeURIComponent(select_client_id);
+            window.location.href = exportUrl;
         });
     });
 </script>

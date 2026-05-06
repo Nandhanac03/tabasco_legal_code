@@ -67,7 +67,7 @@
                         </form>
 
                         <div class="col text-end py-2">
-                            <button type="button" class="btn btn-sm btn-outline-primary px-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-1" id ="exportExcel">
                                 <i class="lni lni-download"></i>
                             </button>
                         </div>
@@ -155,5 +155,26 @@ $(document).ready(function() {
         loadData(pageId, currentFilters);
     });
 
+
+
+
+    $("#exportExcel").click(() => {
+
+        var select_case_id   = ($("#sort_by_case").val() || '').trim();
+        var select_client_id = ($("#sort_by_client_name").val() || '').trim();
+
+        var exportUrl = "<?= ROOT_DIR ?>excel/client_base_action_report_list.php?type=excel";
+
+        if (select_case_id.length > 0) {
+            exportUrl += "&select_case_id=" + encodeURIComponent(select_case_id);
+        }
+
+        if (select_client_id.length > 0) {
+            exportUrl += "&select_client_id=" + encodeURIComponent(select_client_id);
+        }
+
+        window.location.href = exportUrl;
+
+    });
 });
 </script>

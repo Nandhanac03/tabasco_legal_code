@@ -549,3 +549,70 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in G:\wamp64\www\tabasco_legal_code\excel\legalfirm.php on line 107
+[06-May-2026 08:27:47 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "PhpOffice\PhpSpreadsheet\Spreadsheet" not found in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php:76
+Stack trace:
+#0 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\excel\activelegal.php on line 76
+[06-May-2026 08:34:41 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(76): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[06-May-2026 08:35:16 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(76): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[06-May-2026 08:35:24 Asia/Dubai] PHP Fatal error:  Uncaught Error: Interface "Psr\SimpleCache\CacheInterface" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php:13
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(582): include()
+#1 G:\wamp64\www\tabasco_legal_code\vendor\composer\ClassLoader.php(433): Composer\Autoload\{closure}('G:\\wamp64\\www\\t...')
+#2 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Settings.php(168): Composer\Autoload\ClassLoader->loadClass('PhpOffice\\PhpSp...')
+#3 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\CellsFactory.php(19): PhpOffice\PhpSpreadsheet\Settings::getCache()
+#4 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Worksheet\Worksheet.php(356): PhpOffice\PhpSpreadsheet\Collection\CellsFactory::getInstance(Object(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet))
+#5 G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Spreadsheet.php(480): PhpOffice\PhpSpreadsheet\Worksheet\Worksheet->__construct(Object(PhpOffice\PhpSpreadsheet\Spreadsheet))
+#6 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(76): PhpOffice\PhpSpreadsheet\Spreadsheet->__construct()
+#7 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Collection\Memory.php on line 13
+[06-May-2026 08:37:19 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(140): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209
+[06-May-2026 08:39:19 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(140): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209
+[06-May-2026 08:41:11 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(134): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209
+[06-May-2026 08:53:12 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(134): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209
+[06-May-2026 08:55:57 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(134): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209
+[06-May-2026 08:56:12 Asia/Dubai] PHP Fatal error:  Uncaught Error: Class "ZipStream\Option\Archive" not found in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php:209
+Stack trace:
+#0 G:\wamp64\www\tabasco_legal_code\excel\activelegal.php(134): PhpOffice\PhpSpreadsheet\Writer\Xlsx->save('php://output')
+#1 {main}
+  thrown in G:\wamp64\www\tabasco_legal_code\vendor\PhpSpreadsheet\Writer\Xlsx.php on line 209

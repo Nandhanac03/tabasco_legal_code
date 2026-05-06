@@ -65,6 +65,16 @@
                                 false
                             ); // Active tab 
                             ?>
+                            <?php
+                            echo createNavItem(
+                                "case",
+                                "Related Cases",
+                                "link-sharp",
+                                "relatedcases",
+                                $edit_id,
+                                false
+                            ); // Active tab 
+                            ?>
                             
                             <!-- <li class="nav-item" role="presentation">
                                 <a class="nav-link active" href="<?= ROOT_DIR ?>case/information.html">

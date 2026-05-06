@@ -3,6 +3,13 @@
         "mpdf/mpdf": "^8.2"
     },
     "config": {
-        "disable-tls": false
+        "disable-tls": false,
+        "secure-http": false
+    },
+    "repositories": {
+        "packagist.org": {
+            "type": "composer",
+            "url": "http://packagist.org"
+        }
     }
 }

@@ -40,6 +40,7 @@
                             <?php echo createNavItem("case", "Information", "information-sharp", "information", $edit_id, true); ?>
                             <?php echo createNavItem("case", "Documents", "document-attach-sharp", "document", $edit_id, false); ?>
                             <?php echo createNavItem("case", "Hearing Date & Feedback", "calendar", "hearing", $edit_id, false); ?>
+                            <?php echo createNavItem("case", "Related Cases", "link-sharp", "relatedcases", $edit_id, false); ?>
                         </ul>
 
                         <div class="tab-content py-3">

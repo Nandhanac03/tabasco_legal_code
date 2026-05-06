@@ -59,7 +59,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col text-end py-2">
-                            <button type="button" class="btn btn-sm btn-outline-primary px-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
                                 <i class="lni lni-download"></i>
                             </button>
                         </div>
@@ -135,6 +135,13 @@ $(document).ready(function () {
 
     let pageId = $(this).attr("id");
     loadData(pageId, currentFilters);
+  });
+
+  $("#exportExcel").click(() => {
+    let exportUrl = "<?= ROOT_DIR ?>excel/followupactions.php?type=excel";
+    if (currentFilters.select_case_id) exportUrl += "&select_case_id=" + encodeURIComponent(currentFilters.select_case_id);
+    if (currentFilters.select_client_id) exportUrl += "&select_client_id=" + encodeURIComponent(currentFilters.select_client_id);
+    window.location.href = exportUrl;
   });
 
 });

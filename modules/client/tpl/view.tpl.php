@@ -179,7 +179,7 @@
                                         <?php $data['type'] == 'I' ?>
                                         <div class="col-12 col-lg-6">
                                             <label
-                                                class="form-label"><?= $type = $data['type'] == 'I' ? 'Internal staff' : ($data['type'] == 'M' ? 'Marketing' : 'unknown'); ?></label>
+                                                class="form-label"><?= $type = $data['type'] == 'I' ? 'Internal staff' : ($data['type'] == 'M' ? 'Marketing' : 'External Client'); ?></label>
                                             <p class="form-control  mb-0">
                                                 <?= !empty($data['marketing_person']) ? htmlspecialchars($data['marketing_person']) : '-' ?>
                                             </p>

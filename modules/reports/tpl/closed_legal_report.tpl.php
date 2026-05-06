@@ -458,7 +458,7 @@
 
         var actionDate = $("#action_date").val().trim();
 
-        var exportUrl = "<?= ROOT_DIR ?>excel/activelegal.php?type=excel";
+        var exportUrl = "<?= ROOT_DIR ?>excel/closedlegal.php?type=excel";
 
         if (marketing.length > 0) {
 

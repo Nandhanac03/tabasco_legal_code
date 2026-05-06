@@ -12,7 +12,7 @@
 
     <div class="page-breadcrumb d-flex align-items-center mb-3">
 
-      <div class="breadcrumb-title pe-3 d-none d-sm-block">Closed Legal</div>
+      <div class="breadcrumb-title pe-3 d-none d-sm-block">Dashboard</div>
 
       <div class="ps-3 d-none d-sm-block">
 
@@ -30,7 +30,7 @@
 
             </li>
 
-            <li class="breadcrumb-item active" aria-current="page">Closed Legal List</li>
+            <li class="breadcrumb-item active" aria-current="page">Active Legal</li>
 
           </ol>
 
@@ -39,6 +39,19 @@
       </div>
 
 
+
+      <!-- Right-Side Buttons (Back + New Client) -->
+      <?php if (LEGAL_AUTH_ADD): ?>
+        <div class="ms-auto d-flex gap-2">
+
+          <button type="button" class="btn btn-primary"
+
+            onclick="window.location.href='<?= ROOT_DIR ?>activelegal/information.html';">
+
+            <i class="fadeIn animated bx bx-plus"></i>New Legal</button>
+
+        </div>
+      <?php endif; ?>
     </div>
 
 
@@ -53,8 +66,6 @@
 
       <div class="col-12">
 
-
-
         <form id="search_form">
 
           <div class="card">
@@ -62,7 +73,6 @@
             <div class="card-body">
 
               <div class="row g-3">
-
                 <div class="row g-3">
                   <div class="col-12 col-lg">
                     <select class="form-select select2-bootstrap" id="sort_by_case" name="sort_by_case">
@@ -76,6 +86,8 @@
                       <?php endif; ?>
                     </select>
                   </div>
+
+
                   <div class="col-12 col-lg">
                     <select class="form-select select2-bootstrap" id="sort_by_client_name" name="sort_by_client_name">
                       <option value="">Client Name</option>
@@ -88,17 +100,34 @@
                       <?php endif; ?>
                     </select>
                   </div>
+                  <!-- <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_marketing" name="sort_by_marketing">
+                      <option value="">Sort By Marketing / Internal Staff</option>
+                      <?php if (!empty($array_legal_client_marketing)): ?>
+                        <?php foreach ($array_legal_client_marketing as $legalMarketing): ?>
+                          <option value="<?= htmlspecialchars($legalMarketing['user_Id']) ?>">
+                            <?= htmlspecialchars($legalMarketing['user_name']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
 
-                </div><!--end row-->
+                  </div> -->
+                  <!-- <div class="col-12 col-lg">
+                    <select class="form-select select2-bootstrap" id="sort_by_client" name="sort_by_client">
+                      <option value="" selected>Sort By Client</option>
+                    </select>
+                  </div> -->
 
+                <!-- </div> -->
+                <!--end row-->
 
 
                 <!-- <div class="col-12 col-lg">
 
-        <input class="form-control" type="text" placeholder="Search by Firm" id="search_firm">
+                  <input class="form-control" type="text" placeholder="Search by Code" id="search_code">
 
-      </div> -->
-
+                </div> -->
 
 
               </div><!--end row-->
@@ -146,8 +175,6 @@
 
         </form>
 
-
-
         <div class="card">
 
           <div class="card-body">
@@ -162,9 +189,9 @@
 
             </div>
 
-            <div class="table-responsive mt-3" style="overflow-x:auto;">
+            <div class="table-responsive mt-3">
 
-              <div id="load_ajax_active_legal" style="overflow-x: auto;"></div>
+              <div id="load_ajax_active_legal"></div>
 
             </div>
 
@@ -179,9 +206,145 @@
     <!-- end page content-->
 
 
+
+
+
+
+
+    <div class="modal fade" id="shiftingModal" tabindex="-1" aria-labelledby="shiftingModalLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h5 class="modal-title" id="shiftingModalLabel">Shifting Legal Firm/Party</h5>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDelClsBtn"></button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <form>
+
+              <div class="mb-3">
+
+                <input type="hidden" class="form-control" id="legal_id">
+
+              </div>
+
+              <div class="mb-3">
+
+                <label class="form-label">Category <span class="text-danger">*</span></label>
+
+                <select class="form-control" id="category_type">
+
+                  <option value="">- - select - -</option>
+
+                  <option value="third_party">Third Party</option>
+
+                  <option value="debt_collector">Debt Collector</option>
+
+                  <option value="legal_firm">Legal Firm</option>
+
+                  <option value="legal_team">Legal Team</option>
+
+                </select>
+
+              </div>
+
+              <div class="mb-3">
+
+                <label class="form-label"> Firm/Party <span class="text-danger">*</span></label>
+
+                <select class="form-control" id="party_names">
+
+                  <option value="">- - select - -</option>
+
+                </select>
+
+              </div>
+
+              <div class="mb-3">
+
+                <label class="form-label">Shifted Date <span class="text-danger">*</span></label>
+
+                <input type="date" class="form-control" id="shift_date">
+
+              </div>
+
+            </form>
+
+          </div>
+
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            <button type="button" class="btn btn-primary" id="proceedShift">Shift</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h5 class="modal-title" id="deleteModalLabel">Delete Data</h5>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDelDataClsBtn"></button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <form>
+
+              <div class="mb-3">
+
+                <label class="form-label">Are you sure want to delete this data?</label>
+
+                <input type="hidden" class="form-control" value="" id="deleteLegalId">
+
+              </div>
+
+            </form>
+
+          </div>
+
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-danger" id="deleteLegalBtn"><i class="lni lni-trash"></i></button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
   </div>
 
 </div>
+
+
+
 <!-- Legal Status Modal -->
 <div class="modal fade" id="legalStatusModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl">
@@ -208,6 +371,7 @@
               <!-- Add more options if needed -->
             </select>
           </div>
+
           <div class="mb-3">
             <label for="legalStatusSelect" class="form-label">Reason</label>
             <input class="form-control" id="legalreson" name="legalreson" type="text">
@@ -265,6 +429,7 @@
       }
       return;
     }
+
     $.ajax({
       url: "<?= ROOT_DIR ?>modules/activelegal/ajax/changeLegalStatus.php",
       type: "POST",
@@ -273,7 +438,9 @@
         action: 'change_status',
         id: id,
         newStatus: newStatus,
-        legalreson: legalreson
+        legalreson: legalreson,
+        module: 'activelegal',
+        page: 'list'
       },
       success: function(response) {
         const toastEl = document.getElementById('statusToast');
@@ -310,8 +477,11 @@
   });
 </script>
 
+
+
 <script type="text/javascript">
   $(document).ready(function() {
+
 
     $('#sort_by_case').change(function() {
       const clientId = $(this).find(':selected').data('client-id');
@@ -332,7 +502,29 @@
 
 
 
+    $("#deleteModal").on('show.bs.modal', function(event) {
 
+      let eventButton = $(event.relatedTarget)
+
+      let legalId = eventButton.data('legal_id')
+
+      $("#deleteLegalId").val(legalId)
+
+    })
+
+
+
+
+
+    $("#shiftingModal").on('show.bs.modal', function(event) {
+
+      let button = $(event.relatedTarget);
+
+      let activeLegalId = button.data('legal_id')
+
+      $("#legal_id").val(activeLegalId)
+
+    })
 
 
     loadData(1);
@@ -348,6 +540,57 @@
       loadData(pageId);
 
     });
+
+
+    $("#deleteLegalBtn").click(function() {
+
+      let id = $("#deleteLegalId").val();
+
+      if (!id || id == undefined || id == '') {
+
+        round_error_notify('Unexpected error occured.')
+
+        return;
+
+      }
+
+      $.ajax({
+
+        type: 'post',
+
+        url: "<?= ROOT_DIR ?>modules/activelegal/ajax/manage_active_legal.php",
+
+        data: {
+
+          action: 'deleteActiveLegal',
+
+          id
+
+        },
+
+        success: function(jsonResponse) {
+
+          let response = JSON.parse(jsonResponse)
+
+          if (response.success) {
+
+            $("#modalDelDataClsBtn").click()
+
+            round_success_noti(response.message)
+
+            loadData(1);
+
+          } else {
+
+            round_error_notify(response.message)
+
+          }
+
+        }
+
+      })
+
+    })
 
     // Search form submission
     document.getElementById('search_form').addEventListener('submit', function(e) {
@@ -389,14 +632,15 @@
   });
 
 
+
   function loadData(page, filters = {}) {
     $.ajax({
-      url: "<?= ROOT_DIR ?>modules/closedlegal/ajax/load_closed_legal.php",
+      url: "<?= ROOT_DIR ?>modules/activelegal/ajax/load_active_legal.php",
       type: "POST",
       cache: false,
       data: Object.assign({
         page_no: page,
-        module: 'closedlegal',
+        module: 'activelegal',
         page: 'list'
       }, filters), // merge filters with page number
       success: function(response) {
@@ -405,9 +649,9 @@
     });
   }
 
-
-
   function listClient(marketingId, clientId) {
+
+
 
     // Clear previous items
 
@@ -576,11 +820,121 @@
 
         $("#party_names").html(response.html)
 
+
       }
 
     })
 
   })
+
+
+
+  $("#proceedShift").click(function() {
+
+    const category_type = $("#category_type")
+
+    const party_name = $("#party_names")
+
+    const shift_date = $("#shift_date")
+
+    let proceed = true;
+
+    if (category_type.val() == '') {
+
+      proceed = false;
+
+      category_type.addClass('is-invalid').removeClass('is-valid')
+
+    } else {
+
+      category_type.addClass('is-valid').removeClass('is-invalid')
+
+    }
+
+    if (party_name.val() == '') {
+
+      proceed = false;
+
+      party_name.addClass('is-invalid').removeClass('is-valid')
+
+    } else {
+
+      party_name.addClass('is-valid').removeClass('is-invalid')
+
+    }
+
+    if (shift_date.val() == '') {
+
+      proceed = false;
+
+      shift_date.addClass('is-invalid').removeClass('is-valid')
+
+    } else {
+
+      shift_date.addClass('is-valid').removeClass('is-invalid')
+
+    }
+
+
+
+    if (proceed) {
+
+      const active_id = $("#legal_id").val()
+
+      $.ajax({
+
+        type: 'post',
+
+        url: "<?= ROOT_DIR ?>modules/activelegal/ajax/shift_active_legal.php",
+
+        data: {
+
+          action: 'saveShift',
+
+          party_type: category_type.val(),
+
+          party_name: party_name.val(),
+
+          shift_date: shift_date.val(),
+
+          active_legal_id: active_id
+
+        },
+
+        success: function(jsonResponse) {
+
+          let response = JSON.parse(jsonResponse)
+
+          if (response.success) {
+
+            category_type.val('').removeClass('is-valid')
+
+            party_name.val('').removeClass('is-valid')
+
+            shift_date.val('').removeClass('is-valid')
+
+            $("#modalDelClsBtn").click();
+
+            round_success_noti(response.message)
+            // Reload the page after a short delay (optional)
+            setTimeout(function() {
+              location.reload();
+            }, 1000); // wait 1 second to show the success message
+          } else {
+
+            round_error_notify(response.message)
+
+          }
+
+        }
+
+      })
+
+    }
+
+  })
+
+
 
   function round_error_notify(msg = '') {
 
@@ -610,27 +964,60 @@
 
   $("#exportExcel").click(() => {
 
-    var select_case_id   = $("#sort_by_case").val().trim();
-    var select_client_id = $("#sort_by_client_name").val().trim();
-    var search_code      = $("#search_code").val().trim();
-    var fromDate         = $("#fromDate").val().trim();
+    //console.log('haielo')
 
-    var exportUrl = "<?= ROOT_DIR ?>excel/closedlegal.php?type=excel";
 
-    if (select_case_id.length > 0) {
-      exportUrl += "&select_case_id=" + encodeURIComponent(select_case_id);
+
+    var marketing = $("#marketing").val().trim();
+
+    var client = $("#client").val().trim();
+
+    var searchFirm = $("#search_firm").val().trim();
+
+    var fromDate = $("#fromDate").val().trim();
+
+    var toDate = $("#toDate").val().trim();
+
+    var actionDate = $("#action_date").val().trim();
+
+   // console.log({marketing, client,searchFirm});
+
+    var exportUrl = "<?= ROOT_DIR ?>excel/activelegal.php?type=excel";
+
+    if (marketing.length > 0) {
+
+      exportUrl += "&marketing=" + encodeURIComponent(marketing);
+
     }
 
-    if (select_client_id.length > 0) {
-      exportUrl += "&select_client_id=" + encodeURIComponent(select_client_id);
+    if (client.length > 0) {
+
+      exportUrl += "&client=" + encodeURIComponent(client);
+
     }
 
-    if (search_code.length > 0) {
-      exportUrl += "&search_code=" + encodeURIComponent(search_code);
+    if (searchFirm.length > 0) {
+
+      exportUrl += "&searchfirm=" + encodeURIComponent(searchFirm);
+
     }
 
-    if (fromDate !== '') {
-      exportUrl += "&fromDate=" + encodeURIComponent(fromDate);
+    if (fromDate != '') {
+
+      exportUrl += "&fromdate=" + encodeURIComponent(fromDate);
+
+    }
+
+    if (toDate != '') {
+
+      exportUrl += "&todate=" + encodeURIComponent(toDate);
+
+    }
+
+    if (actionDate != '') {
+
+      exportUrl += "&actiondate=" + encodeURIComponent(actionDate);
+
     }
 
     window.location.href = exportUrl;

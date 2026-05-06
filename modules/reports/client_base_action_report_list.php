@@ -20,7 +20,6 @@ $objClients = new Clients();
 
 
 
-
 $array_legal_case    =   array();
 $array_legal_case = $objLegalCase->get_legal_case();
 

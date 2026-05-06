@@ -18,7 +18,7 @@ require '../vendor/autoload.php'; // PhpSpreadsheet Library
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 
 
@@ -75,7 +75,7 @@ $legalData = $objActiveLegal->Get_ActiveLegal_Information($filters);
 // Create Spreadsheet
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setTitle('Debt Collector');
+$sheet->setTitle('Active Legal');
 
 // Set Headers
 $headers = ["Code", "Date", "Marketing", "Client", "Present Legal Firm", "Case Status", "Claim Amount", "Collection Received", "Balance to Claim", "Expense"];
@@ -126,11 +126,11 @@ foreach ($dataRows as $row) {
 }
 
 // Send as Excel file
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment; filename="legal_activelegal_' . date("Y-m-d_H-i-s") . '.xlsx"');
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment; filename="legal_activelegal_' . date("Y-m-d_H-i-s") . '.xls"');
 header('Cache-Control: max-age=0'); // Clear buffer for clean file
 
-$writer = new Xlsx($spreadsheet);
+$writer = new Xls($spreadsheet);
 $writer->save('php://output');
 exit();
 

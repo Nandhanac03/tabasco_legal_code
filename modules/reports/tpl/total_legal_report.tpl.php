@@ -418,14 +418,14 @@
 
         var actionDate = $("#action_date").val().trim();
 
-        var exportUrl = "<?= ROOT_DIR ?>excel/activelegal.php?type=excel";
+        var exportUrl = "<?= ROOT_DIR ?>excel/totallegal.php?type=excel";
 
         if (marketing.length > 0) {
 
             exportUrl += "&marketing=" + encodeURIComponent(marketing);
 
         }
-
+ 
         if (client.length > 0) {
 
             exportUrl += "&client=" + encodeURIComponent(client);

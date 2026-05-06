@@ -962,63 +962,50 @@
 
 
 
-  $("#exportExcel").click(() => {
-
-    //console.log('haielo')
+       $("#exportExcel").click(() => {
 
 
+       //console.log("helo");
 
-    var marketing = $("#marketing").val().trim();
+    var search_code = $("#search_code").val() ? $("#search_code").val().trim() : '';
 
-    var client = $("#client").val().trim();
+    var select_case_id = $("#sort_by_case").val() ? $("#sort_by_case").val().trim() : '';
 
-    var searchFirm = $("#search_firm").val().trim();
+    var select_client_id = $("#sort_by_client_name").val() ? $("#sort_by_client_name").val().trim() : '';
 
-    var fromDate = $("#fromDate").val().trim();
+    var fromDate = $("#fromDate").val() ? $("#fromDate").val().trim() : '';
 
-    var toDate = $("#toDate").val().trim();
 
-    var actionDate = $("#action_date").val().trim();
-
-   // console.log({marketing, client,searchFirm});
 
     var exportUrl = "<?= ROOT_DIR ?>excel/activelegal.php?type=excel";
 
-    if (marketing.length > 0) {
 
-      exportUrl += "&marketing=" + encodeURIComponent(marketing);
 
-    }
+    if (search_code.length > 0) {
 
-    if (client.length > 0) {
-
-      exportUrl += "&client=" + encodeURIComponent(client);
+      exportUrl += "&search_code=" + encodeURIComponent(search_code);
 
     }
 
-    if (searchFirm.length > 0) {
+    if (select_case_id.length > 0) {
 
-      exportUrl += "&searchfirm=" + encodeURIComponent(searchFirm);
+      exportUrl += "&select_case_id=" + encodeURIComponent(select_case_id);
+
+    }
+
+    if (select_client_id.length > 0) {
+
+      exportUrl += "&select_client_id=" + encodeURIComponent(select_client_id);
 
     }
 
     if (fromDate != '') {
 
-      exportUrl += "&fromdate=" + encodeURIComponent(fromDate);
+      exportUrl += "&fromDate=" + encodeURIComponent(fromDate);
 
     }
 
-    if (toDate != '') {
 
-      exportUrl += "&todate=" + encodeURIComponent(toDate);
-
-    }
-
-    if (actionDate != '') {
-
-      exportUrl += "&actiondate=" + encodeURIComponent(actionDate);
-
-    }
 
     window.location.href = exportUrl;
 

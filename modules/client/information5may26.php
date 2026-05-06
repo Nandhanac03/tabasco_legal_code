@@ -98,17 +98,6 @@ if ($_POST) {
                 $input_data['client_from']  = 'legal';
             }
         }
-    } else if ($input_data['type'] == 'E') {
-        $input_data['name'] = trim($_POST['external_client_name'] ?? '');
-        $input_data['marketing'] = $_SESSION['LOGIN_LEGAL_ID'] ?? '0'; // Assign to logged-in user or 0
-        if (!$edit_id) {
-            $input_data['client_from'] = 'legal';
-        }
-
-        if ($input_data['name'] === '') {
-            $error_msg = "Please enter external client name";
-            $goForward = false;
-        }
     }
 
     if (!$edit_id) {

@@ -18,8 +18,10 @@ class ComposerStaticInit38057b71b26cd342067ba6a9879826bf
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'M' => 
         array (
@@ -38,6 +40,10 @@ class ComposerStaticInit38057b71b26cd342067ba6a9879826bf
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
         ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -45,6 +51,10 @@ class ComposerStaticInit38057b71b26cd342067ba6a9879826bf
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/PhpSpreadsheet',
         ),
         'Mpdf\\PsrLogAwareTrait\\' => 
         array (
