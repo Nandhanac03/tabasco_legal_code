@@ -1,0 +1,33 @@
+8- In Add case: an option to link (Related Cases) to the case of the same client must be added. This option must show automatically all case related to the same client and I will have the option to choose between them. However, this option should be optional because the same client can have multiple cases not linked to each other.
+
+
+CREATE TABLE legal_case_to_case_relations(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    main_case_id INT NOT NULL,
+    related_case_id INT NOT NULL,
+    created_by INT NOT NULL,
+    created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('A','D') DEFAULT 'A'
+);
+
+modules/case/tpl/
+modules/case/ajax/
+common/
+modules/case/
+
+
+
+
+
+3- We can't add cases out of tabasco Client list (we need an option to the cases when tabasco is part of it against companies or individuals who are not clients of Tabasco.
+
+
+ALTER TABLE `legal_client`
+MODIFY COLUMN `type`
+ENUM('I','M','E')
+NOT NULL
+COMMENT 'I = Internal, M = Marketing, E = External Client';
+
+modules/client/
+modules/client/tpl/inforamtion.tpl.php     & view.tpl.php
+modules/client/ajax/save_external_client.php

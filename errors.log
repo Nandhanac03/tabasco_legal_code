@@ -1,0 +1,24 @@
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(../lib/config.php): failed to open stream: No such file or directory in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 9
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(): Failed opening '../lib/config.php' for inclusion (include_path='.;C:\php\pear') in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 9
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(../lib/class/class.dbcon.php): failed to open stream: No such file or directory in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 10
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(): Failed opening '../lib/class/class.dbcon.php' for inclusion (include_path='.;C:\php\pear') in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 10
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(../lib/class/class.legal_active_legals.php): failed to open stream: No such file or directory in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 11
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  include_once(): Failed opening '../lib/class/class.legal_active_legals.php' for inclusion (include_path='.;C:\php\pear') in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 11
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Warning:  require(../vendor/autoload.php): failed to open stream: No such file or directory in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 13
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0
+[07-May-2026 11:31:12 Asia/Dubai] PHP Fatal error:  require(): Failed opening required '../vendor/autoload.php' (include_path='.;C:\php\pear') in G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php on line 13
+[07-May-2026 11:31:12 Asia/Dubai] PHP Stack trace:
+[07-May-2026 11:31:12 Asia/Dubai] PHP   1. {main}() G:\wamp64\www\tabasco_legal_code\excel\bad_debts.php:0

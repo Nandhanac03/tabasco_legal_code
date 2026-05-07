@@ -68,7 +68,7 @@
 
                         <div class="col text-end py-2">
 
-                            <button type="button" class="btn btn-sm btn-outline-primary px-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
                                 <i class="lni lni-download"></i>
                             </button>
                         </div>
@@ -134,6 +134,13 @@
             e.preventDefault();
             var pageId = $(this).attr("id");
             loadData(pageId, currentFilters);
+        });
+
+        $("#exportExcel").on("click", function() {
+            var case_id = $('#sort_by_case').val() || '';
+            var client_id = $('#sort_by_client_name').val() || '';
+            var exportUrl = "<?= ROOT_DIR ?>excel/action_report.php?select_case_id=" + encodeURIComponent(case_id) + "&select_client_id=" + encodeURIComponent(client_id);
+            window.location.href = exportUrl;
         });
     });
 </script>

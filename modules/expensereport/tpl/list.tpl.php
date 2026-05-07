@@ -70,7 +70,7 @@
                         <div class="col text-end py-2">
 
 
-                            <button type="button" class="btn btn-sm btn-outline-primary px-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
                                 <i class="lni lni-download"></i>
                             </button>
                         </div>
@@ -144,5 +144,37 @@ $(document).ready(function () {
         loadData(pageId);
     });
 
+ $("#exportExcel").click(function () {
+
+var client = $("#sort_by_client_name").val() || '';
+var marketing = $("#sort_by_marketing").val() || '';
+var keyword = $("#text_keyword").val() || '';
+var fromDate = $("#sort_by_fromDate").val() || '';
+var toDate = $("#sort_by_toDate").val() || '';
+
+var exportUrl = "<?= ROOT_DIR ?>excel/expense_report.php?type=excel";
+
+if (client !== '') {
+    exportUrl += "&client=" + encodeURIComponent(client);
+}
+
+if (marketing !== '') {
+    exportUrl += "&marketing=" + encodeURIComponent(marketing);
+}
+
+if (keyword !== '') {
+    exportUrl += "&keyword=" + encodeURIComponent(keyword);
+}
+
+if (fromDate !== '') {
+    exportUrl += "&fromDate=" + encodeURIComponent(fromDate);
+}
+
+if (toDate !== '') {
+    exportUrl += "&toDate=" + encodeURIComponent(toDate);
+}
+
+window.location.href = exportUrl;
+});
 });
 </script>

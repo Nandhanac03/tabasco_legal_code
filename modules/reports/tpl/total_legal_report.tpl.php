@@ -105,10 +105,21 @@
             <div class="col-12 col-md-12">
                 <div class="card radius-10">
                     <div class="card-header">
+
+                    <div class="col text-end py-2">
+
+<button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
+    <i class="lni lni-download"></i>
+</button>
+</div>
+
+
+
+
                         <h6><i class="fadeIn animated bx bx-file-blank me-2"></i>Bad Debts Statement</h6>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x: auto !important;">
 
                             <div id="load_ajax_bad_depts"></div>
                         </div>
@@ -399,64 +410,36 @@
     }
 
 
+    $("#exportExcel").click(function () {
 
-    $("#exportExcel").click(() => {
+var select_case_id = $("#sort_by_case").val()
+    ? $("#sort_by_case").val().trim()
+    : '';
 
-        // console.log('haielo')
+var select_client_id = $("#sort_by_client_name").val()
+    ? $("#sort_by_client_name").val().trim()
+    : '';
 
+var exportUrl =
+    "<?= ROOT_DIR ?>excel/totallegal_report.php?type=excel";
 
+if (select_case_id.length > 0) {
 
-        var marketing = $("#marketing").val().trim();
+    exportUrl +=
+        "&select_case_id=" +
+        encodeURIComponent(select_case_id);
+}
 
-        var client = $("#client").val().trim();
+if (select_client_id.length > 0) {
 
-        var searchFirm = $("#search_firm").val().trim();
+    exportUrl +=
+        "&select_client_id=" +
+        encodeURIComponent(select_client_id);
+}
 
-        var fromDate = $("#fromDate").val().trim();
+window.location.href = exportUrl;
 
-        var toDate = $("#toDate").val().trim();
+});
 
-        var actionDate = $("#action_date").val().trim();
-
-        var exportUrl = "<?= ROOT_DIR ?>excel/totallegal.php?type=excel";
-
-        if (marketing.length > 0) {
-
-            exportUrl += "&marketing=" + encodeURIComponent(marketing);
-
-        }
- 
-        if (client.length > 0) {
-
-            exportUrl += "&client=" + encodeURIComponent(client);
-
-        }
-
-        if (searchFirm.length > 0) {
-
-            exportUrl += "&searchfirm=" + encodeURIComponent(searchFirm);
-
-        }
-
-        if (fromDate != '') {
-
-            exportUrl += "&fromdate=" + encodeURIComponent(fromDate);
-
-        }
-
-        if (toDate != '') {
-
-            exportUrl += "&todate=" + encodeURIComponent(toDate);
-
-        }
-
-        if (actionDate != '') {
-
-            exportUrl += "&actiondate=" + encodeURIComponent(actionDate);
-
-        }
-
-        window.location.href = exportUrl;
-
-    });
+    
 </script>

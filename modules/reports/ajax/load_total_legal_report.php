@@ -189,7 +189,7 @@ $pagination_output = implode("\n", $pagination);
 
 if ($totalData > 0 && is_array($legalData)) {
 
-    echo '<table class="table align-middle mb-0">
+    echo '<table class="table align-middle mb-0" style="overflow-y:auto!important;">
 
         <thead class="table-light">
 

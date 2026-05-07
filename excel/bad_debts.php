@@ -1,0 +1,167 @@
+<?php
+ob_start();
+session_start();
+date_default_timezone_set("Asia/Dubai");
+ini_set('log_errors', 1);
+ini_set('error_log', 'errors.log');
+error_reporting(E_ALL);
+
+include_once("../lib/config.php");
+include_once("../lib/class/class.dbcon.php");
+include_once("../lib/class/class.legal_active_legals.php");
+
+require '../vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+
+$objActiveLegal = new ActiveLegal();
+
+/* =========================================================
+   DATABASE CONNECTION
+========================================================= */
+
+$conn = new mysqli(IP, USER, DBPWD, DB);
+
+if ($conn->connect_error) {
+    die("Database connection failed");
+}
+
+/* =========================================================
+   GET FILTER VALUES
+========================================================= */
+
+// Get Filters
+$search           = trim($_GET['search_code'] ?? $_GET['search'] ?? '');
+$select_case_id   = trim($_GET['select_case_id'] ?? $_GET['select_case'] ?? '');
+$select_client_id = trim($_GET['select_client_id'] ?? $_GET['select_client'] ?? $_GET['client'] ?? '');
+
+$fromDate = '';
+if (!empty($_GET['fromDate']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['fromDate'])) {
+    $fromDate = $_GET['fromDate'];
+}
+
+$filters = [
+    'status'       => 'A',
+    'legal_status' => 'Bad_debts',
+    'dateon'       => $fromDate,
+    'search'       => $search,
+    'client'       => $select_client_id,
+    'case_id'      => $select_case_id
+];
+
+$legalData = $objActiveLegal->Get_ActiveLegal_Information($filters);
+
+// Load Other Classes
+include_once("../lib/class/class.legal_expense.php");
+$objExpense = new Expense();
+
+include_once("../lib/class/class.legal_collection.php");
+$objCollection = new Collection();
+
+include_once("../lib/class/class.legal_cheque.php");
+$objCheque = new Cheque();
+
+include_once("../lib/class/class.legal_case_root_actions.php");
+$objcaseRootAction = new CaseRootAction();
+
+// Create Excel
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setTitle('Bad Debts');
+
+// Headers
+$headers = ["S/NO", "Client", "Case Status", "Present Legal Firm", "Contact No", "Claim Amount", "Received Claim", "Expense", "Balance To Claim", "Last Action & Date", "Remarks"];
+$sheet->fromArray($headers, null, 'A1');
+
+// Style Headers
+$headerStyle = [
+    'font' => ['bold' => true, 'size' => 11],
+    'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]]
+];
+$sheet->getStyle('A1:K1')->applyFromArray($headerStyle);
+
+// Auto Width
+foreach (range('A', 'K') as $col) {
+    $sheet->getColumnDimension($col)->setAutoSize(true);
+}
+
+$dataRows = [];
+if (!empty($legalData)) {
+    $slno = 1;
+    foreach ($legalData as $row) {
+        // Cheque Calculations
+        $with_client = $objCheque->get_cheque_total($row['client'], 'C');
+        $wit_case    = $objCheque->get_cheque_total($row['client'], 'CA');
+
+        $with_client_total1 = isset($with_client[0]['Total1']) ? (float)$with_client[0]['Total1'] : 0;
+        $with_client_total2 = isset($with_client[0]['Total2']) ? (float)$with_client[0]['Total2'] : 0;
+        $wit_case_total1 = isset($wit_case[0]['Total1']) ? (float)$wit_case[0]['Total1'] : 0;
+        $wit_case_total2 = isset($wit_case[0]['Total2']) ? (float)$wit_case[0]['Total2'] : 0;
+
+        $outstanding_cheque = $with_client_total1 + $wit_case_total1;
+        $outstanding_without_cheque = $with_client_total2 + $wit_case_total2;
+        $total_outstanding = $outstanding_cheque + $outstanding_without_cheque;
+
+        // Collection
+        $total_collection = (float)$objCollection->total_collection($row['id']);
+
+        // Expense
+        $total_expense = (float)$objExpense->total_expense($row['id']);
+
+        // Balance
+        $balance = $total_outstanding - $total_collection;
+
+        // Last Action
+        $case_filter = ['created_from' => 'CA', 'active_legal_id' => $row['id']];
+        $case_roots = $objcaseRootAction->get_case_root('', $case_filter);
+        $lastAction = '-';
+        if (!empty($case_roots[0])) {
+            $lastAction = ($case_roots[0]['description'] ?? '') . ' ' . ($case_roots[0]['date'] ?? '');
+        }
+
+        $dataRows[] = [
+            $slno++,
+            $row['ClientName'] ?? '-',
+            'Bad Debts',
+            $row['Present_Legal_Firm_Name'] ?? '-',
+            $row['Clientmobile_number'] ?? '-',
+            number_format($total_outstanding, 2),
+            number_format($total_collection, 2),
+            number_format($total_expense, 2),
+            number_format($balance, 2),
+            $lastAction,
+            $row['remarks'] ?? '-'
+        ];
+    }
+}
+
+/* =========================================================
+   INSERT DATA
+========================================================= */
+
+if (!empty($dataRows)) {
+    $sheet->fromArray($dataRows, null, 'A2');
+}
+
+/* =========================================================
+   OUTPUT EXCEL
+========================================================= */
+
+$fileName = "bad_debts_reports_" . date("Y-m-d_H-i-s") . ".xls";
+
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment; filename="' . $fileName . '"');
+header('Cache-Control: max-age=0');
+
+$writer = new Xls($spreadsheet);
+$writer->save('php://output');
+
+/* =========================================================
+   CLOSE CONNECTION
+========================================================= */
+
+$conn->close();
+exit();
+?>

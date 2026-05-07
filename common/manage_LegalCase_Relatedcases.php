@@ -2,7 +2,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0"><i class="lni lni-menu"></i> Related Cases List</h6>
         <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#quickAddCaseForm">
-            <i class="lni lni-plus"></i> Quick Add Case
+            <i class="lni lni-plus"></i> Case Relation
         </button>
     </div>
     <div class="card-body">
@@ -11,23 +11,37 @@
             <div class="card card-body bg-light">
                 <form id="addRelatedCaseForm">
                     <input type="hidden" name="main_case_id" value="<?= $edit_id ?>">
-                    <div class="row g-3">
-                        <!-- LEGAL CASE SELECT -->
-                        <div class="col-md-6">
-                            <label class="form-label">Search Case Number *</label>
-                            <input type="text" class="form-control" id="searchCaseKeyword" placeholder="Type case number to search...">
-                            <select class="form-select mt-2" id="caseSelect" name="selected_case" required>
-                                <option value="">-- Search and Select Case --</option>
-                            </select>
-                        </div>
+                    <div class="row">
 
-                        <!-- SUBMIT -->
-                        <div class="col-md-6 d-flex align-items-end">
-                            <button type="submit" class="btn btn-success w-100">
-                                Save Relation
-                            </button>
-                        </div>
-                    </div>
+<!-- SEARCH INPUT -->
+<div class="col-md-4">
+    <label class="form-label">Search Case Number *</label>
+    <input type="text"
+           class="form-control"
+           id="searchCaseKeyword"
+           placeholder="Type case number to search...">
+</div>
+
+<!-- SELECT -->
+<div class="col-md-5">
+    <label class="form-label">Select Case</label>
+    <select class="form-select"
+            id="caseSelect"
+            name="selected_case"
+            required>
+        <option value="">-- Search and Select Case --</option>
+    </select>
+</div>
+
+<!-- BUTTON -->
+<div class="col-md-3">
+    <label class="form-label d-block">&nbsp;</label>
+    <button type="submit" class="btn btn-success w-100">
+        <i class="lni lni-save"></i> Save Relation
+    </button>
+</div>
+
+</div>
                 </form>
             </div>
         </div>

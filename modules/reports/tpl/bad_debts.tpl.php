@@ -109,6 +109,10 @@
 
                         <div class="card-body">
 
+
+                     
+
+
                             <div class="row g-3">
 
                                 <div class="col-12 col-lg">
@@ -147,8 +151,27 @@
 
             </div>
             <div class="col-12 col-md-12">
+
                 <div class="card radius-10">
+
+
+         
                     <div class="card-header">
+
+
+
+       
+                    <div class="col text-end py-2">
+
+<button type="button" class="btn btn-sm btn-outline-primary px-1" id="exportExcel">
+
+  <i class="lni lni-download"></i>
+
+</button>
+
+</div>
+
+
                         <h6><i class="fadeIn animated bx bx-file-blank me-2"></i>Bad Debts Statement</h6>
                     </div>
                     <div class="card-body">
@@ -446,63 +469,16 @@
 
 
 
-    $("#exportExcel").click(() => {
-
-        // console.log('haielo')
-
-
-
-        var marketing = $("#marketing").val().trim();
-
-        var client = $("#client").val().trim();
-
-        var searchFirm = $("#search_firm").val().trim();
-
-        var fromDate = $("#fromDate").val().trim();
-
-        var toDate = $("#toDate").val().trim();
-
-        var actionDate = $("#action_date").val().trim();
-
-        var exportUrl = "<?= ROOT_DIR ?>excel/baddebts.php?type=excel";
-
-        if (marketing.length > 0) {
-
-            exportUrl += "&marketing=" + encodeURIComponent(marketing);
-
-        }
-
-        if (client.length > 0) {
-
-            exportUrl += "&client=" + encodeURIComponent(client);
-
-        }
-
-        if (searchFirm.length > 0) {
-
-            exportUrl += "&searchfirm=" + encodeURIComponent(searchFirm);
-
-        }
-
-        if (fromDate != '') {
-
-            exportUrl += "&fromdate=" + encodeURIComponent(fromDate);
-
-        }
-
-        if (toDate != '') {
-
-            exportUrl += "&todate=" + encodeURIComponent(toDate);
-
-        }
-
-        if (actionDate != '') {
-
-            exportUrl += "&actiondate=" + encodeURIComponent(actionDate);
-
-        }
-
+    $("#exportExcel").on("click", function() {
+        var case_id = $('#sort_by_case').val() || '';
+        var client_id = $('#sort_by_client_name').val() || '';
+        var search_code = $('#search_code').val() || '';
+        var fromDate = $('#fromDate').val() || '';
+        
+        var exportUrl = "<?= ROOT_DIR ?>excel/bad_debts.php?select_case_id=" + encodeURIComponent(case_id) + 
+                        "&select_client_id=" + encodeURIComponent(client_id) + 
+                        "&search_code=" + encodeURIComponent(search_code) + 
+                        "&fromDate=" + encodeURIComponent(fromDate);
         window.location.href = exportUrl;
-
     });
 </script>
