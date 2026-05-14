@@ -202,7 +202,7 @@ if ($_POST) {
 
                 if ($id) {
                     $_SESSION['PAGE_SUCCESS'] = 'You have successfully ' . ($edit_id ? 'updated' : 'added') . ' the client profile information';
-                    header("location: " . ROOT_DIR . "clientdemo/information/add/$id.html");
+                    header("location: " . ROOT_DIR . "clientdemo/information/edit/$id.html");
                     exit;
                 }
             } else {

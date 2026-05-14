@@ -329,7 +329,7 @@
                                     <!-- END EXTERNAL CLIENT SECTION -->
 
                                     <div class="mb-3">
-                                      <button type="submit" class="btn btn-primary px-5">Save</button>
+                                      <button type="submit" class="btn btn-primary px-5" disabled>Save</button>
                                       <button type="reset" class="btn btn-secondary px-5">Reset</button>
                                     </div>
 
@@ -354,28 +354,39 @@
                                   <div id="OutstandingresponseMessage" class="mt-3"></div>
 
                                   <div class="mb-3">
-                                    <label class="form-label">Total Outstanding:</label>
-                                    <input type="number"
+                                  <label class="form-label">Total Outstanding:</label>
+<input type="number" class="form-control" 
+       value="<?= $data['total_outstanding'] ?? 0.00 ?>"
+       id="total_outstanding"
+       autocomplete="off" />  <!-- NO name attribute = NOT submitted -->
+                                    <!-- <input type="number"
        class="form-control"
        value="<?= $data['total_outstanding'] ?? 0.00 ?>"
        id="total_outstanding"
        name="total_outstanding"
-       autocomplete="off" />
+       step="0.01"
+       onchange="set_Outstanding('<?= $edit_id ?>')"
+       autocomplete="off" /> -->
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with cheque:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" readonly="true" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" step="0.01" autocomplete="off" onchange="set_Outstanding('<?= $edit_id ?>')" />
                                   </div>
 
                                   <div class="mb-3">
-                                    <label class="form-label">Outstanding without cheque:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" readonly="true" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <label class="form-label">Outstanding with Invoice:</label>
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" step="0.01" autocomplete="off" onchange="set_Outstanding('<?= $edit_id ?>')" />
                                   </div>
 
                                 </div>
                                 <!-- END card-body -->
                               </div>
+                              <!-- END card -->
+
+                          
+
+
                               <!-- END card -->
                               <?php include("common/manage_Cheque.php"); ?>
                             </div>
@@ -512,6 +523,146 @@
       });
     }
   }
+
+  function toggleOtherExpense() {
+    const type = document.getElementById('new_expense_type').value;
+    const div = document.getElementById('other_expense_reason_div');
+    if (type === 'Other expense') {
+      div.style.display = 'block';
+    } else {
+      div.style.display = 'none';
+      document.getElementById('new_expense_reason').value = '';
+    }
+  }
+
+  function loadClientExpenses(clientId) {
+    if (!clientId) return;
+    fetch(`<?= ROOT_DIR ?>ajax/manage_client_expenses.php?action=get_expenses&client_id=${clientId}`)
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === "success") {
+          const list = document.getElementById('client_expenses_list');
+          list.innerHTML = '';
+          let total = 0;
+          result.data.forEach(exp => {
+            total += parseFloat(exp.amount);
+            const row = `
+              <tr>
+                <td>${exp.description} ${exp.remark ? ' (' + exp.remark + ')' : ''}</td>
+                <td class="text-end">${parseFloat(exp.amount).toFixed(2)}</td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-danger" onclick="deleteClientExpense('${exp.id}', '${clientId}')">
+                    <i class="bx bx-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+            list.innerHTML += row;
+          });
+          document.getElementById('total_expenses_sum').innerText = total.toFixed(2);
+          updateTotalClaimAmount();
+        }
+      });
+  }+
+
+  function addClientExpense(clientId) {
+    if (!clientId) {
+      alert("Please save the client information first.");
+      return;
+    }
+    const type = document.getElementById('new_expense_type').value;
+    const amount = document.getElementById('new_expense_amount').value;
+    const reason = document.getElementById('new_expense_reason').value;
+
+    if (!type || !amount || amount <= 0) {
+      alert("Please select fee type and enter amount.");
+      return;
+    }
+
+    const data = {
+      action: 'add_expense',
+      client_id: clientId,
+      fee_title: type,
+      amount: amount,
+      remark: reason
+    };
+
+    fetch("<?= ROOT_DIR ?>ajax/manage_client_expenses.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === "success") {
+          document.getElementById('new_expense_type').value = '';
+          document.getElementById('new_expense_amount').value = '';
+          document.getElementById('new_expense_reason').value = '';
+          toggleOtherExpense();
+          loadClientExpenses(clientId);
+        } else {
+          alert(result.message);
+        }
+      });
+  }
+
+  function deleteClientExpense(expenseId, clientId) {
+    if (!confirm("Are you sure you want to delete this expense?")) return;
+    const data = {
+      action: 'delete_expense',
+      expense_id: expenseId
+    };
+    fetch("<?= ROOT_DIR ?>ajax/manage_client_expenses.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === "success") {
+          loadClientExpenses(clientId);
+        } else {
+          alert(result.message);
+        }
+      });
+  }
+
+  function updateTotalClaimAmount() {
+    const outstanding = parseFloat(document.getElementById('total_outstanding').value) || 0;
+    const expenses = parseFloat(document.getElementById('total_expenses_sum').innerText) || 0;
+    document.getElementById('total_claim_amount').value = (outstanding + expenses).toFixed(2);
+  }
+
+  // Initial load
+  $(document).ready(function() {
+    const clientId = '<?= $edit_id ?>';
+    if (clientId) {
+      loadClientExpenses(clientId);
+    }
+
+    // Update total claim when outstanding changes
+    $('#total_outstanding').on('input change', function() {
+      updateTotalClaimAmount();
+      
+      // Auto-calculate Invoice if Total is changed
+      const total = parseFloat($(this).val()) || 0;
+      const cheque = parseFloat($('#outstanding_cheque').val()) || 0;
+      const invoice = total - cheque;
+      $('#outstanding_without_cheque').val(invoice.toFixed(2));
+    });
+
+    $('#outstanding_cheque, #outstanding_without_cheque').on('input change', function() {
+      const cheque = parseFloat($('#outstanding_cheque').val()) || 0;
+      const invoice = parseFloat($('#outstanding_without_cheque').val()) || 0;
+      const total = cheque + invoice;
+      $('#total_outstanding').val(total.toFixed(2));
+      updateTotalClaimAmount();
+    });
+  });
 </script>
 <?php
 if ($action == 'edit') {
@@ -538,8 +689,7 @@ if ($action == 'edit') {
 
 <script>
   function set_Outstanding(param1) {
-    return false
-    $('#OutstandingresponseMessage').html('');
+    $('#OutstandingresponseMessage').html('<div class="alert alert-info">Updating...</div>');
     if (!param1) {
       $("#total_outstanding").val(0);
       $("#outstanding_cheque").val(0);
@@ -578,12 +728,16 @@ if ($action == 'edit') {
           document.getElementById("total_outstanding").value = result.total_outstanding;
           document.getElementById("outstanding_cheque").value = result.outstanding_cheque;
           document.getElementById("outstanding_without_cheque").value = result.outstanding_without_cheque;
+          $('#OutstandingresponseMessage').html('<div class="alert alert-success">Outstanding data updated successfully</div>');
+          setTimeout(() => { $('#OutstandingresponseMessage').html(''); }, 3000);
         } else {
           console.error("Error:", result.message);
+          $('#OutstandingresponseMessage').html('<div class="alert alert-danger">' + result.message + '</div>');
         }
       })
       .catch(error => {
         console.error("Error:", error);
+        $('#OutstandingresponseMessage').html('<div class="alert alert-danger">An error occurred while updating data</div>');
       });
   }
 

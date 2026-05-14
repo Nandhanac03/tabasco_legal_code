@@ -127,7 +127,7 @@ if ($_POST) {
 
                     $_SESSION['PAGE_SUCCESS'] = 'You have successfully ' . ($edit_id ? 'updated' : 'added') . ' the Active Legal information';
 
-                    header("location: " . ROOT_DIR . "activelegal/information/edit/$id.html");
+                    header("location: " . ROOT_DIR . "activelegaldemo/information/edit/$id.html");
 
                     exit;
                 }
@@ -158,7 +158,7 @@ if ($_POST) {
             // exit;
 
             if (!isset($data['code']) && !isset($data['user_id'])) {
-                header("location: " . ROOT_DIR . "activelegal/list.html");
+                header("location: " . ROOT_DIR . "activelegaldemo/list.html");
                 exit;
             }
             break;

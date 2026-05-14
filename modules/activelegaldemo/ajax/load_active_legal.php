@@ -210,7 +210,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
                 <th style="border: 1px solid #00000014;">Marketing</th>
 
-                <th style="border: 1px solid #00000014;">Client/<br>
+                <th style="border: 1px solid #00000014;">Client / Case No /<br>
                 Date</th>
 
                 <th style="border: 1px solid #00000014;">Case <br>Category</th>
@@ -263,11 +263,12 @@ $fullText = $lastAction . ' ' . $lastDate;
    '. htmlspecialchars($row['User_Client'] ?? '-').'<br>
     <b>'. htmlspecialchars($row['Usertype_Client'] ?? '-').'</b><br>
     <span style="color: lightseagreen;">
-       '. htmlspecialchars($row['code'] ?? '-').'
+       '. htmlspecialchars($row['ClientCode'] ?? '-').'
     </span>
 </td>
 
             <td style="border: 1px solid #00000014; max-width:150px; min-width:150px; white-space: normal;word-break: break-word;">' . htmlspecialchars($row['ClientName'] ?? '-') . '<br>
+               <b>' . htmlspecialchars($row['case_number'] ?? '-') . '<br></b>
               <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b></td>
             <td style="border: 1px solid #00000014; max-width:100px; min-width:100px;">' . htmlspecialchars(ucwords(str_replace('_', ' ', $row['legal_firm_type_name'] ?? '-'))) . '</td>
            <td style="border: 1px solid #00000014; max-width:180px; min-width:140px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;">' . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>

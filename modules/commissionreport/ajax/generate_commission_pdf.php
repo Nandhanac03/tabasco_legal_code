@@ -38,22 +38,31 @@ $voucher_id = 0;
 $is_reprint = false;
 $created_by = $_SESSION['LOGIN_LEGAL_ID'] ?? 0;
 
+$createNew = true;
+
 if (count($existing_vouchers) === 1) {
-    $voucher_id = $existing_vouchers[0]['voucher_id'];
-    $is_reprint = true;
+    $temp_voucher_id = $existing_vouchers[0]['voucher_id'];
     
     // Fetch existing voucher details
     $v = $db->SQL_Fetch(
         "SELECT voucher_no, commission_pdf FROM legal_commission_voucher WHERE id = ? LIMIT 1",
-        [$voucher_id]
+        [$temp_voucher_id]
     );
-    $voucher_no = $v['voucher_no'];
-    $pdf_filename = $v['commission_pdf'] ?: 'Commission_Voucher_' . $voucher_no . '.pdf';
-    $upload_path = "../../../uploads/expenses/" . $pdf_filename;
 
-    // Update printed_at
-    $db->Query("UPDATE legal_commission_voucher SET printed_at = NOW() WHERE id = ?", [$voucher_id]);
-} else {
+    if ($v) {
+        $createNew = false;
+        $voucher_id = $temp_voucher_id;
+        $is_reprint = true;
+        $voucher_no = $v['voucher_no'];
+        $pdf_filename = $v['commission_pdf'] ?: 'Commission_Voucher_' . $voucher_no . '.pdf';
+        $upload_path = "../../../uploads/expenses/" . $pdf_filename;
+
+        // Update printed_at
+        $db->Query("UPDATE legal_commission_voucher SET printed_at = NOW() WHERE id = ?", [$voucher_id]);
+    }
+}
+
+if ($createNew) {
     // ✅ Create new voucher
     $voucher_no = 'VC-' . rand(100,999);
     $pdf_filename = 'Commission_Voucher_' . $voucher_no . '.pdf'; 

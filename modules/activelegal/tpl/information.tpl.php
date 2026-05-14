@@ -152,7 +152,7 @@
                             );
 
 
-
+                         
 
            
 
@@ -309,7 +309,7 @@
 
                                                                             </div>
 
-                                                                            <div class="mb-3">
+                                                                            <!-- <div class="mb-3">
                                                                                 <label class="form-label w-100" for="select_client"> Client:<span class="asterisk text-danger">*</span>
                                                                                     <?php if (!$isEdit): ?>
                                                                                         <a href="javascript:void(0);" onclick="openAddClientModal('marketing')" class="float-end btn btn-sm btn-outline-primary py-0"><i class="lni lni-plus"></i> Add External Client</a>
@@ -328,7 +328,7 @@
                                                                                     <input type="hidden" id="select_client_hidden" name="select_client" value="<?= $data['client'] ?? '' ?>">
                                                                                 <?php endif; ?>
 
-                                                                            </div>
+                                                                            </div> -->
                                                                         </div>
 
                                                                         <div id="internalStaff">
@@ -505,7 +505,7 @@
 
                                                                         <div class="mb-3">
 
-                                                                            <label class="form-label">Outstanding with cheque:</label>
+                                                                            <label class="form-label">Outstanding with Cheques:</label>
 
                                                                             <input type="number" class="form-control"
 
@@ -519,7 +519,7 @@
 
                                                                         <div class="mb-3">
 
-                                                                            <label class="form-label">Outstanding without cheque:</label>
+                                                                            <label class="form-label">Outstanding with Invoices:</label>
 
                                                                             <input type="number" class="form-control"
 
@@ -1074,9 +1074,9 @@
                                     $('#claim_amount').val(0);
                                     return;
                                 }
-                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
+                                // $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                // $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                // $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
                                 // Claim amount must be added separately, so we don't auto-fill it from outstanding
                                 // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
                             });
@@ -1223,9 +1223,9 @@
                                     $('#claim_amount').val(0);
                                     return;
                                 }
-                                $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
+                                // $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                // $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                // $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
                                 // Claim amount must be added separately, so we don't auto-fill it from outstanding
                                 // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
                             });

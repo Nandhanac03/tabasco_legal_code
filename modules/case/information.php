@@ -39,6 +39,7 @@ if ($action == 'edit') {
         header("location: " . ROOT_DIR . "activelegal/list.html");
         exit;
     }
+    $selected_related_ids = $objLegalCase->getCaseRelations($edit_id);
 }
 
 $client_id = $activeLegal[0]['client'] ?? null;
@@ -107,7 +108,15 @@ if ($_POST) {
         $input_data['outstanding_with_cheque']   = $_POST['outstanding_with_cheque']   ?? '0';
         $input_data['outstanding_without_cheque'] = $_POST['outstanding_without_cheque'] ?? '0';
         $input_data['claim_amount']              = $_POST['claim_amount']              ?? '0';
-        $input_data['related_case_id']           = $_POST['related_case_id']           ?? 0;
+        
+        // Handle Multiple Related Cases
+        $related_case_ids = $_POST['related_case_id'] ?? [];
+        if (!is_array($related_case_ids)) {
+            $related_case_ids = $related_case_ids ? [$related_case_ids] : [];
+        }
+        // Backward compatibility: keep the first one in the main table column
+        $input_data['related_case_id']           = !empty($related_case_ids) ? (int)$related_case_ids[0] : 0;
+
         $input_data['created_id']                = $user_id;
         $input_data['created_on']                = date('Y-m-d H:i:s');
         $input_data['updated_id']                = $user_id;
@@ -120,6 +129,9 @@ if ($_POST) {
             } else {
                 $id = $edit_id;
             }
+
+            // Sync multiple relations
+            $objLegalCase->syncCaseRelations($id, $related_case_ids, $user_id);
 
             $root_array = [];
             $root_array['case_id']        = $id;

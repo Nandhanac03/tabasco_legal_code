@@ -199,7 +199,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
             <tr>
 
-                <th>Code</th>
+                <th>Client Code</th>
 
                 <th>Date</th>
 
@@ -242,7 +242,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
         echo '<tr>
 
-         <td onclick="window.location=\'' . ROOT_DIR . 'closedlegal/view/view/' . intval($row['id'] ?? 0) . '.html\'" style="cursor:pointer;color: lightseagreen;">' . htmlspecialchars($row['code'] ?? '-') . '</td>
+         <td onclick="window.location=\'' . ROOT_DIR . 'closedlegal/view/view/' . intval($row['id'] ?? 0) . '.html\'" style="cursor:pointer;color: lightseagreen;">' . htmlspecialchars($row['ClientCode'] ?? '-') . '</td>
 
             <td>' . htmlspecialchars($row['dateon'] ?? '-') . '</td>
 

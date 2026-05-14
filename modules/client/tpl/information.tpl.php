@@ -355,24 +355,24 @@
 
                                   <div class="mb-3">
                                     <label class="form-label">Total Outstanding:</label>
-                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" readonly="true" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" readonly="false" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with cheque:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" readonly="true" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" readonly="false" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding without cheque:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" readonly="true" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" readonly="false" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                 </div>
                                 <!-- END card-body -->
                               </div>
                               <!-- END card -->
-                              <?php include("common/manage_Cheque.php"); ?>
+                              <?php include("common/manage_Cheques.php"); ?>
                             </div>
                             <!-- END col -->
                           </div>

@@ -198,7 +198,7 @@ $pagination_output = implode("\n", $pagination);
 
 if ($totalData > 0 && is_array($legalData)) {
 
-    echo '<table class="table align-middle mb-0">
+    echo '<table class="table align-middle mb-0" style="overflow-x:auto!important;">
 
         <thead class="table-light">
 
@@ -210,7 +210,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
                 <th style="border: 1px solid #00000014;">Marketing</th>
 
-                <th style="border: 1px solid #00000014;">Client/<br>
+                <th style="border: 1px solid #00000014;">Client / Client Code /<br>
                 Date</th>
 
                 <th style="border: 1px solid #00000014;">Case <br>Category</th>
@@ -263,12 +263,14 @@ $fullText = $lastAction . ' ' . $lastDate;
    '. htmlspecialchars($row['User_Client'] ?? '-').'<br>
     <b>'. htmlspecialchars($row['Usertype_Client'] ?? '-').'</b><br>
     <span style="color: lightseagreen;">
-       '. htmlspecialchars($row['code'] ?? '-').'
+       '. htmlspecialchars($row['ClientCode'] ?? '-').'
     </span>
 </td>
 
             <td style="border: 1px solid #00000014; max-width:150px; min-width:150px; white-space: normal;word-break: break-word;">' . htmlspecialchars($row['ClientName'] ?? '-') . '<br>
-              <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b></td>
+               
+            <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b>
+              </td>
             <td style="border: 1px solid #00000014; max-width:100px; min-width:100px;">' . htmlspecialchars(ucwords(str_replace('_', ' ', $row['legal_firm_type_name'] ?? '-'))) . '</td>
            <td style="border: 1px solid #00000014; max-width:180px; min-width:140px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;">' . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>
             <td style="max-width:80px; min-width:80px;">' . htmlspecialchars($row['case_status'] ?? 'OPEN') . '</td>';

@@ -181,20 +181,20 @@
                             <input type="text" class="form-control" id="client_contact_number"
                               name="client_contact_number" value="" autocomplete="off" />
                           </div>
-                          <div class="col-12 d-none">
+                          <div class="col-12">
                             <label class="form-label">Total outstanding</label>
                             <input type="number" class="form-control" id="client_total_outstanding"
-                              name="client_total_outstanding" value="0.00" autocomplete="off" />
+                              name="client_total_outstanding" value="0.00" step="0.01" autocomplete="off" />
                           </div>
-                          <div class="col-12 d-none">
+                          <div class="col-12">
                             <label class="form-label">Outstanding cheque</label>
                             <input type="number" class="form-control" id="client_outstanding_cheque"
-                              name="client_outstanding_cheque" value="0.00" autocomplete="off" />
+                              name="client_outstanding_cheque" value="0.00" step="0.01" autocomplete="off" />
                           </div>
-                          <div class="col-12 d-none">
+                          <div class="col-12">
                             <label class="form-label">Outstanding without cheque</label>
                             <input type="number" class="form-control" id="client_outstanding_without_cheque"
-                              name="client_outstanding_without_cheque" value="0.00" autocomplete="off" />
+                              name="client_outstanding_without_cheque" value="0.00" step="0.01" autocomplete="off" />
                           </div>
                           <div id="response"></div>
                         </div>

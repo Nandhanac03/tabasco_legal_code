@@ -138,6 +138,7 @@ if ($legalData) {
         $legalData[$key]['final_outstanding_cheque']         = $outstanding_cheque;
         $legalData[$key]['final_outstanding_without_cheque'] = $outstanding_without_cheque;
         $legalData[$key]['final_total_outstanding']          = $total_outstanding;
+        $legalData[$key]['case_number'] = $value['case_number'] ?? '-';
     }
 }
 
@@ -279,7 +280,9 @@ $fullText = $lastAction . ' ' . $lastDate;
 </td>
 
             <td style="border: 1px solid #00000014; max-width:150px; min-width:150px; white-space: normal;word-break: break-word;">' . htmlspecialchars($row['ClientName'] ?? '-') . '<br>
-              <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b></td>
+                <b>' . htmlspecialchars($row['case_number'] ?? '-') . '</b>
+            
+            <b>' . htmlspecialchars($row['dateon'] ?? '-') . '</b></td>
            <td style="border: 1px solid #00000014; max-width:180px; min-width:140px; white-space:normal; word-wrap:break-word; overflow-wrap:break-word; text-align: justify;">' . htmlspecialchars($row['Present_Legal_Firm_Name'] ?? '-') . '</td>
             <td style="max-width:80px; min-width:80px;">' . htmlspecialchars($row['case_status'] ?? 'OPEN') . '</td>';
             if (defined('LEGAL_AUTH_EDIT') && LEGAL_AUTH_EDIT) {

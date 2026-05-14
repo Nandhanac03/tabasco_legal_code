@@ -191,7 +191,7 @@
 
             <div class="table-responsive mt-3">
 
-              <div id="load_ajax_active_legal"></div>
+              <div id="load_ajax_active_legal" style="overflow-x:auto!important;"></div>
 
             </div>
 

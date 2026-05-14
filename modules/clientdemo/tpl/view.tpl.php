@@ -30,7 +30,7 @@
 <!-- <?php //if (LEGAL_AUTH_EDIT): ?> -->
                 <!-- Edit Button -->
                 <button class="btn btn-primary px-4" type="button"
-                    onclick="window.location.href='<?= ROOT_DIR . 'clientdemo/information/add/' . intval($data['id'] ?? 0) . '.html' ?>'"
+                    onclick="window.location.href='<?= ROOT_DIR . 'clientdemo/information/edit/' . intval($data['id'] ?? 0) . '.html' ?>'"
                     id="editButton">
                     <i class='bx bx-edit-alt me-1'></i>Edit
                 </button>

@@ -113,30 +113,19 @@ if ($_POST) {
     // ✅ Validate required fields based on cheque_type
 
     if ($cheque_type == 1) {
-
-        // If cheque_type=1, cheque_date, cheque_amount, file, and hidden fields are required
-        if (!$cheque_date || !$cheque_amount || !$cheque_number|| !$cheque_bank || !isset($_FILES['cheque_file']) || !$postID || !$postmodule || !$postpage ) {
-
+        // If cheque_type=1 (PDC), cheque_date, cheque_amount, cheque_number, cheque_bank and hidden fields are required
+        if (!$cheque_date || !$cheque_amount || !$cheque_number || !$cheque_bank || !$postID || !$postmodule || !$postpage) {
             $response['message'] = VALIDATION_MSG;
-
             $response['status'] = 'error';
-
             echo json_encode($response);
-
             exit;
         }
     } else {
-
-        // If cheque_type!=1, only cheque_amount and hidden fields are required
-
-        if (!$cheque_amount || !$postID || !$postmodule || !$postpage) {
-
+        // If cheque_type!=1 (Invoice Entry), cheque_date, cheque_number, cheque_amount and hidden fields are required
+        if (!$cheque_date || !$cheque_number || !$cheque_amount || !$postID || !$postmodule || !$postpage) {
             $response['message'] = VALIDATION_MSG;
-
             $response['status'] = 'error';
-
             echo json_encode($response);
-
             exit;
         }
     }
@@ -148,100 +137,7 @@ if ($_POST) {
 
 
     $uniqueFileName = '';
-
     $targetFilePath = '';
-
-
-
-    // ✅ Only process file upload if cheque_type == 1
-
-    if ($cheque_type == 1) {
-
-        $file = $_FILES['cheque_file'];
-
-        $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-
-        $maxFileSize = 1 * 1024 * 1024; // 2MB limit
-
-
-
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-
-            $response['message'] = 'Upload error: Please Upload any File';
-
-            $response['status'] = 'error';
-
-            echo json_encode($response);
-
-            exit;
-        }
-
-
-
-        if (!in_array($file['type'], $allowedTypes)) {
-
-            $response['message'] = 'Only JPG, PNG, and PDF files allowed.';
-
-            $response['status'] = 'error';
-
-            echo json_encode($response);
-
-            exit;
-        }
-
-
-
-        if ($file['size'] > $maxFileSize) {
-
-            $response['message'] = 'File size exceeds 2MB.';
-
-            $response['status'] = 'error';
-
-            echo json_encode($response);
-
-            exit;
-        }
-
-
-
-        if (!is_uploaded_file($file['tmp_name'])) {
-
-            $response['message'] = 'Temporary file not found.';
-
-            $response['status'] = 'error';
-
-            echo json_encode($response);
-
-            exit;
-        }
-
-
-
-        // Generate new unique file name
-
-        $extension      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-        $uniqueFileName = 'cheque_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $extension;
-
-        $targetFilePath = $uploadDir . $uniqueFileName;
-
-
-
-        // Move uploaded file
-
-        if (!move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-
-            $response['success'] = false;
-
-            $response['status'] = 'error';
-
-            $response['message'] = 'Failed to save uploaded file.';
-
-            echo json_encode($response);
-
-            exit;
-        }
-    }
 
 
 
@@ -249,13 +145,13 @@ if ($_POST) {
 
     $input_data['add_type']    = $cheque_type;
 
-    $input_data['upload_date'] = ($cheque_type == 1) ? $cheque_date : date('Y-m-d'); // current date if not type=1
+    $input_data['upload_date'] = $cheque_date; 
 
     $input_data['amount']      = $cheque_amount;
 
     $input_data['cheque_name'] = ($cheque_type == 1) ? $uniqueFileName : ''; // Empty for non-type=1
 
-    $input_data['notes']       = '';
+    $input_data['notes']       = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
 
     $input_data['parent_id']   = $parentID;
 

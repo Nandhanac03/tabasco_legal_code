@@ -77,8 +77,10 @@ if ($_POST) {
 
 
         $available_cheque = $objCheque->get_cheque('', $parentID);
+        $cheque_totals = $objCheque->get_cheque_total($parentID, 'C');
 
-
+        $total_with_cheque = $cheque_totals[0]['Total1'] ?? 0;
+        $total_without_cheque = $cheque_totals[0]['Total2'] ?? 0;
 
         $html = "";
 
@@ -117,6 +119,8 @@ if ($_POST) {
         }
 
         $response['message'] = $html;
+        $response['total_with_cheque'] = $total_with_cheque;
+        $response['total_without_cheque'] = $total_without_cheque;
 
         $response['success'] = true;
 

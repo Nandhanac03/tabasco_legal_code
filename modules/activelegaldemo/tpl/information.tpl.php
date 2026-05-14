@@ -513,13 +513,13 @@
 
                                                                                 name="outstanding_with_cheque"
 
-                                                                                value="<?= $data['outstanding_with_cheque'] ?>" required />
+                                                                                value="<?= $data['outstanding_with_cheque'] ?>" readonly />
 
                                                                         </div>
 
                                                                         <div class="mb-3">
 
-                                                                            <label class="form-label">Outstanding without cheque:</label>
+                                                                            <label class="form-label">Outstanding with Invoice:</label>
 
                                                                             <input type="number" class="form-control"
 
@@ -527,7 +527,7 @@
 
                                                                                 name="outstanding_without_cheque"
 
-                                                                                value="<?= $data['outstanding_without_cheque'] ?>" required />
+                                                                                value="<?= $data['outstanding_without_cheque'] ?>" readonly />
 
                                                                         </div>
 
@@ -542,6 +542,82 @@
                                                                     <input type="hidden" name="selected_client_id" id="selected_client_id">
 
                                                                 </div>
+
+
+
+                                                                <div class="card mt-3">
+                                <div class="card-header">
+                                  <h6 class="mb-0"><i class="lni lni-revenue"></i> Paid Court Fees & Expenses</h6>
+                                </div>
+                                <div class="card-body">
+                                  <div id="ExpenseResponseMessage" class="mt-2"></div>
+                                  <div class="row g-2 align-items-end mb-3">
+                                    <div class="col-md-5">
+                                      <label class="form-label">Fee Type</label>
+                                      <select class="form-select" id="new_expense_type" onchange="toggleOtherExpense()">
+                                        <option value="">Select Fee Type</option>
+                                        <option value="Court Filing Case fees">Court Filing Case fees</option>
+                                        <option value="Expert fee">Expert fee</option>
+                                        <option value="Announcement fee">Announcement fee</option>
+                                        <option value="Emirates Judgment Enforcement fee (EJE)">Emirates Judgment Enforcement fee (EJE)</option>
+                                        <option value="Notary Public Fee">Notary Public Fee</option>
+                                        <option value="Other expense">Other expense</option>
+                                      </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label class="form-label">Amount</label>
+                                      <input type="number" class="form-control" id="new_expense_amount" step="0.01" placeholder="0.00">
+                                    </div>
+                                    <div class="col-md-3">
+                                      <button type="button" class="btn btn-primary w-100" onclick="addClientExpense('<?= $edit_id ?>')">
+                                        <i class="bx bx-plus"></i> Add
+                                      </button>
+                                    </div>
+                                    <div class="col-12 mt-2" id="other_expense_reason_div" style="display: none;">
+                                      <label class="form-label">Expense Reason</label>
+                                      <input type="text" class="form-control" id="new_expense_reason" placeholder="Enter reason for other expense">
+                                    </div>
+                                  </div>
+
+                                  <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                      <thead class="table-light">
+                                        <tr>
+                                          <th>Fee Type / Reason</th>
+                                          <th class="text-end">Amount</th>
+                                          <th class="text-center">Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody id="client_expenses_list">
+                                        <!-- Expenses will be loaded here -->
+                                      </tbody>
+                                      <tfoot>
+                                        <tr class="table-light">
+                                          <th>Total Expenses</th>
+                                          <th class="text-end" id="total_expenses_sum">0.00</th>
+                                          <th></th>
+                                        </tr>
+                                      </tfoot>
+                                    </table>
+                                  </div>
+
+                                  <div class="mt-3 border-top pt-3">
+                                    <label class="form-label fw-bold text-primary">Total Claim Amount:</label>
+                                    <input type="number" class="form-control fw-bold text-primary" value="0.00" id="total_claim_amount"  />
+                                  </div>
+                                </div>
+                              </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
                                                                 <!-- Claim & Expense Card -->
@@ -684,7 +760,7 @@
 
                                                                 <button type="submit"
 
-                                                                    class="btn btn-primary px-5 mx-2" id="btn_save">Save</button>
+                                                                    class="btn btn-primary px-5 mx-2" id="btn_save" disabled>Save</button>
 
                                                                 <button type="reset"
 
@@ -1010,7 +1086,7 @@
 
     });
 
-    function listInternal(internalId, clientId) {
+    function listInternal(internalId, clientId, skipAutofill = false) {
 
         // return;
 
@@ -1053,32 +1129,34 @@
                                 $('#select_Internalclient').append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
                             });
 
-                            // Change event listener
                             $('#select_Internalclient').on('change', function() {
                                 const selectedId = $(this).val();
                                 $('#selected_client_id').val(selectedId);
                                 loadCheque();
+                                if (skipAutofill) {
+                                    skipAutofill = false;
+                                    return;
+                                }
                                 if (!selectedId) {
                                     // Default option selected
                                     $('#total_outstanding').val(0);
-                                    $('#outstanding_with_cheque').val(0);
-                                    $('#outstanding_without_cheque').val(0);
+                                    // $('#outstanding_with_cheque').val(0);
+                                    // $('#outstanding_without_cheque').val(0);
                                     $('#claim_amount').val(0);
                                     return;
                                 }
                                 const selectedItem = response.find(item => String(item.id) === selectedId);
                                 if (!selectedItem) {
                                     $('#total_outstanding').val(0);
-                                    $('#outstanding_with_cheque').val(0);
-                                    $('#outstanding_without_cheque').val(0);
+                                    // $('#outstanding_with_cheque').val(0);
+                                    // $('#outstanding_without_cheque').val(0);
                                     $('#claim_amount').val(0);
                                     return;
                                 }
                                 $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
-                                // Claim amount must be added separately, so we don't auto-fill it from outstanding
-                                // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                // These are now handled by loadCheque() dynamically
+                                // $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                // $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
                             });
 
                             // Set initial selection and trigger change
@@ -1136,6 +1214,10 @@
             success: function(jsonResponse) {
                 let response = JSON.parse(jsonResponse)
                 $("#cheque_table_body").html(response.message)
+                if (response.success) {
+                    $('#outstanding_with_cheque').val(response.total_with_cheque || 0).trigger('change');
+                    $('#outstanding_without_cheque').val(response.total_without_cheque || 0).trigger('change');
+                }
             },
             error: function(err) {
                 console.log(err)
@@ -1143,7 +1225,7 @@
         })
     }
 
-    function listClient(marketingId, clientId) {
+    function listClient(marketingId, clientId, skipAutofill = false) {
 
 
 
@@ -1202,32 +1284,34 @@
                                 $('#select_client').append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
                             });
 
-                            // Change event listener
                             $('#select_client').on('change', function() {
                                 const selectedId = $(this).val();
                                 $('#selected_client_id').val(selectedId);
                                 loadCheque();
+                                if (skipAutofill) {
+                                    skipAutofill = false;
+                                    return;
+                                }
                                 if (!selectedId) {
                                     // Default option selected
                                     $('#total_outstanding').val(0);
-                                    $('#outstanding_with_cheque').val(0);
-                                    $('#outstanding_without_cheque').val(0);
+                                    // $('#outstanding_with_cheque').val(0);
+                                    // $('#outstanding_without_cheque').val(0);
                                     $('#claim_amount').val(0);
                                     return;
                                 }
                                 const selectedItem = response.find(item => String(item.id) === selectedId);
                                 if (!selectedItem) {
                                     $('#total_outstanding').val(0);
-                                    $('#outstanding_with_cheque').val(0);
-                                    $('#outstanding_without_cheque').val(0);
+                                    // $('#outstanding_with_cheque').val(0);
+                                    // $('#outstanding_without_cheque').val(0);
                                     $('#claim_amount').val(0);
                                     return;
                                 }
                                 $('#total_outstanding').val(selectedItem.total_outstanding ?? 0).trigger('change');
-                                $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
-                                $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
-                                // Claim amount must be added separately, so we don't auto-fill it from outstanding
-                                // $('#claim_amount').val(selectedItem.total_outstanding ?? 0).trigger('change');
+                                // These are now handled by loadCheque() dynamically
+                                // $('#outstanding_with_cheque').val(selectedItem.outstanding_cheque ?? 0).trigger('change');
+                                // $('#outstanding_without_cheque').val(selectedItem.outstanding_without_cheque ?? 0).trigger('change');
                             });
 
                             // Set initial selection and trigger change
@@ -1322,6 +1406,16 @@
     }
 </script>
 
+
+<!-- **********new script********* -->
+
+
+
+<!-- ******************* -->
+
+
+
+<!-- old script -->
 <script>
     const claimAmountInput = document.getElementById('claim_amount');
     const collectedAmountInput = document.getElementById('collected_amount');
@@ -1353,6 +1447,183 @@
         const total = withCheque + withoutCheque;
         totalOutstandingInput.value = total.toFixed(2);
         document.getElementById('outstanding_reference').value = total.toFixed(2);
+        updateTotalClaimAmount();
+    }
+
+    function toggleOtherExpense() {
+        const type = document.getElementById('new_expense_type').value;
+        const div = document.getElementById('other_expense_reason_div');
+        if (type === 'Other expense') {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+            document.getElementById('new_expense_reason').value = '';
+        }
+    }
+
+    function loadClientExpenses(clientId) {
+        if (!clientId) return;
+        fetch(`<?= ROOT_DIR ?>ajax/manage_client_expenses.php?action=get_expenses&client_id=${clientId}`)
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "success") {
+                    const list = document.getElementById('client_expenses_list');
+                    list.innerHTML = '';
+                    let total = 0;
+                    result.data.forEach(exp => {
+                        total += parseFloat(exp.amount);
+                        const row = `
+                            <tr>
+                                <td>${exp.description} ${exp.remark ? ' (' + exp.remark + ')' : ''}</td>
+                                <td class="text-end">${parseFloat(exp.amount).toFixed(2)}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteClientExpense('${exp.id}', '${clientId}')">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        list.innerHTML += row;
+                    });
+                    document.getElementById('total_expenses_sum').innerText = total.toFixed(2);
+                    updateTotalClaimAmount();
+                }
+            });
+    }
+
+
+//     function addClientExpense(clientId) {
+
+// const type = document.getElementById('new_expense_type').value;
+// const amount = parseFloat(document.getElementById('new_expense_amount').value) || 0;
+// const reason = document.getElementById('new_expense_reason').value;
+
+// if (!type || amount <= 0) {
+//     alert("Please select fee type and enter amount.");
+//     return;
+// }
+
+// let expenseTitle = type;
+
+// if (type === "Other expense" && reason !== '') {
+//     expenseTitle += " - " + reason;
+// }
+
+// let row = `
+//     <tr>
+//         <td>${expenseTitle}</td>
+//         <td class="text-end">${amount.toFixed(2)}</td>
+//         <td class="text-center">
+//             <button class="btn btn bx bx-trash"
+//                 onclick="removeExpense(this, ${amount})">
+//                 Delete
+//             </button>
+//         </td>
+//     </tr>
+// `;
+
+// document.getElementById('client_expenses_list')
+//     .insertAdjacentHTML('beforeend', row);
+
+// let totalExpenses = parseFloat(
+//     document.getElementById('total_expenses_sum').innerText
+// ) || 0;
+
+// totalExpenses += amount;
+
+// document.getElementById('total_expenses_sum').innerText =
+//     totalExpenses.toFixed(2);
+
+// let claimAmount = parseFloat(
+//     document.getElementById('total_claim_amount').value
+// ) || 0;
+
+// claimAmount += amount;
+
+// document.getElementById('total_claim_amount').value =
+//     claimAmount.toFixed(2);
+
+// document.getElementById('new_expense_type').value = '';
+// document.getElementById('new_expense_amount').value = '';
+// document.getElementById('new_expense_reason').value = '';
+
+// toggleOtherExpense();
+// }
+    function addClientExpense(clientId) {
+        if (!clientId) {
+            alert("Please save the information first.");
+            return;
+        }
+        const type = document.getElementById('new_expense_type').value;
+        const amount = document.getElementById('new_expense_amount').value;
+        const reason = document.getElementById('new_expense_reason').value;
+
+        if (!type || !amount || amount <= 0) {
+            alert("Please select fee type and enter amount.");
+            return;
+        }
+
+        const data = {
+            action: 'add_expense',
+            client_id: clientId,
+            fee_title: type,
+            amount: amount,
+            remark: reason
+        };
+
+        fetch("<?= ROOT_DIR ?>ajax/manage_client_expenses.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "success") {
+                    document.getElementById('new_expense_type').value = '';
+                    document.getElementById('new_expense_amount').value = '';
+                    document.getElementById('new_expense_reason').value = '';
+                    toggleOtherExpense();
+                    loadClientExpenses(clientId);
+                } else {
+                    alert(result.message);
+                }
+            });
+    }
+
+    function deleteClientExpense(expenseId, clientId) {
+        if (!confirm("Are you sure you want to delete this expense?")) return;
+        const data = {
+            action: 'delete_expense',
+            expense_id: expenseId
+        };
+        fetch("<?= ROOT_DIR ?>ajax/manage_client_expenses.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "success") {
+                    loadClientExpenses(clientId);
+                } else {
+                    alert(result.message);
+                }
+            });
+    }
+
+    function updateTotalClaimAmount() {
+        // const outstanding = parseFloat(totalOutstandingInput.value) || 0;
+        const expenses = parseFloat(document.getElementById('total_expenses_sum').innerText) || 0;
+        const totalClaim = expenses;
+        document.getElementById('total_claim_amount').value = totalClaim.toFixed(2);
+        
+        // Update the main Claim Amount field
+        claimAmountInput.value = totalClaim.toFixed(2);
+        updateBalance();
     }
 
     claimAmountInput.addEventListener('input', updateBalance);
@@ -1367,6 +1638,14 @@
     
     $(withChequeInput).on('change', updateOutstanding);
     $(withoutChequeInput).on('change', updateOutstanding);
+
+    // Initial load for expenses
+    $(document).ready(function() {
+        const editId = '<?= $edit_id ?>';
+        if (editId) {
+            loadClientExpenses(editId);
+        }
+    });
 </script>
 
 <?php if ($action == "edit" && $edit_id > 0 && $data['user_id'] > 0 && $data['category'] > 0) { ?>
@@ -1374,11 +1653,9 @@
     <script>
         $('#select_marketing').val(<?= $data['user_id'] ?>).trigger('change');
 
-        listClient('<?= $data['user_id'] ?>', '<?= $data['client'] ?>');
-
+        listClient('<?= $data['user_id'] ?>', '<?= $data['client'] ?>', true);
         $('#select_internal').val(<?= $data['user_id'] ?>).trigger('change');
-
-        listInternal('<?= $data['user_id'] ?>', '<?= $data['client'] ?>');
+        listInternal('<?= $data['user_id'] ?>', '<?= $data['client'] ?>', true);
 
         $('#category').val('<?= $data['category'] ?>').trigger('change');
 

@@ -156,11 +156,13 @@ if ($alphabet === 'list') {
     if($array_total['Total2']>0)
     $outstanding_without_cheque = $array_total['Total2'];
 
-    $current_client_data = $objClients->Get_Client_Information($parent_id)[0] ?? [];
-    $total_outstanding   = $current_client_data['total_outstanding'] ?? 0.00;
+    $total_outstanding = floatval($outstanding_cheque) + ($outstanding_without_cheque);
+
+
+
 
     $data_input     = [
-        'total_outstanding' => $total_outstanding,
+        'total_outstanding' => $total_outstanding ?? 0.00,
         'outstanding_cheque' => $outstanding_cheque ?? 0.00,
         'outstanding_without_cheque' => $outstanding_without_cheque ?? 0.00
     ];

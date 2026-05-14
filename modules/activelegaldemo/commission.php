@@ -134,7 +134,7 @@ if ($_POST) {
 
             $_SESSION['PAGE_SUCCESS'] = 'You have successfully ' . ($edit_id ? 'updated' : 'added') . ' the commission information';
 
-            header("location: " . ROOT_DIR . "activelegal/commission/edit/$active_legal_id.html");
+            header("location: " . ROOT_DIR . "activelegaldemo/commission/edit/$active_legal_id.html");
 
             exit;
         } else {

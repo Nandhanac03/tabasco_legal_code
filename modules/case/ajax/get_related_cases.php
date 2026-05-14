@@ -18,7 +18,7 @@ if (isset($_POST['active_legal_id'])) {
         $active_legals = $objLegalCase->SELECT_MultiFetch("SELECT id FROM legal_activelegal WHERE client = ? AND status = 'A'", [$client_id]);
         $al_ids = array_column($active_legals, 'id');
         
-        $html = '<option value="">-- None (Optional) --</option>';
+        $html = '<option value="">- - Select - -</option>';
         if (!empty($al_ids)) {
             $placeholders = implode(',', array_fill(0, count($al_ids), '?'));
             $Sqlcmd = "
@@ -29,6 +29,7 @@ if (isset($_POST['active_legal_id'])) {
                 ORDER BY lc.id DESC
             ";
             $cases = $objLegalCase->SELECT_MultiFetch($Sqlcmd, $al_ids);
+
             
             if ($cases) {
                 foreach ($cases as $case) {

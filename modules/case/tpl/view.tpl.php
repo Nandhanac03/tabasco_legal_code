@@ -189,6 +189,9 @@
                                         <p><b>Case No :</b> <?= isset($current_case[0]['case_number']) ? $current_case[0]['case_number'] : '' ?></p>
                                         <p><b>Case Mode :</b> <?= isset($current_case[0]['case_mode_title']) ? $current_case[0]['case_mode_title'] : '' ?></p>
                                         <p><b>Case Category :</b> <?= isset($current_case[0]['category_name']) ? $current_case[0]['category_name'] : '' ?></p>
+                                        <?php if (!empty($current_case[0]['related_case_number'])) { ?>
+                                            <p><b>Related Case :</b> <?= htmlspecialchars($current_case[0]['related_case_number']) ?></p>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>

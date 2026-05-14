@@ -40,7 +40,7 @@
                             <?php echo createNavItem("case", "Information", "information-sharp", "information", $edit_id, true); ?>
                             <?php echo createNavItem("case", "Documents", "document-attach-sharp", "document", $edit_id, false); ?>
                             <?php echo createNavItem("case", "Hearing Date & Feedback", "calendar", "hearing", $edit_id, false); ?>
-                            <?php echo createNavItem("case", "Related Cases", "link-sharp", "relatedcases", $edit_id, false); ?>
+                            <!-- <?php echo createNavItem("case", "Related Cases", "link-sharp", "relatedcases", $edit_id, false); ?> -->
                         </ul>
 
                         <div class="tab-content py-3">
@@ -100,42 +100,32 @@
                                                                                 value="<?= isset($current_legal_case[0]['case_number']) && $current_legal_case[0]['case_number'] != '' ? $current_legal_case[0]['case_number'] : $_POST['case_number'] ?>">
                                                                         </div>
                                                                          
-                                                                         <div class="mb-3">
+                                                                         <!-- <div class="mb-3">
                                                                              <label class="form-label">Related Case (Optional):</label>
                                                                              <select class="form-select" name="related_case_id" id="related_case_id">
                                                                                  <option value="">-- None --</option>
                                                                              </select>
+                                                                         </div> -->
+
+
+                                                                         <div class="mb-3">
+                                                                             <label class="form-label">Related Case :</label>
+                                                                             <select class="form-select select2-bootstrap" name="related_case_id[]" id="related_case_id" multiple="multiple">
+                                                                                 <option value="">- - select - -</option>
+                                                                             </select>
                                                                          </div>
 
-
-
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Cases: <span class="text-danger">*</span></label>
-                                                                            <select class="form-select" name="category" id="category">
-                                                                                <option value="">- - select - -</option>
-                                                                                <?php if ($categories) { ?>
-                                                                                    <?php foreach ($categories as $category) { ?>
-                                                                                        <option value="<?= $category['id'] ?>" <?= $current_legal_case[0]['category'] == $category['id'] ? 'selected' : '' ?>><?= $category['title'] ?></option>
-                                                                                    <?php } ?>
-                                                                                <?php } ?>
-                                                                            </select>
-                                                                        </div>
-
-
-
-
-
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Category: <span class="text-danger">*</span></label>
-                                                                            <select class="form-select" name="category" id="category">
-                                                                                <option value="">- - select - -</option>
-                                                                                <?php if ($categories) { ?>
-                                                                                    <?php foreach ($categories as $category) { ?>
-                                                                                        <option value="<?= $category['id'] ?>" <?= $current_legal_case[0]['category'] == $category['id'] ? 'selected' : '' ?>><?= $category['title'] ?></option>
-                                                                                    <?php } ?>
-                                                                                <?php } ?>
-                                                                            </select>
-                                                                        </div>
+                                                                         <div class="mb-3">
+                                                                             <label class="form-label">Case Category: <span class="text-danger">*</span></label>
+                                                                             <select class="form-select" name="category" id="category">
+                                                                                 <option value="">- - select - -</option>
+                                                                                 <?php if ($categories) { ?>
+                                                                                     <?php foreach ($categories as $category) { ?>
+                                                                                         <option value="<?= $category['id'] ?>" <?= $current_legal_case[0]['category'] == $category['id'] ? 'selected' : '' ?>><?= $category['title'] ?></option>
+                                                                                     <?php } ?>
+                                                                                 <?php } ?>
+                                                                             </select>
+                                                                         </div>
 
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Court: <span class="text-danger">*</span></label>
@@ -250,7 +240,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Outstanding with cheque:</label>
+                    <label class="form-label">Outstanding with Cheques:</label>
                     <!-- CHANGE: Removed readonly — user can manually edit and it will be saved -->
                     <input type="text" class="form-control"
                         name="outstanding_with_cheque"
@@ -259,7 +249,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Outstanding without cheque:</label>
+                    <label class="form-label">Outstanding with Invoices:</label>
                     <!-- CHANGE: Removed readonly — user can manually edit and it will be saved -->
                     <input type="text" class="form-control"
                         name="outstanding_without_cheque"
@@ -459,11 +449,23 @@
         //     });
         // }
 
-        fetchActiveLegalInfo($('#code').val());
+        // fetchActiveLegalInfo($('#code').val());
+        fetchRelatedCases($('#code').val());
 
         $('#code').on('change', function() {
-            fetchActiveLegalInfo(this.value);
+            // fetchActiveLegalInfo(this.value);
+            fetchRelatedCases(this.value);
         });
+
+        // Initialize select2
+        if ($.fn.select2) {
+            $('#related_case_id').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: 'Select related cases',
+                allowClear: true
+            });
+        }
     });
 
     // CHANGE 4: New function — recalculates the three totals by reading the cheque table rows
@@ -706,10 +708,10 @@
                     if (response.success) {
                         $('#related_case_id').html(response.html);
                         // Set current selection if editing
-                        let selectedRelated = '<?= $current_legal_case[0]['related_case_id'] ?? '' ?>';
-                        if (selectedRelated) {
-                            $('#related_case_id').val(selectedRelated);
-                        }
+                        <?php if (isset($selected_related_ids) && !empty($selected_related_ids)) { ?>
+                            let selectedRelated = <?= json_encode($selected_related_ids) ?>;
+                            $('#related_case_id').val(selectedRelated).trigger('change');
+                        <?php } ?>
                     }
                 } catch(e) { console.error("Error parsing related cases", e); }
             }
@@ -726,8 +728,7 @@
             success: function(jsonResponse) {
                 let response = JSON.parse(jsonResponse);
                 $("#cheque_table_body").html(response.message);
-                // CHANGE 4: After table is rendered, recalculate the totals
-                recalculateTotals();
+                // Removed recalculateTotals() to keep fields manual as per request
             },
             error: function(err) {
                 console.log(err);

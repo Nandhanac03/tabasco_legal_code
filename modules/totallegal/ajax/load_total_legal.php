@@ -243,7 +243,7 @@ if ($totalData > 0 && is_array($legalData)) {
 
         echo '<tr>
 
-         <td>' . htmlspecialchars($row['code'] ?? '-') . '</td>
+         <td>' . htmlspecialchars($row['ClientCode'] ?? '-') . '</td>
 
             <td>' . htmlspecialchars($row['dateon'] ?? '-') . '</td>
 

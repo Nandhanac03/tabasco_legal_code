@@ -7,39 +7,41 @@
             <div class="mb-3">
                 <label class="form-label"></label>
                 <input class="form-check-input" type="radio" name="chequeAdd" id="flexRadioDefault1" value="1" checked>
-                <label class="form-check-label" for="flexRadioDefault1">With Cheque</label>
+                <label class="form-check-label" for="flexRadioDefault1">PDC (Post-Dated Cheque)</label>
                 <input class="form-check-input" type="radio" name="chequeAdd" id="flexRadioDefault2" value="2">
-                <label class="form-check-label" for="flexRadioDefault2">Without Cheque</label>
+                <label class="form-check-label" for="flexRadioDefault2">Invoice Entry</label>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Cheque Date: <span class="asterisk text-danger">*</span></label>
+                <label class="form-label"><span id="span_date_label">Date</span>: <span class="asterisk text-danger">*</span></label>
                 <input type="date" name="cheque_date" id="cheque_date" class="form-control" autocomplete="off" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Cheque Number: <span class="asterisk text-danger">*</span></label>
+                <label class="form-label"><span id="span_number_label">Cheque Number</span>: <span class="asterisk text-danger">*</span></label>
                 <input type="text" name="cheque_number" id="cheque_number" class="form-control" autocomplete="off" />
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" id="div_bank">
                 <label class="form-label">Bank: <span class="asterisk text-danger">*</span></label>
                 <input type="text" name="cheque_bank" id="cheque_bank" class="form-control" autocomplete="off" />
             </div>
 
+
+
             <div class="mb-3">
-                <label class="form-label">Bounced Date: </label>
-                <input type="date" name="cheque_bounced_date" id="cheque_bounced_date" class="form-control" autocomplete="off" />
+                <label class="form-label">Description: </label>
+                <textarea name="notes" id="notes" class="form-control" placeholder="Enter description"></textarea>
             </div>
 
             <div class="mb-3">
-                <label class="form-label"><span id="span_amount_label">Outstanding</span>: <span class="asterisk text-danger">*</span></label>
-                <input type="number" name="cheque_amount" id="cheque_amount" class="form-control" placeholder="Outstanding " min="0" step="0.01" autocomplete="off" />
+                <label class="form-label"><span id="span_amount_label">Amount</span>: <span class="asterisk text-danger">*</span></label>
+                <input type="number" name="cheque_amount" id="cheque_amount" class="form-control"  min="0" step="0.01" autocomplete="off" />
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Upload cheque: <span class="asterisk text-danger">*</span></label>
-                <input type="file" name="cheque_file" id="cheque_file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+                <input type="file" name="cheque_name" id="cheque_name" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
             </div>
 
             <div id="response"></div>
@@ -70,9 +72,10 @@
                             <tr>
                                 <td class="text-center">Sl No</td>
                                 <td class="text-center">Date</td>
-                                <td class="text-center">Outstanding</td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="th_number">Number</span></td>
+                                <td class="text-center">Amount</td>
+                                <td class="text-center">Description</td>
+                                <td class="text-center">Action</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,9 +101,9 @@
     radios.forEach(radio => {
         radio.addEventListener('change', function () {
             if (this.value === "1") {
-                button.innerHTML = '<i class="fadeIn animated bx bx-plus"></i> Add Cheque details';
+                button.innerHTML = '<i class="fadeIn animated bx bx-plus"></i> Add PDC details';
             } else {
-                button.innerHTML = '<i class="fadeIn animated bx bx-plus"></i> Add Payment details';
+                button.innerHTML = '<i class="fadeIn animated bx bx-plus"></i> Add Invoice Entry';
             }
         });
     });
@@ -137,12 +140,11 @@
                         row.innerHTML = `
                         <td class="text-center">${index + 1}</td>
                         <td class="text-center">${formatDateDMY(item.upload_date)}</td>
+                        <td class="text-center">${item.cheque_number || '-'}</td>
                         <td class="text-center">${item.amount || '-'}</td>
+                        <td class="text-center">${item.notes || '-'}</td>
                         <td class="text-center">
-                            ${item.cheque_name ? `<a href="<?= ROOT_DIR ?>uploads/all_cheque/${item.cheque_name}" target="_blank">View</a>` : '-'}
-                        </td>
-                        <td class="text-center">
-                            ${item.id ? `<a href="#" class="delete-link" data-id="${item.id}" style="color: red; font-weight: bold;">Delete</a>` : '-'}
+                            ${item.id ? `<a href="#" class="delete-link" data-id="${item.id}" style="color: red; font-weight: bold;" title="Delete"><i class="lni lni-trash"></i></a>` : ''}
                         </td>`;
                         tbody.appendChild(row);
                     });
@@ -202,34 +204,24 @@
 
     function toggleChequeFields() {
         const withCheque = document.getElementById('flexRadioDefault1').checked;
-        const chequeDate = document.getElementById('cheque_date');
-        const chequeAmount = document.getElementById('cheque_amount');
-        const chequeFile = document.getElementById('cheque_file');
-        const chequeNnumber = document.getElementById('cheque_number');
-        const chequeBank = document.getElementById('cheque_bank');
-        const chequeBouncedDate = document.getElementById('cheque_bounced_date');
+        const spanDate = document.getElementById('span_date_label');
+        const spanNumber = document.getElementById('span_number_label');
+        const thNumber = document.getElementById('th_number');
+        const divBank = document.getElementById('div_bank');
 
-
-        //outstanding_cheque_heading 
-
-
-        if (withCheque == true) {
-            document.getElementById('outstanding_cheque_heading').textContent = "Outstanding with cheque List";
-        } else if (withCheque == false) {
-            document.getElementById('outstanding_cheque_heading').textContent = "Outstanding without cheque List";
+        if (withCheque) {
+            document.getElementById('outstanding_cheque_heading').textContent = "PDC (Post-Dated Cheque) List";
+            spanDate.textContent = "Date";
+            spanNumber.textContent = "Cheque Number";
+            thNumber.textContent = "Cheque Number";
+            divBank.style.display = 'block';
+        } else {
+            document.getElementById('outstanding_cheque_heading').textContent = "Invoice Entry List";
+            spanDate.textContent = "Date";
+            spanNumber.textContent = "Invoice Number";
+            thNumber.textContent = "Invoice Number";
+            divBank.style.display = 'none';
         }
-
-        chequeDate.disabled = !withCheque;
-        chequeFile.disabled = !withCheque;
-        chequeAmount.disabled = false;
-
-        chequeDate.closest('.mb-3').style.display = withCheque ? 'block' : 'none';
-        chequeFile.closest('.mb-3').style.display = withCheque ? 'block' : 'none';
-        chequeNnumber.closest('.mb-3').style.display = withCheque ? 'block' : 'none';
-        chequeBank.closest('.mb-3').style.display = withCheque ? 'block' : 'none';
-        chequeBouncedDate.closest('.mb-3').style.display = withCheque ? 'block' : 'none';
-        
-
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -324,7 +316,7 @@
 
         $('#outstanding_cheque').val(0.00);
         $('#outstanding_without_cheque').val(0.00);
-        $('#total_outstanding').val(0.00);
+        /* $('#total_outstanding').val(0.00); */
 
         if (parent_id !== '') {
             $.ajax({
@@ -342,10 +334,8 @@
                         $('#outstanding_cheque').val(response.Total1);
                         $('#outstanding_without_cheque').val(response.Total2);
 
-                        const cheque = parseFloat(response.Total1) || 0;
-                        const withoutCheque = parseFloat(response.Total2) || 0;
-
-                        $('#total_outstanding').val((cheque + withoutCheque).toFixed(2));
+                        // Use the preserved total from the database instead of recalculating it
+                        $('#total_outstanding').val(response.OutstandingTotal);
                     } else {
                         alert('Error: ' + response.message);
                     }

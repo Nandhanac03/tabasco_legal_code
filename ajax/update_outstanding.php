@@ -26,9 +26,8 @@ if($param1){
 
     // Update the outstanding data
 
-    if($marketing>0 && $param1>0){
+    if($param1>0){
         $update_array   =   array();
-        $update_array['marketing']                      = $marketing;
         $update_array['total_outstanding']              = $totalOutstanding;
         $update_array['outstanding_cheque']             = $outstandingCheque;
         $update_array['outstanding_without_cheque']     = $outstandingWithoutCheque;

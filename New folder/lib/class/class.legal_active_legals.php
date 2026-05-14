@@ -103,111 +103,159 @@ class ActiveLegal extends dbcon
     public function Get_ActiveLegal_Information($filters = [])
     {
         $params = [];
+    
         $sql = "SELECT
-    AL.*,
-    U1.user_name AS createdBy,
-    U2.user_name AS User_Client,
-    UT.usertype_title AS Usertype_Client,
-    LC.name AS ClientName,
-    LC.type AS ClientType,
-    LC.mobile_number AS Clientmobile_number,
-    LDC.contact_no AS Deptmobile_number,
-    LF.contact_no AS legalfirmmobile_number,
-    LTP.contact_no AS thirdmobile_number,
-    U3.user_mob AS legalteammobile_number,
-
-    CONCAT(
-        COALESCE(
-            CONCAT(LTP.name, ' — Third Party'),
-            CONCAT(LF.name, ' — Legal Firm'),
-            CONCAT(LDC.name, ' — Debt Collector'),
-            CONCAT(U3.user_name, ' — Legal Team')
-        )
-    ) AS Present_Legal_Firm_Name,
-    CASE
-        WHEN AL.category = 1 THEN 'TP'
-        WHEN AL.category = 2 THEN 'LF'
-        WHEN AL.category = 3 THEN 'DC'
-        WHEN AL.category = 4 THEN 'LT'
-        ELSE 'unknown'
-    END AS legal_firm_type,
-    CASE
-        WHEN AL.category = 1 THEN 'third_party'
-        WHEN AL.category = 2 THEN 'legal_firm'
-        WHEN AL.category = 3 THEN 'debt_collector'
-        WHEN AL.category = 4 THEN 'legal_team'
-        ELSE 'unknown'
-    END AS legal_firm_type_name
-FROM legal_activelegal AL
-LEFT JOIN users U1 ON U1.user_Id = AL.created_id
-LEFT JOIN users U2 ON U2.user_Id = AL.user_id
-LEFT JOIN usertype UT ON UT.usertype_Id = U2.user_typeId
-LEFT JOIN legal_client LC ON LC.id = AL.client
-LEFT JOIN legal_third_party LTP ON LTP.id = AL.agencies_id AND AL.category = 1
-LEFT JOIN legal_firm LF ON LF.id = AL.agencies_id AND AL.category = 2
-LEFT JOIN legal_debt_collector LDC ON LDC.id = AL.agencies_id AND AL.category = 3
-LEFT JOIN users U3 ON U3.user_Id = AL.agencies_id AND AL.category = 4
-WHERE 1";
+            AL.*,
+    
+            U1.user_name AS createdBy,
+            U2.user_name AS User_Client,
+            UT.usertype_title AS Usertype_Client,
+    
+            LC.name AS ClientName,
+            LC.type AS ClientType,
+            LC.mobile_number AS Clientmobile_number,
+    
+            LCASE.case_number AS case_number,
+    
+            LDC.contact_no AS Deptmobile_number,
+            LF.contact_no AS legalfirmmobile_number,
+            LTP.contact_no AS thirdmobile_number,
+            U3.user_mob AS legalteammobile_number,
+    
+            CONCAT(
+                COALESCE(
+                    CONCAT(LTP.name, ' — Third Party'),
+                    CONCAT(LF.name, ' — Legal Firm'),
+                    CONCAT(LDC.name, ' — Debt Collector'),
+                    CONCAT(U3.user_name, ' — Legal Team')
+                )
+            ) AS Present_Legal_Firm_Name,
+    
+            CASE
+                WHEN AL.category = 1 THEN 'TP'
+                WHEN AL.category = 2 THEN 'LF'
+                WHEN AL.category = 3 THEN 'DC'
+                WHEN AL.category = 4 THEN 'LT'
+                ELSE 'unknown'
+            END AS legal_firm_type,
+    
+            CASE
+                WHEN AL.category = 1 THEN 'third_party'
+                WHEN AL.category = 2 THEN 'legal_firm'
+                WHEN AL.category = 3 THEN 'debt_collector'
+                WHEN AL.category = 4 THEN 'legal_team'
+                ELSE 'unknown'
+            END AS legal_firm_type_name
+    
+        FROM legal_activelegal AL
+    
+        LEFT JOIN users U1
+            ON U1.user_Id = AL.created_id
+    
+        LEFT JOIN users U2
+            ON U2.user_Id = AL.user_id
+    
+        LEFT JOIN usertype UT
+            ON UT.usertype_Id = U2.user_typeId
+    
+        LEFT JOIN legal_client LC
+            ON LC.id = AL.client
+    
+        LEFT JOIN legal_case LCASE
+            ON LCASE.active_legal_id = AL.id
+            AND LCASE.status = 'A'
+    
+        LEFT JOIN legal_third_party LTP
+            ON LTP.id = AL.agencies_id
+            AND AL.category = 1
+    
+        LEFT JOIN legal_firm LF
+            ON LF.id = AL.agencies_id
+            AND AL.category = 2
+    
+        LEFT JOIN legal_debt_collector LDC
+            ON LDC.id = AL.agencies_id
+            AND AL.category = 3
+    
+        LEFT JOIN users U3
+            ON U3.user_Id = AL.agencies_id
+            AND AL.category = 4
+    
+        WHERE 1";
+    
         if (!empty($filters['id'])) {
             $sql .= " AND AL.id = :id";
             $params['id'] = $filters['id'];
         }
+    
         if (!empty($filters['code'])) {
             $sql .= " AND AL.code = :code";
             $params['code'] = $filters['code'];
         }
+    
         if (!empty($filters['dateon'])) {
             $sql .= " AND DATE(AL.dateon) = :dateon";
             $params['dateon'] = $filters['dateon'];
         }
+    
         if (!empty($filters['user_id'])) {
             $sql .= " AND AL.user_id = :user_id";
             $params['user_id'] = $filters['user_id'];
         }
+    
         if (!empty($filters['client'])) {
             $sql .= " AND AL.client = :client";
             $params['client'] = $filters['client'];
         }
+    
         if (!empty($filters['search'])) {
-            $sql .= " AND (AL.code LIKE :search OR AL.notes LIKE :search1 OR U1.user_name LIKE :search2)";
-            $params['search'] = '%' . $filters['search'] . '%';
+    
+            $sql .= " AND (
+                AL.code LIKE :search
+                OR AL.notes LIKE :search1
+                OR U1.user_name LIKE :search2
+                OR LCASE.case_number LIKE :search3
+            )";
+    
+            $params['search']  = '%' . $filters['search'] . '%';
             $params['search1'] = '%' . $filters['search'] . '%';
             $params['search2'] = '%' . $filters['search'] . '%';
+            $params['search3'] = '%' . $filters['search'] . '%';
         }
+    
         if (!empty($filters['status'])) {
             $sql .= " AND AL.status = :status";
             $params['status'] = $filters['status'];
         }
+    
         if (!empty($filters['legal_status'])) {
             $sql .= " AND AL.legal_status = :legal_status";
             $params['legal_status'] = $filters['legal_status'];
         }
+    
         if (!empty($filters['action_id'])) {
             $sql .= " AND AL.id != :action_id";
             $params['action_id'] = $filters['action_id'];
         }
-        
+    
+        $sql .= " GROUP BY AL.id";
+    
         $sql .= " ORDER BY AL.id DESC";
-
+    
         if (!empty($filters['limit'])) {
-            $limit = (int)$filters['limit']; 
-            $offset = !empty($filters['offset']) ? (int)$filters['offset'] : 0; 
+    
+            $limit  = (int)$filters['limit'];
+            $offset = !empty($filters['offset'])
+                ? (int)$filters['offset']
+                : 0;
+    
             $sql .= " LIMIT $offset, $limit";
         }
-      
-        // echo $this->get_query($sql, $params); exit;
+    
+        // echo $this->get_query($sql, $params);
+        // exit;
+    
         return $this->SELECT_MultiFetch($sql, $params);
-
-
-        $activity->log(
-            'legal_activelegal',
-            $id,
-            'UPDATE',
-            'Updated Active Legal record',
-            $oldData,
-            $data
-        );
-        
     }
     function Get_LEGAL_TOTAL_COUNT($offset = '', $limit = '', $status = '', $legal_status = '', $filters = [])
     {

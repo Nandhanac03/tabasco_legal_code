@@ -3,7 +3,8 @@ New system required updates
 
 2- In Active legal & total legal& closed legal: search by client is not working.
 
-3- We can't add cases out of tabasco Client list (we need an option to the cases when tabasco is part of it against companies or individuals who are not clients of Tabasco.
+3- We can't add cases out of tabasco Client list (we need an option to the cases when tabasco is part of it against companies or individuals who are not clients of Tabasco.  
+#DONE
 
 4- In Client section: the outstanding amount must have option to add the Paid court fees and expense (because this expenses will be added to total claim in the judgment) the options must be as follows:
 A. Court Filing Case fees
@@ -19,8 +20,10 @@ All These expenses must reflect directly as expense in Collection & Expense sect
 6- In Add new action: category must be automatically shown same what we add in active legal, case information. Also: remover the following: Email link. stage. UAE pass, they are not required 
 
 7- List download in all sections is not working.
+#reports pending
 
 8- In Add case: an option to link (Related Cases) to the case of the same client must be added. This option must show automatically all case related to the same client and I will have the option to choose between them. However, this option should be optional because the same client can have multiple cases not linked to each other.
+#done
 
 9- Case action: search bar required
 
@@ -36,3 +39,34 @@ separately
 14- In Al Qranfal file, the amount in not correct. Total 2 cases 220000 should be. the system made them 220000 $ 120000.-done 
 
 15-In Add case claimed amount must be added because usually its deferent from the outstanding, mentioned in the client section - done
+
+
+
+
+
+outstanding edit crosscheck in client creation
+
+#reports pending  download in all sections is not working.
+
+
+
+
+12-may-26
+
+1)need to display client code everywhere.
+2)outstanding with cheque/without cheque not depend the cheque list and it will be editable.
+3)statement amount  and pdc list
+4)Related case mapping should be displayed within the form instead of in the tab section.
+
+
+
+
+14-may-26
+
+1) In Active legal the code must be same for each client in all categories.
+#Tomorrow will provide an update.
+
+3)  Case add related to same outstanding amount
+#Tomorrow will provide an update.
+
+

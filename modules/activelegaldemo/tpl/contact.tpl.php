@@ -79,8 +79,7 @@
               echo createNavItem('activelegaldemo', "Commission", "cash", "commission", $edit_id); 
               
               
-              echo createNavItem('activelegaldemo', "RelatedCases", "person-add-outline", "relatedcases", $edit_id);// Inactive tab
-
+           
               ?>
 
 

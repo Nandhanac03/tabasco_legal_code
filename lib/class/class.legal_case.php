@@ -180,6 +180,54 @@ class LegalCase extends dbcon
     
 
 
+    public function syncCaseRelations($case_id, $related_ids = [], $user_id)
+    {
+        // 1. Mark existing relations as deleted for this main_case_id
+        $this->Query("UPDATE legal_case_to_case_relations SET status = 'D' WHERE (main_case_id = :id1 OR related_case_id = :id2) AND status = 'A'", ['id1' => $case_id, 'id2' => $case_id]);
+
+        if (empty($related_ids)) return true;
+
+        foreach ($related_ids as $rel_id) {
+            $rel_id = (int)$rel_id;
+            if ($rel_id <= 0 || $rel_id == $case_id) continue;
+
+            // Check if it already exists (might have been 'D' or exists in reverse)
+            $check = $this->SQL_Fetch(
+                "SELECT id FROM legal_case_to_case_relations 
+                 WHERE (
+                     (main_case_id = :a AND related_case_id = :b) 
+                  OR (main_case_id = :b2 AND related_case_id = :a2)
+                 )",
+                ['a' => $case_id, 'b' => $rel_id, 'b2' => $rel_id, 'a2' => $case_id]
+            );
+
+            if ($check) {
+                // Update to 'A'
+                $this->Query("UPDATE legal_case_to_case_relations SET status = 'A', updated_on = NOW(), updated_by = :uid WHERE id = :rid", ['uid' => $user_id, 'rid' => $check['id']]);
+            } else {
+                // Insert new
+                $this->Query(
+                    "INSERT INTO legal_case_to_case_relations (main_case_id, related_case_id, created_on, created_by, status)
+                     VALUES (:case_id, :rel_id, NOW(), :user_id, 'A')",
+                    ['case_id' => $case_id, 'rel_id' => $rel_id, 'user_id' => $user_id]
+                );
+            }
+        }
+        return true;
+    }
+
+    public function getCaseRelations($case_id)
+    {
+        $sql = "
+            SELECT 
+                IF(main_case_id = :id1, related_case_id, main_case_id) as related_id
+            FROM legal_case_to_case_relations
+            WHERE status = 'A' AND (main_case_id = :id2 OR related_case_id = :id3)
+        ";
+        $result = $this->SELECT_MultiFetch($sql, ['id1' => $case_id, 'id2' => $case_id, 'id3' => $case_id]);
+        return $result ? array_column($result, 'related_id') : [];
+    }
+
     function get_case($id = '', $active_legal_id = '', $case_number = '')
     {
         $params = [];
@@ -331,12 +379,14 @@ class LegalCase extends dbcon
             lch.hearing_feedback,
             al.client AS client_id,
             cat.title AS category_name,
+            rc.case_number AS related_case_number,
 
             CASE 
                 WHEN lc.lawyer REGEXP '^[0-9]+$' THEN u.user_name
                 ELSE lc.lawyer
             END AS lawyer_name
         FROM legal_case AS lc
+        LEFT JOIN legal_case AS rc ON lc.related_case_id = rc.id
         LEFT JOIN legal_category cat ON lc.category = cat.id
 
         /* Get ONLY the latest hearing */
