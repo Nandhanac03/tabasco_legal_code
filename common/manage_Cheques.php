@@ -4,14 +4,37 @@
             <h6 class="mb-0"><i class="lni lni-text-align-justify"></i> Cheque details</h6>
         </div>
         <div class="card-body">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label class="form-label"></label>
                 <input class="form-check-input" type="radio" name="chequeAdd" id="flexRadioDefault1" value="1" checked>
                 <label class="form-check-label" for="flexRadioDefault1">PDC (Post-Dated Cheque)</label>
                 <input class="form-check-input" type="radio" name="chequeAdd" id="flexRadioDefault2" value="2">
                 <label class="form-check-label" for="flexRadioDefault2">Invoice Entry</label>
-            </div>
+            </div> -->
 
+            <div class="mb-3">
+    <label class="form-label d-block mb-2">Select Type</label>
+
+    <div class="btn-group" role="group" aria-label="Cheque Type">
+
+        <input type="radio" class="btn-check" name="chequeAdd"
+               id="flexRadioDefault1" value="1" checked>
+
+        <label class="btn btn-outline-primary"
+               for="flexRadioDefault1">
+            PDC (Post-Dated Cheque)
+        </label>
+
+        <input type="radio" class="btn-check" name="chequeAdd"
+               id="flexRadioDefault2" value="2">
+
+        <label class="btn btn-outline-primary"
+               for="flexRadioDefault2">
+            Invoice Entry
+        </label>
+
+    </div>
+</div>
             <div class="mb-3">
                 <label class="form-label"><span id="span_date_label">Date</span>: <span class="asterisk text-danger">*</span></label>
                 <input type="date" name="cheque_date" id="cheque_date" class="form-control" autocomplete="off" />
@@ -40,7 +63,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Upload cheque: <span class="asterisk text-danger">*</span></label>
+                <label class="form-label">Upload cheque: <span class="asterisk text-danger"></span></label>
                 <input type="file" name="cheque_name" id="cheque_name" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
             </div>
 
@@ -80,9 +103,16 @@
                         </thead>
                         <tbody>
                             <tr id="Rwo_nodata_msg" style="display: none;">
-                                <td colspan="5" class="text-center">No cheque data available.</td>
+                                <td colspan="6" class="text-center">No data available.</td>
                             </tr>
                         </tbody>
+                        <tfoot id="chequeTableFoot" style="display: none;">
+                            <tr class="table-light">
+                                <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                                <td class="text-center"><strong id="totalAmountDisplay">0.00</strong></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -116,7 +146,9 @@
 
     function fetchAndPopulateChequeTable(ID, moduleIs, pageIs) {
         if (ID != '' && moduleIs != '' && pageIs != '') {
-            document.querySelector("#chequeTable tbody").textContent = "";
+            const tbody = document.querySelector("#chequeTable tbody");
+            tbody.textContent = "";
+            $("#chequeTableFoot").hide();
 
             const selectedChequeType = $('input[name="chequeAdd"]:checked').val();
 
@@ -126,7 +158,6 @@
                     success,
                     data
                 }) => {
-                    const tbody = document.querySelector("#chequeTable tbody");
                     $("#Rwo_nodata_msg").hide();
 
                     if (!success || !Array.isArray(data) || data.length === 0) {
@@ -135,19 +166,26 @@
                     }
 
                     tbody.textContent = "";
+                    let totalAmount = 0;
                     data.forEach((item, index) => {
+                        const amount = parseFloat(item.amount) || 0;
+                        totalAmount += amount;
+
                         const row = document.createElement("tr");
                         row.innerHTML = `
                         <td class="text-center">${index + 1}</td>
                         <td class="text-center">${formatDateDMY(item.upload_date)}</td>
                         <td class="text-center">${item.cheque_number || '-'}</td>
-                        <td class="text-center">${item.amount || '-'}</td>
+                        <td class="text-center">${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td class="text-center">${item.notes || '-'}</td>
                         <td class="text-center">
                             ${item.id ? `<a href="#" class="delete-link" data-id="${item.id}" style="color: red; font-weight: bold;" title="Delete"><i class="lni lni-trash"></i></a>` : ''}
                         </td>`;
                         tbody.appendChild(row);
                     });
+
+                    document.getElementById("totalAmountDisplay").textContent = totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    $("#chequeTableFoot").show();
                 })
                 .catch(err => {
                     console.error("Error:", err);

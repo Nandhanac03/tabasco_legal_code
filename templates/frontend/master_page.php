@@ -110,7 +110,7 @@
     <?php
     /* Admin , HR , Legal Staff Menu  */
     if($_SESSION['LOGIN_AGENCIES']==0){?>
-      <li>
+      <li <?= ($main_menu == 'master') ? 'class="mm-active"' : '' ?>>
         <a href="javascript:;" class="has-arrow">
           <div class="parent-icon">
             <ion-icon name="grid-outline"></ion-icon>

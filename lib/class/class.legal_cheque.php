@@ -156,12 +156,16 @@ WHERE
             $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
         
             if ($loggedUserId) {
+                $typeLabel = ($data['add_type'] == 1) ? 'PDC Entry' : 'Invoice Entry';
+                $amount = number_format((float)($data['amount'] ?? 0), 2);
+                $logMessage = "Deleted $typeLabel (ID: $id) - Amount: $amount";
+
                 $activity->logActivity(
-                    'DISABLE',                     // action
-                    'legal_cheque_upload',                  // module/table
-                    $loggedUserId,                 // user id
-                    "Cheque disabled (ID: $id)",     // message
-                    $id                            // reference id
+                    'DISABLE',                     
+                    'legal_cheque_upload',         
+                    $loggedUserId,                 
+                    $logMessage,                   
+                    $id                         
                 );
             }
         }

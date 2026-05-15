@@ -67,6 +67,35 @@ outstanding edit crosscheck in client creation
 #Tomorrow will provide an update.
 
 3)  Case add related to same outstanding amount
+ALTER TABLE legal_client
+ADD COLUMN related_case_id TEXT NULL;
 #Tomorrow will provide an update.
+
+
+
+
+2)  Client Section Outstanding claim amount must have option to add the fees and charges expenses.
+#19 MAY
+Invoice Entry Fields 
+Date
+Invoice Number
+Description
+Amount
+
+PDC (Post-Dated Cheque) List Fields 
+Date
+Cheque Number
+Bank Name
+Description
+Amount
+
+
+
+
+common/Manage_Cheque.php
+ajax/add_cheque.php
+
+
+modules/client/tpl/information.tpl.php
 
 

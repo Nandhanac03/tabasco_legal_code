@@ -111,7 +111,9 @@ if ($alphabet === 'list') {
             'id'        => $id,
             'status'    => 'D',
             'update_by' => $_SESSION['LOGIN_LEGAL_ID'],
-            'update_on' => date('Y-m-d H:i:s')
+            'update_on' => date('Y-m-d H:i:s'),
+            'add_type'  => $array_list['add_type'] ?? '',
+            'amount'    => $array_list['amount'] ?? 0
         ];
 
         $filePath  = $array_list['cheque_name'] ?? '';

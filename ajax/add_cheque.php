@@ -1,205 +1,128 @@
 <?php
-
-ob_end_clean(); // Discard all unwanted echo/print
-
+ob_end_clean(); 
 header('Content-Type: application/json');
-
 error_reporting(0);
-
 ini_set('display_errors', 1);
-
 session_start();
 
-
-
-// Include necessary files
-
 include_once("../lib/config.php");
-
 include_once("../lib/class/class.dbcon.php");
-
 include_once("../lib/class/class.legal_cheque.php");
-
-
 include_once("../lib/class/class.legal_case.php");
+include_once("../lib/class/class.legal_activity_log.php");
 
-$objLegalCase =   new LegalCase();
-
+$objLegalCase = new LegalCase();
 $objCheque = new Cheque();
-
-
+$objLogger = new LegalActivityLog();
 
 if ($_POST) {
-
-
-
-
     $input_data = array();
-
     $uploadDir = '../uploads/all_cheque' . DIRECTORY_SEPARATOR;
 
-
-
     // CSRF token validation
-
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-
         echo json_encode(['status' => 'error', 'message' => 'Invalid CSRF token.']);
-
         exit;
     }
-
-
 
     // Create directory if it doesn't exist
-
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
-
         echo json_encode(['success' => false, 'status' => 'error', 'message' => 'Failed to create upload directory.']);
-
         exit;
     }
-
-
-
-    $response = ['success' => false, 'message' => ''];
-
-
 
     // Hidden fields
     $postmodule  = isset($_POST['hid_module']) ? htmlspecialchars($_POST['hid_module']) : null;
     $postpage    = isset($_POST['hid_page']) ? htmlspecialchars($_POST['hid_page']) : null;
     $postID      = isset($_POST['hid_parentID']) ? htmlspecialchars($_POST['hid_parentID']) : null;
 
-    // ✅ Prepare DB insert data
+    $parentType = '';
+    $parentID = null;
 
     switch ($postmodule) {
         case 'client':
             $parentType = 'C';
-            $parentID      = isset($_POST['hid_parentID']) ? htmlspecialchars($_POST['hid_parentID']) : null;
+            $parentID = $postID;
             break;
         case 'case':
             $parentType = 'CA';
-            $postID      = isset($_POST['hid_parentID']) ? htmlspecialchars($_POST['hid_parentID']) : null;
             if ($postID) {
-                $case       =  $objLegalCase->get_case($postID);
-                $parentID   =   $case[0]['client_id'];
+                $case = $objLegalCase->get_case($postID);
+                $parentID = isset($case[0]['client_id']) ? $case[0]['client_id'] : null;
             }
             break;
     }
 
-
-
-
-
-
-
     // Cheque fields
-
     $cheque_type   = isset($_POST['cheque_type']) ? htmlspecialchars($_POST['cheque_type']) : null;
-
     $cheque_date   = isset($_POST['cheque_date']) ? htmlspecialchars($_POST['cheque_date']) : null;
-
     $cheque_amount = isset($_POST['cheque_amount']) ? floatval($_POST['cheque_amount']) : null;
+    $cheque_number = isset($_POST['cheque_number']) ? htmlspecialchars($_POST['cheque_number']) : '';
+    $cheque_bank   = isset($_POST['cheque_bank']) ? htmlspecialchars($_POST['cheque_bank']) : '';
+    $cheque_notes  = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
 
-    $cheque_number = isset($_POST['cheque_number']) ? htmlspecialchars($_POST['cheque_number']) : null;
-    $cheque_bank = isset($_POST['cheque_bank']) ? htmlspecialchars($_POST['cheque_bank']) : null;
-    $cheque_bounced_date = !empty($_POST['cheque_bounced_date']) ? $_POST['cheque_bounced_date'] : null;
-
-
-
-
-
-    // ✅ Validate required fields based on cheque_type
-
+    // ✅ Robust Validation (Fixes the "0" value issue)
+    $isValid = true;
     if ($cheque_type == 1) {
-        // If cheque_type=1 (PDC), cheque_date, cheque_amount, cheque_number, cheque_bank and hidden fields are required
-        if (!$cheque_date || !$cheque_amount || !$cheque_number || !$cheque_bank || !$postID || !$postmodule || !$postpage) {
-            $response['message'] = VALIDATION_MSG;
-            $response['status'] = 'error';
-            echo json_encode($response);
-            exit;
+        if (empty($cheque_date) || $cheque_amount === null || strlen((string)$cheque_number) === 0 || empty($cheque_bank) || empty($parentID)) {
+            $isValid = false;
         }
     } else {
-        // If cheque_type!=1 (Invoice Entry), cheque_date, cheque_number, cheque_amount and hidden fields are required
-        if (!$cheque_date || !$cheque_number || !$cheque_amount || !$postID || !$postmodule || !$postpage) {
-            $response['message'] = VALIDATION_MSG;
-            $response['status'] = 'error';
-            echo json_encode($response);
-            exit;
+        if (empty($cheque_date) || strlen((string)$cheque_number) === 0 || $cheque_amount === null || empty($parentID)) {
+            $isValid = false;
         }
     }
 
+    if (!$isValid) {
+        echo json_encode(['status' => 'error', 'message' => VALIDATION_MSG]);
+        exit;
+    }
 
-
-
-
-
-
+    // ✅ File Upload Logic
     $uniqueFileName = '';
-    $targetFilePath = '';
+    if (isset($_FILES['cheque_name']) && $_FILES['cheque_name']['error'] === UPLOAD_ERR_OK) {
+        $fileExtension = strtolower(pathinfo($_FILES['cheque_name']['name'], PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
 
-
-
-    // ✅ Fill data for DB
-
-    $input_data['add_type']    = $cheque_type;
-
-    $input_data['upload_date'] = $cheque_date; 
-
-    $input_data['amount']      = $cheque_amount;
-
-    $input_data['cheque_name'] = ($cheque_type == 1) ? $uniqueFileName : ''; // Empty for non-type=1
-
-    $input_data['notes']       = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
-
-    $input_data['parent_id']   = $parentID;
-
-    $input_data['type']        = $parentType;
-
-    $input_data['create_by']   = $_SESSION['LOGIN_LEGAL_ID'];
-
-    $input_data['create_on']   = date('Y-m-d H:i:s');
-
-    $input_data['cheque_number']    = $cheque_number;
-    $input_data['cheque_bank']    = $cheque_bank;
-    $input_data['cheque_bounced_date']    = $cheque_bounced_date;
-
-
-
-
-    // Save to DB
-
-    if ($objCheque->upload_cheque($input_data)) {
-
-        $response['success']   = true;
-
-        $response['status']    = 'success';
-
-        $response['message']   = 'Cheque details added successfully!';
-
-        $response['file_name'] = $uniqueFileName;
-
-       // $objlogger->logActivity('CREATE', 'Cheque', null, "Added cheque of amount {$cheque_amount} for parent ID: {$parentID} ({$parentType})", null, $input_data);
-    } else {
-
-        $response['success'] = false;
-
-        $response['status']  = 'error';
-
-        $response['message'] = 'Failed to save uploaded file.';
-
-
-
-        // If file was uploaded but DB save failed, delete it
-
-        if ($cheque_type == 1 && $uniqueFileName && file_exists($targetFilePath)) {
-
-            unlink($targetFilePath);
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $uniqueFileName = time() . '_' . uniqid() . '.' . $fileExtension;
+            $targetFilePath = $uploadDir . $uniqueFileName;
+            move_uploaded_file($_FILES['cheque_name']['tmp_name'], $targetFilePath);
         }
     }
 
+    // ✅ Prepare DB Data
+    $input_data = [
+        'add_type'           => $cheque_type,
+        'upload_date'        => $cheque_date,
+        'amount'             => $cheque_amount,
+        'cheque_name'        => $uniqueFileName,
+        'notes'              => $cheque_notes,
+        'parent_id'          => $parentID,
+        'type'               => $parentType,
+        'cheque_number'      => $cheque_number,
+        'cheque_bank'        => $cheque_bank,
+        'cheque_bounced_date'=> null,
+        'create_by'          => $_SESSION['LOGIN_LEGAL_ID'],
+        'create_on'          => date('Y-m-d H:i:s')
+    ];
 
+    // ✅ Store in Table
+    if ($objCheque->upload_cheque($input_data)) {
+        $newID = $objCheque->mysqlInsertid();
+        
+        // Add Activity Log
+        $logMsg = ($cheque_type == 1 ? "Added PDC" : "Added Invoice") . " for parent ID: $parentID. Amount: $cheque_amount";
+        $objLogger->logActivity('INSERT', 'legal_cheque_upload', $_SESSION['LOGIN_LEGAL_ID'], $logMsg, $newID);
 
-    echo json_encode($response);
+        echo json_encode([
+            'success' => true,
+            'status' => 'success',
+            'message' => 'Data stored successfully!',
+            'file_name' => $uniqueFileName
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'status' => 'error', 'message' => 'Failed to store data in database.']);
+    }
 }
+?>

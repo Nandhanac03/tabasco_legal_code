@@ -240,7 +240,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Outstanding with Cheques:</label>
+                    <label class="form-label">Outstanding with PDC:</label>
                     <!-- CHANGE: Removed readonly — user can manually edit and it will be saved -->
                     <input type="text" class="form-control"
                         name="outstanding_with_cheque"
@@ -319,7 +319,7 @@
                                                             <div class="col">
                                                                 <div class="card">
                                                                     <div class="card-header">
-                                                                        <h6 class="mb-0"><i class="lni lni-indent-increase"></i> Cheque List</h6>
+                                                                        <h6 class="mb-0"><i class="lni lni-indent-increase"></i> PDC / Invoice List</h6>
                                                                     </div>
                                                                     <div class="card-body">
                                                                         <div class="mb-3">
