@@ -556,6 +556,7 @@
                                       <label class="form-label">Fee Type</label>
                                       <select class="form-select" id="new_expense_type" onchange="toggleOtherExpense()">
                                         <option value="">Select Fee Type</option>
+                                        
                                         <option value="Court Filing Case fees">Court Filing Case fees</option>
                                         <option value="Expert fee">Expert fee</option>
                                         <option value="Announcement fee">Announcement fee</option>

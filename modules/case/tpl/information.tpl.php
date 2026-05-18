@@ -319,7 +319,7 @@
                                                             <div class="col">
                                                                 <div class="card">
                                                                     <div class="card-header">
-                                                                        <h6 class="mb-0"><i class="lni lni-indent-increase"></i> PDC / Invoice List</h6>
+                                                                        <h6 class="mb-0"><i class="lni lni-indent-increase"></i> Cheque List</h6>
                                                                     </div>
                                                                     <div class="card-body">
                                                                         <div class="mb-3">

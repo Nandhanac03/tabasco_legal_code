@@ -355,17 +355,17 @@
 
                                   <div class="mb-3">
                                     <label class="form-label">Total Outstanding:</label>
-                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" readonly="false" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with PDC:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" readonly="false" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with Invoices:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" readonly="false" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
                                   </div>
 
                                 </div>
@@ -533,7 +533,6 @@ if ($action == 'edit') {
 
 <script>
   function set_Outstanding(param1) {
-    return false
     $('#OutstandingresponseMessage').html('');
     if (!param1) {
       $("#total_outstanding").val(0);
@@ -573,6 +572,10 @@ if ($action == 'edit') {
           document.getElementById("total_outstanding").value = result.total_outstanding;
           document.getElementById("outstanding_cheque").value = result.outstanding_cheque;
           document.getElementById("outstanding_without_cheque").value = result.outstanding_without_cheque;
+          
+          // Show success message
+          $('#OutstandingresponseMessage').html('<div class="alert alert-success">Outstanding amounts updated successfully.</div>');
+          setTimeout(() => $('#OutstandingresponseMessage').fadeOut('slow', function() { $(this).html('').show(); }), 3000);
         } else {
           console.error("Error:", result.message);
         }

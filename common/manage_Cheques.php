@@ -178,9 +178,16 @@
                         <td class="text-center">${item.cheque_number || '-'}</td>
                         <td class="text-center">${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td class="text-center">${item.notes || '-'}</td>
-                        <td class="text-center">
-                            ${item.id ? `<a href="#" class="delete-link" data-id="${item.id}" style="color: red; font-weight: bold;" title="Delete"><i class="lni lni-trash"></i></a>` : ''}
-                        </td>`;
+                       <td class="text-center">
+    ${item.id ? `
+        <button type="button"
+                class="delete-link btn btn-sm"
+                data-id="${item.id}"
+                style="color:red;">
+            <i class="lni lni-trash"></i>
+        </button>
+    ` : ''}
+</td>`;
                         tbody.appendChild(row);
                     });
 
@@ -195,49 +202,48 @@
         } else {
             document.querySelector("#chequeTable tbody").innerHTML = '<tr id="Rwo_nodata_msg"><td colspan="5" class="text-center">No cheque data available.</td></tr>';
         }
-
-
+       
     }
 
-    document.querySelector("#chequeTable tbody").addEventListener("click", function(e) {
-        if (e.target.classList.contains("delete-link")) {
-            e.preventDefault();
-            const id = e.target.dataset.id;
-            if (!confirm("Are you sure you want to delete this cheque?")) return;
+    $(document).on('click', '.delete-link', function (e) {
+        e.preventDefault();
 
-            e.target.textContent = "Deleting...";
-            e.target.style.pointerEvents = "none";
+        const $btn = $(this);
+        const id = $btn.data('id');
 
-            fetch(`<?= ROOT_DIR ?>ajax/load_cheque.php?alphabet=delete&id=${id}&parent_id=<?= $_GET['param1']; ?>&list_module=<?= $_GET['module']; ?>&list_page=<?= $_GET['page']; ?>`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        id
-                    })
+        if (!confirm("Are you sure you want to delete this?")) return;
+
+        $btn.prop('disabled', true).css('pointer-events', 'none');
+        const originalContent = $btn.html();
+        $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+        fetch(`<?= ROOT_DIR ?>ajax/load_cheque.php?alphabet=delete&id=${id}&parent_id=<?= $_GET['param1']; ?>&list_module=<?= $_GET['module']; ?>&list_page=<?= $_GET['page']; ?>`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id
                 })
-                .then(res => res.json())
-                .then(({
-                    success,
-                    message
-                }) => {
-                    if (success) {
-                        e.target.closest("tr")?.remove();
-                        alert("✅ Cheque deleted.");
-                        fetchAndPopulateChequeTable(parent_id, list_module, list_page);
-                    } else {
-                        alert("❌ Delete failed: " + message);
-                        e.target.textContent = "Delete";
-                        e.target.style.pointerEvents = "auto";
-                    }
-                })
-                .catch(() => {
-                    alert("❌ Error occurred.");
-                    e.target.textContent = "Delete";
-                    e.target.style.pointerEvents = "auto";
-                });
-        }
+            })
+            .then(res => res.json())
+            .then(({
+                success,
+                message
+            }) => {
+                if (success) {
+                    $btn.closest("tr").remove();
+                    alert("✅ Deleted successfully.");
+                    fetchAndPopulateChequeTable(parent_id, list_module, list_page);
+                } else {
+                    alert("❌ Delete failed: " + message);
+                    $btn.prop('disabled', false).css('pointer-events', 'auto').html(originalContent);
+                }
+            })
+            .catch(() => {
+                alert("❌ Error occurred.");
+                $btn.prop('disabled', false).css('pointer-events', 'auto').html(originalContent);
+            });
     });
 
     function toggleChequeFields() {
@@ -351,10 +357,10 @@
     });
 
     function loadTotal(parent_id, list_module) {
-
+        /*
         $('#outstanding_cheque').val(0.00);
         $('#outstanding_without_cheque').val(0.00);
-        /* $('#total_outstanding').val(0.00); */
+        */
 
         if (parent_id !== '') {
             $.ajax({
@@ -369,11 +375,11 @@
                 success: function(response) {
                     console.log("Total response:", response);
                     if (response.success) {
+                        /*
                         $('#outstanding_cheque').val(response.Total1);
                         $('#outstanding_without_cheque').val(response.Total2);
-
-                        // Use the preserved total from the database instead of recalculating it
                         $('#total_outstanding').val(response.OutstandingTotal);
+                        */
                     } else {
                         alert('Error: ' + response.message);
                     }

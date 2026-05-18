@@ -543,6 +543,100 @@
 
                                                                 </div>
 
+<!-- fees -->
+
+
+
+
+
+
+
+
+
+
+<div class="card mt-3">
+                                <div class="card-header">
+                                  <h6 class="mb-0"><i class="lni lni-revenue"></i> Paid Court Fees & Expenses</h6>
+                                </div>
+                                <div class="card-body">
+                                  <div id="ExpenseResponseMessage" class="mt-2"></div>
+                                  <div class="row g-2 align-items-end mb-3">
+                                    <div class="col-md-5">
+                                      <label class="form-label">Fee Type</label>
+                                      <select class="form-select" id="new_expense_type" onchange="toggleOtherExpense()">
+                                        <option value="">Select Fee Type</option>
+                                        <?php foreach ($array_legal_clients as $legalClient): ?>
+                                        <option value="<?= htmlspecialchars($legalClient['title']) ?>"><?= htmlspecialchars($legalClient['title']) ?></option>
+                                        <?php endforeach;?>
+                                        <!-- <option value="Expert fee">Expert fee</option>
+                                        <option value="Announcement fee">Announcement fee</option>
+                                        <option value="Emirates Judgment Enforcement fee (EJE)">Emirates Judgment Enforcement fee (EJE)</option>
+                                        <option value="Notary Public Fee">Notary Public Fee</option>
+                                        <option value="Other expense">Other expense</option> -->
+                                      </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label class="form-label">Amount</label>
+                                      <input type="number" class="form-control" id="new_expense_amount" step="0.01" placeholder="0.00">
+                                    </div>
+                                    <div class="col-md-3">
+                                      <button type="button" class="btn btn-primary w-100" onclick="addClientExpense('<?= $edit_id ?>')">
+                                        <i class="bx bx-plus"></i> Add
+                                      </button>
+                                    </div>
+                                    <div class="col-12 mt-2" id="other_expense_reason_div" style="display: none;">
+                                      <label class="form-label">Expense Reason</label>
+                                      <input type="text" class="form-control" id="new_expense_reason" placeholder="Enter reason for other expense">
+                                    </div>
+                                  </div>
+
+                                  <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                      <thead class="table-light">
+                                        <tr>
+                                          <th>Fee Type / Reason</th>
+                                          <th class="text-end">Amount</th>
+                                          <th class="text-center">Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody id="client_expenses_list">
+                                        <!-- Expenses will be loaded here -->
+                                      </tbody>
+                                      <tfoot>
+                                        <tr class="table-light">
+                                          <th>Total Expenses</th>
+                                          <th class="text-end" id="total_expenses_sum">0.00</th>
+                                          <th></th>
+                                        </tr>
+                                      </tfoot>
+                                    </table>
+                                  </div>
+
+                                  <div class="mt-3 border-top pt-3">
+                                    <label class="form-label fw-bold text-primary">Total Claim Amount:</label>
+                                    <input type="number" class="form-control fw-bold text-primary" value="0.00" id="total_claim_amount"  />
+                                  </div>
+                                </div>
+                              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ************* -->
+
+
+
+
+
 
                                                                 <!-- Claim & Expense Card -->
 

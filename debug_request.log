@@ -1,0 +1,1 @@
+[2026-05-18 15:17:29] POST data: {"chequeAdd":"1","cheque_date":"2026-05-18","cheque_number":"657537","cheque_bank":"def","notes":"dsgfdgfdg","cheque_amount":"","csrf_token":"83999791e7b395acb15c9afb33eb404680064a0f5d87ad31f8a845c51cce7f7f","hid_module":"client","hid_page":"information","hid_parentID":"1049","cheque_type":"1"}

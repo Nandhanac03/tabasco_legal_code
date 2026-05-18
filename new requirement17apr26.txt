@@ -92,10 +92,53 @@ Amount
 
 
 
-common/Manage_Cheque.php
+common/Manage_Cheques.php
 ajax/add_cheque.php
 
 
 modules/client/tpl/information.tpl.php
 
 
+modules/case/tpl/informmation.tpl.php
+modules/case/tpl/hearing.tpl.php
+modules/case/tpl/document.tpl.php
+modules/case/ajax/get_related_cases.php
+
+
+modules/case/informmation.php
+modules/case/hearing.php
+modules/case/document.php
+
+
+
+ALTER TABLE legal_case ADD related_case_id BIGINT;
+CREATE TABLE legal_case_to_case_relations (
+
+    id BIGINT NOT NULL AUTO_INCREMENT,
+
+    main_case_id BIGINT NOT NULL,
+    related_case_id BIGINT NOT NULL,
+
+    created_by BIGINT DEFAULT NULL,
+
+    created_on DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    updated_by BIGINT DEFAULT NULL,
+
+    updated_on DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    status ENUM('A','D') DEFAULT 'A' 
+        COMMENT 'A=Active, D=Deleted',
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT fk_main_case
+        FOREIGN KEY (main_case_id)
+        REFERENCES legal_case(id),
+
+    CONSTRAINT fk_related_case
+        FOREIGN KEY (related_case_id)
+        REFERENCES legal_case(id)
+
+);

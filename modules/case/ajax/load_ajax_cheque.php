@@ -85,10 +85,9 @@ if ($_POST) {
         $html = "";
 
         if (!empty($available_cheque)) {
-            $totalAmount = 0;
+
             foreach ($available_cheque as $key => $cheque) {
-                $amount = floatval($cheque['amount']);
-                $totalAmount += $amount;
+
                 $no = $key + 1;
                 if (!empty($cheque['cheque_name'])) {
                     $fileIcon = "<a href='" . ROOT_DIR . "/uploads/all_cheque/{$cheque['cheque_name']}' target='_blank' 
@@ -105,16 +104,11 @@ if ($_POST) {
                 $html .= "<tr>
     <td>{$no}</td>
     <td>{$cheque['upload_date']}</td>
-    <td>" . number_format($amount, 2) . "</td>
+    <td>{$cheque['amount']}</td>
     <td>{$fileIcon}</td>
     
 </tr>";
             }
-            $html .= "<tr class='table-light'>
-                <td colspan='2' class='text-end'><strong>Total:</strong></td>
-                <td><strong>" . number_format($totalAmount, 2) . "</strong></td>
-                <td></td>
-            </tr>";
         } else {
 
             $html = "<tr>

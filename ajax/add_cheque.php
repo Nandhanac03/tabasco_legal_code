@@ -56,7 +56,8 @@ if ($_POST) {
     // Cheque fields
     $cheque_type   = isset($_POST['cheque_type']) ? htmlspecialchars($_POST['cheque_type']) : null;
     $cheque_date   = isset($_POST['cheque_date']) ? htmlspecialchars($_POST['cheque_date']) : null;
-    $cheque_amount = isset($_POST['cheque_amount']) ? floatval($_POST['cheque_amount']) : null;
+    // Strictly parse the amount and consider empty strings as null to fail validation
+    $cheque_amount = (isset($_POST['cheque_amount']) && $_POST['cheque_amount'] !== '') ? floatval($_POST['cheque_amount']) : null;
     $cheque_number = isset($_POST['cheque_number']) ? htmlspecialchars($_POST['cheque_number']) : '';
     $cheque_bank   = isset($_POST['cheque_bank']) ? htmlspecialchars($_POST['cheque_bank']) : '';
     $cheque_notes  = isset($_POST['notes']) ? htmlspecialchars($_POST['notes']) : '';
@@ -64,17 +65,17 @@ if ($_POST) {
     // ✅ Robust Validation (Fixes the "0" value issue)
     $isValid = true;
     if ($cheque_type == 1) {
-        if (empty($cheque_date) || $cheque_amount === null || strlen((string)$cheque_number) === 0 || empty($cheque_bank) || empty($parentID)) {
+        if (empty($cheque_date) || $cheque_amount === null || $cheque_amount <= 0 || strlen((string)$cheque_number) === 0 || empty($cheque_bank) || empty($parentID)) {
             $isValid = false;
         }
     } else {
-        if (empty($cheque_date) || strlen((string)$cheque_number) === 0 || $cheque_amount === null || empty($parentID)) {
+        if (empty($cheque_date) || strlen((string)$cheque_number) === 0 || $cheque_amount === null || $cheque_amount <= 0 || empty($parentID)) {
             $isValid = false;
         }
     }
 
     if (!$isValid) {
-        echo json_encode(['status' => 'error', 'message' => VALIDATION_MSG]);
+        echo json_encode(['status' => 'error', 'message' => 'Validation Error: Please make sure to fill the Amount field (> 0) along with Date, Number, and Bank.', 'debug_post' => $_POST]);
         exit;
     }
 

@@ -31,7 +31,7 @@ if($param1){
         $update_array['total_outstanding']              = $totalOutstanding;
         $update_array['outstanding_cheque']             = $outstandingCheque;
         $update_array['outstanding_without_cheque']     = $outstandingWithoutCheque;
-        $update_array['update_by']                      = $_SESSION['user_id'];
+        $update_array['update_by']                      = $_SESSION['LOGIN_LEGAL_ID'];
         $update_array['update_on']                      = date('Y-m-d H:i:s');
         $update_array['refer_id']                       = $param1;
         if($objClients->Manage_Client_information($update_array,$param1)){
