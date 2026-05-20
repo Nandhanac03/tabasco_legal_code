@@ -71,6 +71,27 @@ class LegalFees_type extends dbcon
 
     return $result;
 }
+
+function get_all_fee_type($status = 'yes', $limit = '', $offset = '')
+{
+    $params = [];
+
+    $Sqlcmd = "SELECT * FROM legal_fees_type WHERE 1";
+
+    if ($status == 'yes') {
+        $Sqlcmd .= " AND status = 'A'";
+    }
+
+    $Sqlcmd .= " ORDER BY id DESC";
+
+    if ($limit) {
+        $Sqlcmd .= " LIMIT $limit OFFSET $offset";
+    }
+
+    $this->_result = $this->SELECT_MultiFetch($Sqlcmd, $params);
+
+    return ($this->_num_rows > 0) ? $this->_result : false;
+}
     
     function get_feesType($id = '', $title = '', $not_id = '', $search = '', $limit = '', $offset = '')
     {

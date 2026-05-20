@@ -89,27 +89,19 @@ Bank Name
 Description
 Amount
 
-
-
-
 common/Manage_Cheques.php
 ajax/add_cheque.php
 
-
 modules/client/tpl/information.tpl.php
-
 
 modules/case/tpl/informmation.tpl.php
 modules/case/tpl/hearing.tpl.php
 modules/case/tpl/document.tpl.php
 modules/case/ajax/get_related_cases.php
 
-
 modules/case/informmation.php
 modules/case/hearing.php
 modules/case/document.php
-
-
 
 ALTER TABLE legal_case ADD related_case_id BIGINT;
 CREATE TABLE legal_case_to_case_relations (
@@ -142,3 +134,23 @@ CREATE TABLE legal_case_to_case_relations (
         REFERENCES legal_case(id)
 
 );
+
+ALTER TABLE legal_case
+ADD claim_amount DECIMAL(15,2) DEFAULT 0.00;
+
+
+
+
+paid court feea& expense fee
+
+
+modules/activelegal/ajax/manage_expenses.php
+lib/class/class.legal_expense.php
+modules/activelegal/tpl/information..tpl.php
+
+
+
+modules/activelegal/ajax/manage_expenses.php
+lib/class/class.legal_fees_type.php
+modules/activelegal/tpl/information..tpl.php
+

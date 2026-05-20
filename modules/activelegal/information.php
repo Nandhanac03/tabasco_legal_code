@@ -22,6 +22,10 @@ $objCollection = new Collection();
 include_once("lib/class/class.legal_expense.php");
 $objExpense = new Expense();
 
+include_once("lib/class/class.legal_fees_type.php");
+
+$objLegalfeestype = new LegalFees_type();
+
 
 $edit_id = trim($_GET['param1']);
 
@@ -173,6 +177,9 @@ if ($_POST) {
     }
 }
 
+
+$array_legal_fee_types = array();
+$array_legal_fee_types = $objLegalfeestype->get_feesType();
 
 $array_users = array();
 

@@ -1,5 +1,5 @@
 <?php
-class LegalCase extends dbcon
+class LegalCasess extends dbcon
 {
     function saveCase($data = [], $id = '')
     {

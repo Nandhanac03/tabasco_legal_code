@@ -114,7 +114,7 @@ class Expense extends dbcon
         /* ===== ACTIVITY LOG ===== */
         if ($result) {
         
-            include_once("class.legal_activity_log.php");
+            include_once(__DIR__ . "/class.legal_activity_log.php");
             $activity = new LegalActivityLog();
         
             // Logged-in user ID
@@ -209,6 +209,10 @@ class Expense extends dbcon
         if (!empty($filters['case_id'])) {
             $Sqlcmd .= " AND le.case_id = :case_id";
             $params['case_id'] = $filters['case_id'];
+        }
+        if (!empty($filters['active_legal_id'])) {
+            $Sqlcmd .= " AND le.active_legal_id = :active_legal_id";
+            $params['active_legal_id'] = $filters['active_legal_id'];
         }
         if (!empty($filters['status'])) {
             $Sqlcmd .= " AND le.status = :status";

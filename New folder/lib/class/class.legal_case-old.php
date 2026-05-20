@@ -1,5 +1,5 @@
 <?php
-class LegalCase extends dbcon
+class LegalCasesss extends dbcon
 {
     function saveCase($data = [], $id = '')
     {
@@ -91,6 +91,14 @@ class LegalCase extends dbcon
         if ($data['outstanding_without_cheque']) {
             $sqlCmd .= ", outstanding_without_cheque =:outstanding_without_cheque";
             $params['outstanding_without_cheque'] = $data['outstanding_without_cheque'];
+        }
+        if ($data['claim_amount']) {
+            $sqlCmd .= ", claim_amount =:claim_amount";
+            $params['claim_amount'] = $data['claim_amount'];
+        }
+        if ($data['related_case_id']) {
+            $sqlCmd .= ", related_case_id =:related_case_id";
+            $params['related_case_id'] = $data['related_case_id'];
         }
         if ($id) {
             $sqlCmd .= " WHERE id=$id";

@@ -7,6 +7,15 @@ class Clients extends dbcon
         $params = [];
         $id = (int) $id;  // Ensure ID is an integer
         $isUpdate = $id > 0;
+        
+        $oldData = null;
+        if ($isUpdate) {
+            $oldDataResult = $this->Get_Client_Information($id);
+            if (!empty($oldDataResult)) {
+                $oldData = $oldDataResult[0];
+            }
+        }
+
         $Sqlcmd = $isUpdate ? "UPDATE legal_client SET " : "INSERT INTO legal_client SET ";
         $fields = [
             "marketing",
@@ -47,30 +56,53 @@ class Clients extends dbcon
         }
         $this->_output_alert = "Ok";
         $this->_last_query = $Sqlcmd;
+        
         // Execute query
-    $result = $this->Query($Sqlcmd, $params);
+        $result = $this->Query($Sqlcmd, $params);
 
-    if (!$isUpdate && $result) {
-        $id = $this->_inserted_id = $this->mysqlInsertid();
+        if (!$isUpdate && $result) {
+            $id = $this->_inserted_id = $this->mysqlInsertid();
+        }
+
+        // ===== ACTIVITY LOG =====
+        if ($result) {
+             include_once("class.legal_activity_log.php");
+            $activity = new LegalActivityLog();
+
+            $action = $isUpdate ? 'UPDATE' : 'CREATE';
+            $message = $isUpdate ? 'Updated Client record' : 'Created Client record';
+
+            // Get logged-in user ID from session
+            $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+
+            $activity->logActivity($action, 'legal_client', $loggedUserId, $message);
+
+            // ===== AMOUNT ACTIVITY LOG =====
+            if ($isUpdate && $oldData) {
+                $old_total = (float)($oldData['total_outstanding'] ?? 0);
+                $old_cheque = (float)($oldData['outstanding_cheque'] ?? 0);
+                $old_without = (float)($oldData['outstanding_without_cheque'] ?? 0);
+
+                $new_total = isset($data['total_outstanding']) ? (float)$data['total_outstanding'] : $old_total;
+                $new_cheque = isset($data['outstanding_cheque']) ? (float)$data['outstanding_cheque'] : $old_cheque;
+                $new_without = isset($data['outstanding_without_cheque']) ? (float)$data['outstanding_without_cheque'] : $old_without;
+
+                if ($old_total != $new_total || $old_cheque != $new_cheque || $old_without != $new_without) {
+                    include_once("class.legal_activitylog_amount.php");
+                    $amountActivity = new LegalActivityLogAmount();
+                    $amountActivity->logAmountActivity(
+                        'Update Outstanding Amount',
+                        'client',
+                        $loggedUserId,
+                        "Outstanding amounts modified: Total ($old_total -> $new_total), with PDC ($old_cheque -> $new_cheque), with Invoices ($old_without -> $new_without)",
+                        $id
+                    );
+                }
+            }
+        }
+
+        return $result;
     }
-
-    // ===== ACTIVITY LOG =====
-if ($result) {
-    require_once __DIR__ . '/class.legal_activity_log.php';
-    $activity = new LegalActivityLog();
-
-    $action = $isUpdate ? 'UPDATE' : 'CREATE';
-    $message = $isUpdate ? 'Updated Client record' : 'Created Client record';
-
-    // Get logged-in user ID from session
-    $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
-
-    $activity->logActivity($action, 'legal_client', $loggedUserId, $message);
-}
-
-
-    return $result;
-}
     // Fetch Client Information
     function Get_Client_Information($id = null, $name = null, $search = null, $status = null, $action_id = null, $offset = 0, $limit = 0, $marketing = null, $createFromdate = null, $createTodate = null, $validate_client_id = null)
     {
@@ -226,7 +258,7 @@ if ($result) {
         file_put_contents($logFile, "[$timestamp] $message\n", FILE_APPEND);
     }
 
-    function Update_Cheque_OutStanding($id = '', $data = [])
+    function Update_Cheque_OutStanding($id = '', $data = [], $logActivity = true)
     {
         // Fetch old data for before state
         $oldData = $this->Get_Client_Information($id);
@@ -248,8 +280,32 @@ if ($result) {
             'id'                         => $id
         ];
     
-        return  $this->Query($sql, $params);
+        $result = $this->Query($sql, $params);
+
+        if ($result && $oldData) {
+            $old_total = (float)($oldData['total_outstanding'] ?? 0);
+            $old_cheque = (float)($oldData['outstanding_cheque'] ?? 0);
+            $old_without = (float)($oldData['outstanding_without_cheque'] ?? 0);
+
+            $new_total = (float)($data['total_outstanding'] ?? 0);
+            $new_cheque = (float)($data['outstanding_cheque'] ?? 0);
+            $new_without = (float)($data['outstanding_without_cheque'] ?? 0);
+
+            if ($logActivity && ($old_total != $new_total || $old_cheque != $new_cheque || $old_without != $new_without)) {
+                require_once __DIR__ . '/class.legal_activitylog_amount.php';
+                $amountActivity = new LegalActivityLogAmount();
+                $loggedUserId = $_SESSION['LOGIN_LEGAL_ID'] ?? null;
+                $amountActivity->logAmountActivity(
+                    'Update Outstanding Amount',
+                    'client',
+                    $loggedUserId,
+                    "Outstanding amounts modified: Total ($old_total -> $new_total), with PDC ($old_cheque -> $new_cheque), with Invoices ($old_without -> $new_without)",
+                    $id
+                );
+            }
+        }
     
+        return $result;
     }
     
 }

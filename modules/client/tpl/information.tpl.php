@@ -355,18 +355,26 @@
 
                                   <div class="mb-3">
                                     <label class="form-label">Total Outstanding:</label>
-                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['total_outstanding'] ?? 0.00 ?>" id="total_outstanding" name="total_outstanding" autocomplete="off" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with PDC:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_cheque'] ?? 0.00 ?>" id="outstanding_cheque" name="outstanding_cheque" autocomplete="off" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label">Outstanding with Invoices:</label>
-                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" autocomplete="off" onchange="set_Outstanding('<?= $_REQUEST['param1'] ?>')" />
+                                    <input type="number" class="form-control" value="<?= $data['outstanding_without_cheque'] ?? 0.00 ?>" id="outstanding_without_cheque" name="outstanding_without_cheque" autocomplete="off" />
                                   </div>
+                                  
+                                  <?php if ($edit_id): ?>
+                                  <div class="mb-3 text-end">
+                                      <button type="button" class="btn btn-success" id="btn_save_outstanding" onclick="saveOutstandingAmounts('<?= $edit_id ?>')">
+                                          <i class="bx bx-save"></i> Save Outstanding Amounts
+                                      </button>
+                                  </div>
+                                  <?php endif; ?>
 
                                 </div>
                                 <!-- END card-body -->
@@ -532,31 +540,32 @@ if ($action == 'edit') {
 
 
 <script>
-  function set_Outstanding(param1) {
-    $('#OutstandingresponseMessage').html('');
-    if (!param1) {
-      $("#total_outstanding").val(0);
-      $("#outstanding_cheque").val(0);
-      $("#outstanding_without_cheque").val(0);
-
-      $('#OutstandingresponseMessage').html('<div class="alert alert-danger" id="alertMessage">Please fill out and save the client profile information before adding outstanding amount details.</div>');
-      console.error("Invalid parameter : Client Information ID is missing");
+  function saveOutstandingAmounts(clientId) {
+    if (!clientId) {
+      if (typeof error_noti === 'function') {
+          error_noti("Client Information ID is missing");
+      } else {
+          alert("Please fill out and save the client profile information before adding outstanding amount details.");
+      }
       return false;
     }
+
+    const btn = $('#btn_save_outstanding');
+    const oldHtml = btn.html();
+    btn.prop('disabled', true).html('<i class="bx bx-loader bx-spin"></i> Saving...');
+
     // Collect values from input fields
     let totalOutstanding = document.getElementById("total_outstanding").value;
     let outstandingCheque = document.getElementById("outstanding_cheque").value;
     let outstandingWithoutCheque = document.getElementById("outstanding_without_cheque").value;
 
-    // Create the data object
     let data = {
-      param1: param1,
+      param1: clientId,
       total_outstanding: totalOutstanding,
       outstanding_cheque: outstandingCheque,
       outstanding_without_cheque: outstandingWithoutCheque
     };
 
-    // Send data using fetch()
     fetch("<?= ROOT_DIR ?>ajax/update_outstanding.php", {
         method: "POST",
         headers: {
@@ -566,21 +575,33 @@ if ($action == 'edit') {
       })
       .then(response => response.json())
       .then(result => {
-        console.log("Success:", result);
+        btn.prop('disabled', false).html(oldHtml);
         if (result.status === "success") {
           // Update the fields
           document.getElementById("total_outstanding").value = result.total_outstanding;
           document.getElementById("outstanding_cheque").value = result.outstanding_cheque;
           document.getElementById("outstanding_without_cheque").value = result.outstanding_without_cheque;
           
-          // Show success message
-          $('#OutstandingresponseMessage').html('<div class="alert alert-success">Outstanding amounts updated successfully.</div>');
-          setTimeout(() => $('#OutstandingresponseMessage').fadeOut('slow', function() { $(this).html('').show(); }), 3000);
+          if (typeof round_success_noti === 'function') {
+              round_success_noti("Outstanding amounts updated successfully.");
+          } else {
+              alert("Outstanding amounts updated successfully.");
+          }
         } else {
-          console.error("Error:", result.message);
+          if (typeof error_noti === 'function') {
+              error_noti(result.message || "Error updating outstanding amounts.");
+          } else {
+              alert(result.message || "Error updating outstanding amounts.");
+          }
         }
       })
       .catch(error => {
+        btn.prop('disabled', false).html(oldHtml);
+        if (typeof error_noti === 'function') {
+            error_noti("A server error occurred while saving.");
+        } else {
+            alert("A server error occurred while saving.");
+        }
         console.error("Error:", error);
       });
   }

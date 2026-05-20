@@ -137,6 +137,14 @@ class LegalCase extends dbcon
         
     }
 
+
+    public function getFeeTypes()
+    {
+        $sql = "SELECT id, title FROM legal_fee_type WHERE status = 'A' ORDER BY title ASC";
+        $this->_result = $this->SELECT_MultiFetch($sql, []);
+        return ($this->_num_rows > 0) ? $this->_result : [];
+    }
+
     function get_case($id = '', $active_legal_id = '', $case_number = '')
     {
         $params = [];

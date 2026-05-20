@@ -7,6 +7,15 @@ class ActiveLegal extends dbcon
         $params = [];
         $id = (int) $id;
         $isUpdate = $id > 0;
+        
+        $oldData = null;
+        if ($isUpdate) {
+            $oldDataResult = $this->Get_ActiveLegal_Information(['id' => $id]);
+            if (!empty($oldDataResult)) {
+                $oldData = $oldDataResult[0];
+            }
+        }
+
         $Sqlcmd = $isUpdate
             ? "UPDATE legal_activelegal SET "
             : "INSERT INTO legal_activelegal SET ";
@@ -83,6 +92,29 @@ class ActiveLegal extends dbcon
                         : "Created Active Legal ID: $id",
                     $id                                // reference id
                 );
+            }
+
+            // ===== AMOUNT ACTIVITY LOG =====
+            if ($isUpdate && $oldData) {
+                $old_total = (float)($oldData['total_outstanding'] ?? 0);
+                $old_cheque = (float)($oldData['outstanding_with_cheque'] ?? 0);
+                $old_without = (float)($oldData['outstanding_without_cheque'] ?? 0);
+
+                $new_total = isset($data['total_outstanding']) ? (float)$data['total_outstanding'] : $old_total;
+                $new_cheque = isset($data['outstanding_with_cheque']) ? (float)$data['outstanding_with_cheque'] : $old_cheque;
+                $new_without = isset($data['outstanding_without_cheque']) ? (float)$data['outstanding_without_cheque'] : $old_without;
+
+                if ($old_total != $new_total || $old_cheque != $new_cheque || $old_without != $new_without) {
+                    require_once __DIR__ . '/class.legal_activitylog_amount.php';
+                    $amountActivity = new LegalActivityLogAmount();
+                    $amountActivity->logAmountActivity(
+                        'Update Outstanding Amount',
+                        'activelegal',
+                        $loggedUserId,
+                        "Outstanding amounts modified: Total ($old_total -> $new_total), with PDC ($old_cheque -> $new_cheque), with Invoices ($old_without -> $new_without)",
+                        $id
+                    );
+                }
             }
         }
         

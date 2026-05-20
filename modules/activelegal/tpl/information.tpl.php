@@ -309,7 +309,7 @@
 
                                                                             </div>
 
-                                                                            <!-- <div class="mb-3">
+                                                                            <div class="mb-3">
                                                                                 <label class="form-label w-100" for="select_client"> Client:<span class="asterisk text-danger">*</span>
                                                                                     <?php if (!$isEdit): ?>
                                                                                         <a href="javascript:void(0);" onclick="openAddClientModal('marketing')" class="float-end btn btn-sm btn-outline-primary py-0"><i class="lni lni-plus"></i> Add External Client</a>
@@ -328,7 +328,7 @@
                                                                                     <input type="hidden" id="select_client_hidden" name="select_client" value="<?= $data['client'] ?? '' ?>">
                                                                                 <?php endif; ?>
 
-                                                                            </div> -->
+                                                                            </div>
                                                                         </div>
 
                                                                         <div id="internalStaff">
@@ -530,6 +530,14 @@
                                                                                 value="<?= $data['outstanding_without_cheque'] ?>" required />
 
                                                                         </div>
+                                                                        
+                                                                        <?php if ($isEdit): ?>
+                                                                        <div class="mb-3 text-end">
+                                                                            <button type="button" class="btn btn-success" id="btn_save_outstanding" onclick="saveOutstandingAmounts('<?= $edit_id ?>')">
+                                                                                <i class="bx bx-save"></i> Save Outstanding Amounts
+                                                                            </button>
+                                                                        </div>
+                                                                        <?php endif; ?>
 
                                                                     </div>
 
@@ -546,7 +554,13 @@
 <!-- fees -->
 
 
+<?php
+// At the top with other includes
+include_once("lib/class/class.legal_case.php");
+$objLegalCase = new LegalCase();
 
+// Later in your HTML form:
+?>
 
 
 
@@ -563,17 +577,23 @@
                                   <div class="row g-2 align-items-end mb-3">
                                     <div class="col-md-5">
                                       <label class="form-label">Fee Type</label>
-                                      <select class="form-select" id="new_expense_type" onchange="toggleOtherExpense()">
-                                        <option value="">Select Fee Type</option>
-                                        <?php foreach ($array_legal_clients as $legalClient): ?>
-                                        <option value="<?= htmlspecialchars($legalClient['title']) ?>"><?= htmlspecialchars($legalClient['title']) ?></option>
-                                        <?php endforeach;?>
-                                        <!-- <option value="Expert fee">Expert fee</option>
-                                        <option value="Announcement fee">Announcement fee</option>
-                                        <option value="Emirates Judgment Enforcement fee (EJE)">Emirates Judgment Enforcement fee (EJE)</option>
-                                        <option value="Notary Public Fee">Notary Public Fee</option>
-                                        <option value="Other expense">Other expense</option> -->
-                                      </select>
+                                      <select class="form-select" id="new_expense_type" name="new_expense_type">
+
+<option value="">Select Fee Type</option>
+
+<?php if (!empty($array_legal_fee_types)) { ?>
+
+    <?php foreach ($array_legal_fee_types as $fee) { ?>
+
+        <option value="<?= $fee['id'] ?>">
+            <?= htmlspecialchars($fee['title']) ?>
+        </option>
+
+    <?php } ?>
+
+<?php } ?>
+
+</select>
                                     </div>
                                     <div class="col-md-4">
                                       <label class="form-label">Amount</label>
@@ -1445,7 +1465,7 @@
         const withCheque = parseFloat(withChequeInput.value) || 0;
         const withoutCheque = parseFloat(withoutChequeInput.value) || 0;
         const total = withCheque + withoutCheque;
-        totalOutstandingInput.value = total.toFixed(2);
+        // totalOutstandingInput.value = total.toFixed(2); // Independent now
         document.getElementById('outstanding_reference').value = total.toFixed(2);
     }
 
@@ -1461,7 +1481,215 @@
     
     $(withChequeInput).on('change', updateOutstanding);
     $(withoutChequeInput).on('change', updateOutstanding);
+
+    function loadClientExpenses(active_legal_id) {
+        if (!active_legal_id) return;
+        $.ajax({
+            url: '<?= ROOT_DIR ?>modules/activelegal/ajax/manage_expenses.php',
+            type: 'POST',
+            data: { action: 'list', active_legal_id: active_legal_id },
+            dataType: 'json',
+            success: function(response) {
+                if(response.success) {
+                    $('#client_expenses_list').html(response.html);
+                    $('#total_expenses_sum').text(response.total_sum);
+                    
+                    // Update hidden or readonly inputs if necessary
+                    $('#expense_amount').val(response.total_sum);
+                    
+                    updateTotalClaimAmount();
+                }
+            }
+        });
+    }
+
+    function addClientExpense(active_legal_id) {
+        if (!active_legal_id) {
+            alert("Please save the active legal profile first to add expenses.");
+            return;
+        }
+        const type = $('#new_expense_type').val();
+        const amount = $('#new_expense_amount').val();
+        const reason = $('#new_expense_reason').val();
+        
+        if (!type || !amount || amount <= 0) {
+            alert("Please select a fee type and enter a valid amount.");
+            return;
+        }
+        
+        const btn = $(event.currentTarget);
+        btn.prop('disabled', true).html('<i class="bx bx-loader bx-spin"></i> Adding...');
+        
+        $.ajax({
+            url: '<?= ROOT_DIR ?>modules/activelegal/ajax/manage_expenses.php',
+            type: 'POST',
+            data: {
+                action: 'add',
+                active_legal_id: active_legal_id,
+                fee_type: type,
+                amount: amount,
+                reason: reason
+            },
+            dataType: 'json',
+            success: function(response) {
+                btn.prop('disabled', false).html('<i class="bx bx-plus"></i> Add');
+                if(response.success) {
+                    $('#new_expense_type').val('');
+                    $('#new_expense_amount').val('');
+                    $('#new_expense_reason').val('');
+                    $('#other_expense_reason_div').hide();
+                    loadClientExpenses(active_legal_id);
+                } else {
+                    alert(response.message || "Failed to add expense.");
+                }
+            },
+            error: function() {
+                btn.prop('disabled', false).html('<i class="bx bx-plus"></i> Add');
+                alert("An error occurred.");
+            }
+        });
+    }
+
+    function deleteClientExpense(id, active_legal_id) {
+        if (confirm("Are you sure you want to delete this expense?")) {
+            $.ajax({
+                url: '<?= ROOT_DIR ?>modules/activelegal/ajax/manage_expenses.php',
+                type: 'POST',
+                data: { action: 'delete', id: id },
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        loadClientExpenses(active_legal_id);
+                    } else {
+                        alert(response.message || "Failed to delete expense.");
+                    }
+                }
+            });
+        }
+    }
+    
+    function updateTotalClaimAmount() {
+        const totalOutstanding = parseFloat($('#total_outstanding').val()) || 0;
+        const totalExpenses = parseFloat($('#total_expenses_sum').text()) || 0;
+        
+        const claimAmt =  totalExpenses;
+        $('#total_claim_amount').val(claimAmt.toFixed(2));
+        $('#claim_amount').val(claimAmt.toFixed(2)).trigger('change');
+    }
+
+    function saveOutstandingAmounts(active_legal_id) {
+        if (!active_legal_id) return;
+        
+        const whichTypeUser = $('input[name="which_type_user"]:checked').val();
+        let client_id = '';
+        if (whichTypeUser === 'marketing') {
+            client_id = $('#select_client_hidden').val() || $('#select_client').val();
+        } else {
+            client_id = $('#select_client_hidden').val() || $('#select_Internalclient').val();
+        }
+
+        if (!client_id) {
+            if (typeof error_noti === 'function') {
+                error_noti("Could not identify the client ID to save.");
+            } else {
+                alert("Could not identify the client ID to save.");
+            }
+            return;
+        }
+
+        const total_outstanding = $('#total_outstanding').val();
+        const outstanding_with_cheque = $('#outstanding_with_cheque').val();
+        const outstanding_without_cheque = $('#outstanding_without_cheque').val();
+
+        const btn = $('#btn_save_outstanding');
+        const oldHtml = btn.html();
+        btn.prop('disabled', true).html('<i class="bx bx-loader bx-spin"></i> Saving...');
+
+        $.ajax({
+            url: '<?= ROOT_DIR ?>modules/activelegal/ajax/save_outstanding.php',
+            type: 'POST',
+            data: {
+                active_legal_id: active_legal_id,
+                client_id: client_id,
+                total_outstanding: total_outstanding,
+                outstanding_with_cheque: outstanding_with_cheque,
+                outstanding_without_cheque: outstanding_without_cheque
+            },
+            dataType: 'json',
+            success: function(response) {
+                btn.prop('disabled', false).html(oldHtml);
+                
+                if (response.success) {
+                    if (typeof round_success_noti === 'function') {
+                        round_success_noti(response.message || 'Saved successfully');
+                    } else {
+                        alert(response.message || 'Saved successfully');
+                    }
+                } else {
+                    if (typeof error_noti === 'function') {
+                        error_noti(response.message || 'Error saving');
+                    } else {
+                        alert('Error: ' + (response.message || 'Error saving'));
+                    }
+                }
+            },
+            error: function() {
+                btn.prop('disabled', false).html(oldHtml);
+                
+                if (typeof error_noti === 'function') {
+                    error_noti("A server error occurred while saving.");
+                } else {
+                    alert("A server error occurred while saving.");
+                }
+            }
+        });
+    }
+
+
+
+
+    function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+
+    notification.className = `custom-notification ${type}`;
+    notification.innerText = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+
+
+    $(document).ready(function() {
+        $('#new_expense_type').change(function() {
+            // Check if selected option text contains 'Other' to show reason input
+            const selectedText = $(this).find('option:selected').text().trim().toLowerCase();
+            if (selectedText.includes('other')) {
+                $('#other_expense_reason_div').show();
+            } else {
+                $('#other_expense_reason_div').hide();
+                $('#new_expense_reason').val('');
+            }
+        });
+        
+        let activeLegalId = '<?= $edit_id ?>';
+        if (activeLegalId) {
+            loadClientExpenses(activeLegalId);
+        }
+    });
 </script>
+
 
 <?php if ($action == "edit" && $edit_id > 0 && $data['user_id'] > 0 && $data['category'] > 0) { ?>
 
