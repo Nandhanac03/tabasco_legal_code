@@ -15,11 +15,11 @@ $filter['user_legal_type']     = trim($_SESSION['LOGIN_LEGAL_TYPE'] ?? '');
 $filter['super_admin']         = trim($_SESSION['LOGIN_SUPER_ADMIN'] ?? '');
 $filter['active']              = 'A';
 
-$task_reminders =  $objTask_reminders->get_taskReminders($filter);
+//$task_reminders =  $objTask_reminders->get_taskReminders($filter);
 
-// echo '<pre>';
-// print_r($result);
-// exit;
+
+$task_reminders = $objTask_reminders->get_taskReminders($filter);
+
 
 
 $body   =   "list.tpl";

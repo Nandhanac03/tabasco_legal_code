@@ -362,7 +362,6 @@
 
             let validForm = validateForm(hearing_date, hearing_feedback_date, remarks);
 
-
             if (validForm) {
                 let formData = new FormData();
                 let uploaded_file = hearing_file[0].files[0]
@@ -405,7 +404,7 @@
             let case_id = '<?= $edit_id ?>'
             let csrf_token = '<?= $_SESSION['csrf_token'] ?>'
 
-            if (!deleteId || deleteId == '' || deleteId == undefined) {
+            if (!delete_id || delete_id == '' || delete_id == undefined) {
                 round_error_notify('ID not found');
                 return;
             }

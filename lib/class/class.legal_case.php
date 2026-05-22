@@ -5,7 +5,15 @@ class LegalCase extends dbcon
     {
         $params = [];
 
-        $isUpdate =!empty($id);
+        $isUpdate = !empty($id);
+
+        $oldData = null;
+        if ($isUpdate) {
+            $oldDataResult = $this->get_case($id);
+            if (!empty($oldDataResult)) {
+                $oldData = $oldDataResult[0];
+            }
+        }
 
 
         if ($id) {
@@ -138,6 +146,29 @@ class LegalCase extends dbcon
                         : "Created Case record ID: $id",
                     $id                                // reference id
                 );
+            }
+
+            // ===== AMOUNT ACTIVITY LOG =====
+            if ($isUpdate && $oldData) {
+                $old_total = (float)($oldData['total_outstanding'] ?? 0);
+                $old_cheque = (float)($oldData['outstanding_with_cheque'] ?? 0);
+                $old_without = (float)($oldData['outstanding_without_cheque'] ?? 0);
+
+                $new_total = isset($data['total_outstanding']) ? (float)$data['total_outstanding'] : $old_total;
+                $new_cheque = isset($data['outstanding_with_cheque']) ? (float)$data['outstanding_with_cheque'] : $old_cheque;
+                $new_without = isset($data['outstanding_without_cheque']) ? (float)$data['outstanding_without_cheque'] : $old_without;
+
+                if ($old_total != $new_total || $old_cheque != $new_cheque || $old_without != $new_without) {
+                    require_once __DIR__ . '/class.legal_activitylog_amount.php';
+                    $amountActivity = new LegalActivityLogAmount();
+                    $amountActivity->logAmountActivity(
+                        'Update Case Outstanding Amount',
+                        'case',
+                        $loggedUserId,
+                        "Case outstanding amounts modified: Total ($old_total -> $new_total), with PDC ($old_cheque -> $new_cheque), with Invoices ($old_without -> $new_without)",
+                        $id
+                    );
+                }
             }
         }
         

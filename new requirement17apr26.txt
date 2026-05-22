@@ -154,3 +154,12 @@ modules/activelegal/ajax/manage_expenses.php
 lib/class/class.legal_fees_type.php
 modules/activelegal/tpl/information..tpl.php
 
+
+
+
+new changes
+
+logging in case edit
+
+modules/case/tpl/information.tpl.php
+modules/case/tpl/information..tpl.php

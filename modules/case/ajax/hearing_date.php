@@ -126,14 +126,13 @@ if ($_POST) {
             }
 
             // File upload validation
-
-            $file = $_FILES['hearing_file'];
-
+            $file = isset($_FILES['hearing_file']) ? $_FILES['hearing_file'] : null;
             $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-
-            $maxFileSize = 1 * 1024 * 1024; // 2MB limit
+            $maxFileSize = 1 * 1024 * 1024; // 1MB limit
             $uniqueFileName = '';
-            if (isset($file)) {
+            $targetFilePath = '';
+
+            if ($file && $file['error'] !== UPLOAD_ERR_NO_FILE) {
 
                 if ($file['error'] !== UPLOAD_ERR_OK) {
                     echo json_encode(['success' => false, 'message' => 'Upload error: Please Upload any File', 'file_error' => true]);
@@ -258,6 +257,8 @@ if ($_POST) {
 
             //     exit;
             // }
+
+            break;
 
         case 'load_hearing':
 

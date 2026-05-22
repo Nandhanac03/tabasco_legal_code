@@ -109,76 +109,52 @@ class LegalTask_reminders extends dbcon
     }
     
 
-    function get_taskReminders($filters = [])
-    {
-        $SqlCmd = "SELECT * FROM legal_task_reminders WHERE 1=1";
+    function get_taskReminders($filters = []) 
+    { $SqlCmd = "SELECT * FROM legal_task_reminders WHERE 1=1"; 
         $params = [];
-
-        if (!empty($filters['id'])) {
-            $SqlCmd .= " AND id = :id";
-            $params['id'] = $filters['id'];
-        }
-        if (!empty($filters['user_legal_id'])) {
-            $SqlCmd .= " AND user_legal_id = :user_legal_id";
+         if (!empty($filters['id'])) { $SqlCmd .= " AND id = :id"; 
+            $params['id'] = $filters['id']; 
+        } 
+        if (!empty($filters['user_legal_id']))  
+        { 
+            $SqlCmd .= " AND user_legal_id = :user_legal_id"; 
             $params['user_legal_id'] = $filters['user_legal_id'];
-        }
-        if (!empty($filters['user_legal_type_id'])) {
-            $SqlCmd .= " AND user_legal_type_id = :user_legal_type_id";
-            $params['user_legal_type_id'] = $filters['user_legal_type_id'];
-        }
+         } if (!empty($filters['user_legal_type_id'])) 
+         { 
+            $SqlCmd .= " AND user_legal_type_id = :user_legal_type_id"; 
+            $params['user_legal_type_id'] = $filters['user_legal_type_id']; 
+        } 
         if (!empty($filters['user_legal_type'])) {
-            $SqlCmd .= " AND user_legal_type = :user_legal_type";
-            $params['user_legal_type'] = $filters['user_legal_type'];
-        }
-        if (!empty($filters['super_admin'])) {
-            $SqlCmd .= " AND super_admin = :super_admin";
-            $params['super_admin'] = $filters['super_admin'];
-        }
-        if (!empty($filters['is_view'])) {
-            $SqlCmd .= " AND is_view = :is_view";
-            $params['is_view'] = $filters['is_view'];
-        }
-        if (!empty($filters['task_name'])) {
-            $SqlCmd .= " AND task_name LIKE :task_name";
-            $params['task_name'] = '%' . $filters['task_name'] . '%';
-        }
-
-        $SqlCmd .= " AND reminder_date <= CURDATE()";
-        $SqlCmd .= " AND task_date >= CURDATE()";
-
-        if (!empty($filters['status'])) {
-            $SqlCmd .= " AND status = :status";
-            $params['status'] = $filters['status'];
-        }
-
-        if (!empty($filters['active'])) {
-            $SqlCmd .= " AND active = :active";
-            $params['active'] = $filters['active'];
-        }
-
-        $SqlCmd .= " ORDER BY created_at DESC";
-
-        $rows = $this->SELECT_MultiFetch($SqlCmd, $params);
-
-        // Fast timestamp-based "X days ago"
-        foreach ($rows as &$row) {
-            if (!empty($row['created_at'])) {
-
-                $createdTs = strtotime($row['created_at']);
-                $nowTs = time();
-
-                $days = floor(($nowTs - $createdTs) / 86400);
-
-                if ($days > 0) {
-                    $row['created_ago'] = $days . " day" . ($days > 1 ? "s" : "") . " ago";
-                } else {
-                    $row['created_ago'] = "Today";
-                }
-            } else {
-                $row['created_ago'] = "Unknown";
-            }
-        }
-
-        return ($this->_num_rows > 0) ? $rows : [];
-    }
+             $SqlCmd .= " AND user_legal_type = :user_legal_type";
+              $params['user_legal_type'] = $filters['user_legal_type']; 
+            } 
+            if (!empty($filters['super_admin'])) { 
+                $SqlCmd .= " AND super_admin = :super_admin";
+                 $params['super_admin'] = $filters['super_admin']; 
+                } 
+                
+                if (!empty($filters['is_view'])) { 
+                    $SqlCmd .= " AND is_view = :is_view";
+                     $params['is_view'] = $filters['is_view']; 
+                    
+                    } 
+                    if (!empty($filters['task_name'])) {
+                         $SqlCmd .= " AND task_name LIKE :task_name"; 
+                         $params['task_name'] = '%' . $filters['task_name'] . '%'; 
+                        } 
+                     $SqlCmd .= " AND reminder_date <= CURDATE()";
+         $SqlCmd .= " AND task_date >= CURDATE()"; if (!empty($filters['status'])) 
+         {
+             $SqlCmd .= " AND status = :status"; 
+             $params['status'] = $filters['status']; 
+            } 
+            if (!empty($filters['active'])) 
+            {
+                 $SqlCmd .= " AND active = :active"; 
+                 $params['active'] = $filters['active']; 
+                } 
+                $SqlCmd .= " ORDER BY created_at DESC"; 
+                $rows = $this->SELECT_MultiFetch($SqlCmd, $params);
+                 // Fast timestamp-based "X days ago" foreach ($rows as &$row) { if (!empty($row['created_at'])) { $createdTs = strtotime($row['created_at']); $nowTs = time(); $days = floor(($nowTs - $createdTs) / 86400); if ($days > 0) { $row['created_ago'] = $days . " day" . ($days > 1 ? "s" : "") . " ago"; } else { $row['created_ago'] = "Today"; } } else { $row['created_ago'] = "Unknown"; } } return ($this->_num_rows > 0) ? $rows : []; }
+}
 }

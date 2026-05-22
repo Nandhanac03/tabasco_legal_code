@@ -257,6 +257,8 @@
                         value="<?= isset($current_legal_case[0]['outstanding_without_cheque']) && $current_legal_case[0]['outstanding_without_cheque'] != '' ? $current_legal_case[0]['outstanding_without_cheque'] : '0' ?>">
                 </div>
 
+               
+
                 <!-- <div class="mb-3">
                     <label class="form-label">Active Legal Claim Amount:</label>
                     <input type="text" class="form-control"
@@ -272,6 +274,22 @@
                         step="any"
                         value="<?= isset($current_legal_case[0]['claim_amount']) && $current_legal_case[0]['claim_amount'] != '' ? $current_legal_case[0]['claim_amount'] : (isset($activeLegal[0]['claim_amount']) ? $activeLegal[0]['claim_amount'] : '0') ?>" required>
                 </div>
+
+
+
+
+
+
+ <?php if ($edit_id) { ?>
+                <div class="mb-3 text-end">
+                    <button type="button" class="btn btn-success" id="btn_save_outstanding" onclick="saveOutstandingAmounts(<?= (int)$edit_id ?>)">
+                        <i class="lni lni-save"></i> Save Outstanding Amount
+                    </button>
+                </div>
+                <?php } ?>
+
+
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -746,6 +764,73 @@
             continueDelayOnInactiveTab: false,
             position: 'top right',
             msg: msg
+        });
+    }
+
+    function saveOutstandingAmounts(caseId) {
+        if (!caseId) {
+            if (typeof round_error_notify === 'function') {
+                round_error_notify("Case ID is missing");
+            } else {
+                alert("Please save the Case Information before adding outstanding amount details.");
+            }
+            return false;
+        }
+
+        const btn = $('#btn_save_outstanding');
+        const oldHtml = btn.html();
+        btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+        let totalOutstanding = $('#total_outstanding').val();
+        let outstandingCheque = $('#outstanding_with_cheque').val();
+        let outstandingWithoutCheque = $('#outstanding_without_cheque').val();
+        let claimAmount = $('#claim_amount').val();
+
+        let data = {
+            case_id: caseId,
+            total_outstanding: totalOutstanding,
+            outstanding_with_cheque: outstandingCheque,
+            outstanding_without_cheque: outstandingWithoutCheque,
+            claim_amount: claimAmount
+        };
+
+        fetch("<?= ROOT_DIR ?>modules/case/ajax/save_outstanding.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            btn.prop('disabled', false).html(oldHtml);
+            if (result.status === "success") {
+                $('#total_outstanding').val(result.total_outstanding);
+                $('#outstanding_with_cheque').val(result.outstanding_with_cheque);
+                $('#outstanding_without_cheque').val(result.outstanding_without_cheque);
+                $('#claim_amount').val(result.claim_amount);
+                
+                if (typeof round_success_noti === 'function') {
+                    round_success_noti(result.message || "Outstanding amounts updated successfully.");
+                } else {
+                    alert(result.message || "Outstanding amounts updated successfully.");
+                }
+            } else {
+                if (typeof round_error_notify === 'function') {
+                    round_error_notify(result.message || "Error updating outstanding amounts.");
+                } else {
+                    alert(result.message || "Error updating outstanding amounts.");
+                }
+            }
+        })
+        .catch(error => {
+            btn.prop('disabled', false).html(oldHtml);
+            console.error("Error saving outstanding amounts:", error);
+            if (typeof round_error_notify === 'function') {
+                round_error_notify("Connection error occurred while saving outstanding amounts.");
+            } else {
+                alert("Connection error occurred while saving outstanding amounts.");
+            }
         });
     }
 </script>
