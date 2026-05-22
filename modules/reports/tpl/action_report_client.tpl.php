@@ -43,9 +43,9 @@
                                 </button> -->
                                 <a href="<?= ROOT_DIR ?>reports/action_report_list.html" class="btn btn-dark"><ion-icon name="return-down-back-outline"></ion-icon>BACK</a>
 
-                                <button class="btn btn-outline-primary ms-auto mb-0">
+                                <!-- <button class="btn btn-outline-primary ms-auto mb-0">
                                     <i class="lni lni-download"></i>
-                                </button>
+                                </button> -->
                             </div>
 
 

@@ -331,8 +331,13 @@
             formData.append('hearing_date', $("#edit_hearing_date").val());
             formData.append('hearing_feedback_date', $("#edit_hearing_feedback_date").val());
             formData.append('hearing_feedback', $("#edit_remarks").val());
-            formData.append('hearing_file', $("#edit_hearing_file")[0].files[0]);
             formData.append('csrf_token', '<?= $_SESSION['csrf_token'] ?>');
+
+            // Only append file if one is actually selected
+            let files = $("#edit_hearing_file")[0].files;
+            if (files.length > 0) {
+                formData.append('hearing_file', files[0]);
+            }
 
             $.ajax({
                 type: 'POST',
@@ -340,6 +345,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
+                dataType: 'json',
                 success: function(response) {
                     if (response.success) {
                         round_success_noti(response.message);
@@ -348,6 +354,9 @@
                     } else {
                         round_error_notify(response.message);
                     }
+                },
+                error: function() {
+                    round_error_notify('Something went wrong. Please try again.');
                 }
             });
         });

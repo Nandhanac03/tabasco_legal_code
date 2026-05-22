@@ -22,8 +22,13 @@
 
                         </li>
 
+
+
+
                         <li class="breadcrumb-item active" aria-current="page">View Action</li>
 
+
+                        
                     </ol>
 
                 </nav>
@@ -42,7 +47,12 @@
 
                     <div class="card-header py-3">
 
-
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+    <h6 class="mb-0">Action Details</h6>
+    <a href="javascript:history.back()" class="btn btn-secondary">
+        <ion-icon name="arrow-back-outline"></ion-icon> Back
+    </a>
+</div>
 
                     </div>
 

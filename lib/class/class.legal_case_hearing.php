@@ -53,7 +53,7 @@ class CaseHearing extends dbcon
         }
 
         $this->_last_query = $sql;
-        $result = $this->Query($set, $params);
+        $result = $this->Query($sql, $params);
 
         /* ===== GET INSERTED ID ===== */
         $isUpdate = !empty($id);
@@ -83,6 +83,8 @@ class CaseHearing extends dbcon
                 );
             }
         }
+
+        return $result;
     }
     function get_hearing($id = '', $case_id = '', $type = '')
     {
