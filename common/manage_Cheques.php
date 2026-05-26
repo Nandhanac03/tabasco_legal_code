@@ -144,7 +144,7 @@
         return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
     };
 
-    function fetchAndPopulateChequeTable(ID, moduleIs, pageIs) {
+    function fetchAndPopulateChequeTable(ID, moduleIs, pageIs, update_inputs = false) {
         if (ID != '' && moduleIs != '' && pageIs != '') {
             const tbody = document.querySelector("#chequeTable tbody");
             tbody.textContent = "";
@@ -171,24 +171,49 @@
                         const amount = parseFloat(item.amount) || 0;
                         totalAmount += amount;
 
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                        <td class="text-center">${index + 1}</td>
-                        <td class="text-center">${formatDateDMY(item.upload_date)}</td>
-                        <td class="text-center">${item.cheque_number || '-'}</td>
-                        <td class="text-center">${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                        <td class="text-center">${item.notes || '-'}</td>
-                       <td class="text-center">
-    ${item.id ? `
-        <button type="button"
-                class="delete-link btn btn-sm"
-                data-id="${item.id}"
-                style="color:red;">
-            <i class="lni lni-trash"></i>
+                     const row = document.createElement("tr");
+row.innerHTML = `
+    <td class="text-center">${index + 1}</td>
+    <td class="text-center">${formatDateDMY(item.upload_date)}</td>
+    <td class="text-center">${item.cheque_number || '-'}</td>
+    <td class="text-center">${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+    <td class="text-center">
+        <button type="button" 
+                class="btn btn-sm btn-outline-secondary toggle-desc"
+                onclick="toggleDescription(this)">
+            <ion-icon name="chevron-down"></ion-icon> View
         </button>
-    ` : ''}
-</td>`;
-                        tbody.appendChild(row);
+    </td>
+    <td class="text-center">
+        ${item.id ? `
+            <button type="button"
+                    class="delete-link btn btn-sm"
+                    data-id="${item.id}"
+                    style="color:red;">
+                <i class="lni lni-trash"></i>
+            </button>
+        ` : ''}
+    </td>`;
+
+row.appendChild(document.createElement('tr')); // This will be replaced
+
+// Insert the main row
+tbody.appendChild(row);
+
+// Create the hidden description row
+const descRow = document.createElement("tr");
+descRow.className = "description-row d-none";
+descRow.innerHTML = `
+    <td colspan="6" class="bg-light p-3">
+        <div>
+            <strong style="font-size: 14px; color: #333;">Description:</strong>
+            <p style="margin: 8px 0 0 0; color: #666; white-space: pre-wrap; word-wrap: break-word;">
+                ${item.notes || 'No description available'}
+            </p>
+        </div>
+    </td>`;
+
+tbody.appendChild(descRow);
                     });
 
                     document.getElementById("totalAmountDisplay").textContent = totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -198,7 +223,7 @@
                     console.error("Error:", err);
                     alert("❌ Failed to load cheque data.");
                 });
-            loadTotal(ID, moduleIs);
+            loadTotal(ID, moduleIs, update_inputs);
         } else {
             document.querySelector("#chequeTable tbody").innerHTML = '<tr id="Rwo_nodata_msg"><td colspan="5" class="text-center">No cheque data available.</td></tr>';
         }
@@ -234,7 +259,7 @@
                 if (success) {
                     $btn.closest("tr").remove();
                     alert("✅ Deleted successfully.");
-                    fetchAndPopulateChequeTable(parent_id, list_module, list_page);
+                    fetchAndPopulateChequeTable(parent_id, list_module, list_page, true);
                 } else {
                     alert("❌ Delete failed: " + message);
                     $btn.prop('disabled', false).css('pointer-events', 'auto').html(originalContent);
@@ -269,13 +294,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        fetchAndPopulateChequeTable(parent_id, list_module, list_page);
+        fetchAndPopulateChequeTable(parent_id, list_module, list_page, false);
         toggleChequeFields();
 
         document.querySelectorAll('input[name="chequeAdd"]').forEach(radio => {
             radio.addEventListener("change", function() {
                 toggleChequeFields();
-                fetchAndPopulateChequeTable(parent_id, list_module, list_page);
+                fetchAndPopulateChequeTable(parent_id, list_module, list_page, false);
             });
         });
     });
@@ -318,7 +343,7 @@
                             $('#frm_addCheque')[0].reset();
                             document.getElementById(`flexRadioDefault${selectedChequeType}`).checked = true;
                             toggleChequeFields();
-                            fetchAndPopulateChequeTable(parent_id, list_module, list_page);
+                            fetchAndPopulateChequeTable(parent_id, list_module, list_page, true);
 
 
                         }
@@ -356,12 +381,7 @@
         });
     });
 
-    function loadTotal(parent_id, list_module) {
-        /*
-        $('#outstanding_cheque').val(0.00);
-        $('#outstanding_without_cheque').val(0.00);
-        */
-
+    function loadTotal(parent_id, list_module, update_inputs = false) {
         if (parent_id !== '') {
             $.ajax({
                 url: '<?= ROOT_DIR ?>ajax/load_cheque.php',
@@ -370,16 +390,23 @@
                 data: {
                     alphabet: 'loadTotal',
                     parent_id: parent_id,
-                    list_module: list_module
+                    list_module: list_module,
+                    update_db: update_inputs ? 1 : 0
                 },
                 success: function(response) {
                     console.log("Total response:", response);
                     if (response.success) {
-                        /*
-                        $('#outstanding_cheque').val(response.Total1);
-                        $('#outstanding_without_cheque').val(response.Total2);
-                        $('#total_outstanding').val(response.OutstandingTotal);
-                        */
+                        if (update_inputs) {
+                            $('#outstanding_cheque').val(response.Total1);
+                            $('#outstanding_without_cheque').val(response.Total2);
+                            if (typeof calculateTotalOutstanding === 'function') {
+                                calculateTotalOutstanding();
+                            } else {
+                                const pdc = parseFloat(response.Total1) || 0;
+                                const invoice = parseFloat(response.Total2) || 0;
+                                $('#total_outstanding').val((pdc + invoice).toFixed(2));
+                            }
+                        }
                     } else {
                         alert('Error: ' + response.message);
                     }
@@ -390,4 +417,27 @@
             });
         }
     }
+</script>
+
+
+<script>
+
+
+    function toggleDescription(btn) {
+    const row = btn.closest('tr');
+    const descRow = row.nextElementSibling;
+    
+    // Toggle the hidden class
+    descRow.classList.toggle('d-none');
+    
+    // Update button icon and text
+    const icon = btn.querySelector('ion-icon');
+    if (descRow.classList.contains('d-none')) {
+        icon.setAttribute('name', 'chevron-down');
+        btn.innerHTML = '<ion-icon name="chevron-down"></ion-icon> View';
+    } else {
+        icon.setAttribute('name', 'chevron-up');
+        btn.innerHTML = '<ion-icon name="chevron-up"></ion-icon> Hide';
+    }
+}
 </script>

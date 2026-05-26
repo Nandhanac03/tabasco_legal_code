@@ -333,12 +333,7 @@
             formData.append('hearing_feedback', $("#edit_remarks").val());
             formData.append('csrf_token', '<?= $_SESSION['csrf_token'] ?>');
 
-            // Only append file if one is actually selected
-            let files = $("#edit_hearing_file")[0].files;
-            if (files.length > 0) {
-                formData.append('hearing_file', files[0]);
-            }
-
+            
             $.ajax({
                 type: 'POST',
                 url: '<?= ROOT_DIR ?>modules/case/ajax/hearing_date.php',

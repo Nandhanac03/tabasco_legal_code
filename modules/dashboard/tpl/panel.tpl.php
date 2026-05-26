@@ -35,7 +35,51 @@
         </div>
         <!--end breadcrumb-->
 
+<style>
 
+
+
+    /* Hide sidebar by default */
+.sidebar {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+/* Show when active */
+.sidebar.active {
+    display: block;
+}
+
+/* On larger screens, always show */
+@media (min-width: 768px) {
+    .sidebar {
+        display: block !important;
+    }
+}
+
+/* Overlay for mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+</style>
 
 
 
@@ -488,4 +532,54 @@
             }
         });
     });
+</script>
+<script>
+$(document).ready(function() {
+    const sidebar = $('#sidebar');
+    const overlay = $('#sidebarOverlay');
+    const toggleBtn = $('#sidebarToggle');
+    
+    // Remember sidebar state
+    const sidebarState = localStorage.getItem('sidebarOpen') === 'true';
+    
+    // Set initial state on desktop
+    if (window.innerWidth >= 768) {
+        sidebar.addClass('active');
+    } else if (sidebarState) {
+        sidebar.addClass('active');
+        overlay.addClass('active');
+    }
+    
+    // Toggle sidebar
+    toggleBtn.on('click', function() {
+        sidebar.toggleClass('active');
+        overlay.toggleClass('active');
+        
+        // Save state
+        localStorage.setItem('sidebarOpen', sidebar.hasClass('active'));
+    });
+    
+    // Close on overlay click
+    overlay.on('click', function() {
+        sidebar.removeClass('active');
+        overlay.removeClass('active');
+        localStorage.setItem('sidebarOpen', false);
+    });
+    
+    // Close on link click (mobile)
+    sidebar.find('a').on('click', function() {
+        if (window.innerWidth < 768) {
+            sidebar.removeClass('active');
+            overlay.removeClass('active');
+        }
+    });
+    
+    // Handle window resize
+    $(window).on('resize', function() {
+        if (window.innerWidth >= 768) {
+            sidebar.addClass('active');
+            overlay.removeClass('active');
+        }
+    });
+});
 </script>
