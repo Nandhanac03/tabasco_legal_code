@@ -164,3 +164,13 @@ logging in case edit
 modules/case/tpl/information.tpl.php
 modules/case/ajax/save_outstanding.php
 lib/class/class.legal_case.php
+lib/class/class.legal_case_hearing.php
+
+
+activelegal log
+modules/activelegal/tpl/information.tpl.php
+modules/activelegal/ajax/save_outstanding.php
+lib/class/class.legal_activelegals.php
+
+
+modules/client/tpl/information.tpl.php
